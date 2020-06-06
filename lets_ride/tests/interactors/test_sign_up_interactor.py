@@ -120,4 +120,3 @@ def test_sign_up(create_user_auth_tokens):
 #         phone_number=phone_number
 #     )
 #     presenter.raise_user_with_phone_number_already_exist.assert_called()
-

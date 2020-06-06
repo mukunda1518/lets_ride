@@ -4,6 +4,7 @@ from lets_ride.interactors.storages.storage_interface \
 from lets_ride.utils.datetime_conversion \
     import convert_datetime_to_datetime_object
 
+
 class ShareTravelInfoInteractor:
 
     def __init__(

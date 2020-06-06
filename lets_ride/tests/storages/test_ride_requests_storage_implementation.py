@@ -97,5 +97,3 @@ def test_get_ride_request(
 
     # Assert
     assert ride_requests_dto_with_status_pending == response
-
-

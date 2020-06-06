@@ -84,4 +84,3 @@ def test_share_ride_with_flexible_timings():
         seats=seats,
         asset_quantity=asset_quantity
     )
-

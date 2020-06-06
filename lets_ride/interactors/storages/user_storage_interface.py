@@ -2,6 +2,7 @@ from abc import abstractmethod
 from abc import ABC
 from lets_ride.dtos.dtos import UserDto
 
+
 class UserStorageInterface(ABC):
 
     def __init__(self):
@@ -43,8 +44,7 @@ class UserStorageInterface(ABC):
     @abstractmethod
     def check_username_exists(self, username: str):
         pass
-    
+
     @abstractmethod
     def check_phone_number_exists(self, phone_number: str):
         pass
-

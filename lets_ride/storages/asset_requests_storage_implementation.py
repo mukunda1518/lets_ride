@@ -195,7 +195,6 @@ class AssetRequestsStorageImplementation(AssetRequestsStorageInterface):
         return base_asset_request_dto
 
 
-
     def _get_asset_request_dto(
         self,
         asset_request_obj: AssetRequest,

@@ -47,7 +47,6 @@ def test_get_login_response_given_token_dto_returns_response_dict():
     assert expected_response_dict == actual_reponse_dict
 
 
-
 def test_user_profile_response_given_user_dto_returns_response_dict(
     token_dto=token_dto
 ):
@@ -70,6 +69,7 @@ def test_user_profile_response_given_user_dto_returns_response_dict(
     # Assert
     assert excepted_response_dict == actual_reponse_dict
 
+
 def test_raise_invalid_phone_number():
     # Arrange
     presenter = PresenterImplementation()
@@ -83,6 +83,7 @@ def test_raise_invalid_phone_number():
     # Assert
     assert exception.value.message == exception_message
     assert exception.value.res_status == exception_res_status
+
 
 def test_raise_invalid_password():
     # Arrange

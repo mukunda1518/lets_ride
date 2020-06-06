@@ -6,6 +6,8 @@ from lets_ride.interactors.storages.matching_shares_results_storage_interface \
     import MatchingSharesStorageInterface
 from lets_ride.interactors.presenters.presenter_interface \
     import PresenterInterface
+
+
 from lets_ride.dtos.dtos import (
     BaseRideShareDto,
     BaseTravelInfoDto,
@@ -48,7 +50,7 @@ class MatchingSharesResultsInteractor:
         asset_request_matching_dtos = self._get_asset_request_matching_dtos_without_duplications(
             asset_matching_for_ride_share_dtos, asset_request_matching_dtos
         )
-
+        total_matching_asset_requests = len(asset_request_matching_dtos)
         total_matching_asset_requests = len(asset_request_matching_dtos)
         asset_request_matching_dtos = asset_request_matching_dtos[offset:limit]
 

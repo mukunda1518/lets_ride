@@ -33,7 +33,6 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
         return ride_requests_dto
 
 
-
     def get_ride_request_with_status_expired(
         self, user_id: int, offset: int, limit: int, sort_key: str,
         sort_value: str, current_datetime_obj: datetime
@@ -63,7 +62,6 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
         return ride_requests_dto
 
 
-
     def get_ride_request_with_status_pending(
         self, user_id: int, offset: int, limit: int, sort_key: str,
         sort_value: str, current_datetime_obj: datetime
@@ -91,7 +89,6 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
             ride_request_dtos, total_rides
         )
         return ride_requests_dto
-
 
 
     def get_ride_requests(
@@ -173,7 +170,6 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
         return ride_request_dtos
 
 
-
     def _get_base_ride_request_dto(
         self,
         ride_request_obj: RideRequest
@@ -200,7 +196,6 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
                 laguage_quantity=ride_request_obj.laguage_quantity
             )
         return base_ride_request_dto
-
 
 
     def _get_ride_request_dto(

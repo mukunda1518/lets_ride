@@ -3,6 +3,7 @@ from abc import abstractmethod
 from abc import ABC
 from lets_ride.dtos.dtos import AssetRequestsDto
 
+
 class AssetRequestsStorageInterface(ABC):
 
     @abstractmethod

@@ -24,11 +24,8 @@ def test_update_ride_request_status(
     )
 
     # Assert
-
     ride_request_obj = RideRequest.objects.get(id=ride_request_id)
     ride_matching_obj = ShareRide.objects.get(id=ride_matching_id)
     assert ride_request_obj.accepted_by_id == user_id
     assert ride_matching_obj.seats == seats
     assert ride_matching_obj.asset_quantity == asset_quantity
-
-

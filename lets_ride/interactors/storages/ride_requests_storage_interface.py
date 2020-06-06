@@ -4,6 +4,7 @@ from abc import abstractmethod
 from abc import ABC
 from lets_ride.dtos.dtos import RideRequestsDto
 
+
 class RideRequestsStorageInterface(ABC):
 
     @abstractmethod

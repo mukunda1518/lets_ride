@@ -91,5 +91,3 @@ class MyAssetRequestsInteractor:
         else:
             status = Status.PENDING.value
         return status
-
-

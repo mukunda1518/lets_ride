@@ -23,4 +23,3 @@ def test_accept_ride_request_wrapper():
     storage.update_ride_request_status.assert_called_once_with(
         user_id, ride_request_id, ride_matching_id
     )
-

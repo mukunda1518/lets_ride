@@ -69,14 +69,18 @@ class PresenterImplementation(PresenterInterface):
     def raise_invalid_password(self):
         raise NotFound(*INVALID_PASSWORD)
 
+
     def raise_invalid_for_limit_and_offset(self):
         raise BadRequest(*INVALID_OFFSET_LIMIT_VALUE)
+
 
     def raise_username_already_exist(self):
         raise BadRequest(*INVALID_USERNAME)
 
+
     def raise_user_with_phone_number_already_exist(self):
         raise BadRequest(*PHONE_NUMBER_WITH_USER_EXIST)
+
 
     def  get_asset_requests_response(
         self, asset_requests_dto: AssetRequestsDto
@@ -171,6 +175,7 @@ class PresenterImplementation(PresenterInterface):
 
         return list_of_ride_dict
 
+
     def _get_ride_dict(self, ride_dto: RideMatchingDto):
         base_ride_dto = ride_dto.ride_dto
         base_ride_dict = self._get_base_ride_dict(base_ride_dto)
@@ -235,6 +240,7 @@ class PresenterImplementation(PresenterInterface):
             "phone_number": base_asset_dto.phone_number,
         }
         return base_asset_dict
+
 
     def _get_datetime_based_on_flexible_timings(
         self, base_dto: Union[BaseAssetRequestDto, BaseRideRequestDto]

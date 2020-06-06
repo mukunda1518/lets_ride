@@ -37,4 +37,3 @@ def test_user_profile():
     storage.user_profile.assert_called_once_with(user_id=user_id)
     presenter.user_profile_response.assert_called_once_with(user_dto=user_dto)
     assert response == mock_presenter_response
-

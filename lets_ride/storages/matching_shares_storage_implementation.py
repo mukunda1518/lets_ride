@@ -21,7 +21,6 @@ from lets_ride.models.ride_request import RideRequest
 class MatchingSharesStorageImplementation(MatchingSharesStorageInterface):
 
     def get_ride_shares(self, user_id: int) -> List[BaseRideShareDto]:
-
         ride_share_objs = ShareRide.objects.filter(user_id=user_id)
         ride_share_dtos = self._get_ride_share_dtos(ride_share_objs)
         return ride_share_dtos
@@ -136,7 +135,6 @@ class MatchingSharesStorageImplementation(MatchingSharesStorageInterface):
             ride_matching_dto = self._get_ride_matching_dto(ride_matching_obj)
             ride_matching_dtos.append(ride_matching_dto)
         return ride_matching_dtos
-
 
 
     def _get_ride_matching_dto(
@@ -259,6 +257,7 @@ class MatchingSharesStorageImplementation(MatchingSharesStorageInterface):
             phone_number=asset_request_matching_obj.phone_number
         )
         return base_asset_matching_dto
+
 
     def _get_datetime_based_on_flexible_timings(
         self, base_obj: Union[AssetRequest, RideRequest, ShareRide, TravelInfo]

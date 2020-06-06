@@ -75,6 +75,7 @@ class MyRideRequestsInteractor:
         current_datetime_obj = datetime.now()
         flexible_timings = ride_dto.ride_dto.flexible_timings
         is_accepted = ride_dto.accepted_person
+
         if flexible_timings:
             request_datetime_obj = \
                 ride_dto.ride_dto.flexible_to_date_time
