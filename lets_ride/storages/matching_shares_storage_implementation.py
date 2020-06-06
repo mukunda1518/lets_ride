@@ -149,7 +149,7 @@ class MatchingSharesStorageImplementation(MatchingSharesStorageInterface):
 
         ride_matching_dto = RideMatchingDto(
             ride_dto=base_ride_matching_dto,
-            ride_matching_id="",
+            ride_matching_id=0,
             username=ride_matching_obj.user.username,
             user_phone_number=ride_matching_obj.user.phone_number
         )
@@ -228,8 +228,8 @@ class MatchingSharesStorageImplementation(MatchingSharesStorageInterface):
 
         asset_matching_dto = AssetMatchingDto(
             asset_dto=base_asset_matching_dto,
-            travel_matching_id="",
-            ride_matching_id="",
+            travel_matching_id=0,
+            ride_matching_id=0,
             username=asset_request_matching_obj.user.username,
             user_phone_number=asset_request_matching_obj.user.phone_number
         )

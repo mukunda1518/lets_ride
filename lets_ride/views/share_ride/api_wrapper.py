@@ -35,4 +35,4 @@ def api_wrapper(*args, **kwargs):
         seats=seats,
         asset_quantity=asset_quantity
     )
-    return HttpResponse(status=200)
+    return HttpResponse(status=201)

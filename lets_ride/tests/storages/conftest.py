@@ -413,10 +413,10 @@ def populate_travel_shares(populate_users):
             source="Delhi",
             destination="Hyderabad",
             flexible_timings=True,
-            flexible_from_date_time=datetime.datetime(2020,4,15,3,30),
-            flexible_to_date_time=datetime.datetime(2020,5,15,3,30),
+            flexible_from_date_time=datetime.datetime(2020,1,15,3,50),
+            flexible_to_date_time=datetime.datetime(2020,4,15,3,50),
             travel_medium="TRAIN",
-            asset_quantity=2,
+            asset_quantity=6,
             user_id=2,
         )
     ]
@@ -460,11 +460,11 @@ def populate_ride_matching_requests(populate_users):
             source="Delhi",
             destination="Hyderabad",
             flexible_timings=True,
-            flexible_from_date_time=datetime.datetime(2020,1,15,3,50),
-            flexible_to_date_time=datetime.datetime(2020,4,15,3,50),
-            seats=4,
-            laguage_quantity=5,
-            user_id=2,
+            flexible_from_date_time=datetime.datetime(2020,4,15,3,30),
+            flexible_to_date_time=datetime.datetime(2020,5,15,3,30),
+            seats=1,
+            laguage_quantity=2,
+            user_id=3,
         )
     ]
     RideRequest.objects.bulk_create(ride_request_list)
@@ -489,7 +489,7 @@ def ride_matching_dtos(base_ride_matching_request_dto):
     ride_matching_dtos = [
         RideMatchingDto(
             ride_dto=base_ride_matching_request_dto,
-            ride_matching_id="",
+            ride_matching_id=0,
             username="user1",
             user_phone_number="1234567890"
         )
@@ -504,7 +504,7 @@ def populate_asset_matching_requests(populate_users):
         AssetRequest(
             source="Kurnool",
             destination="Hyderabad",
-            travel_date_time=datetime.datetime(2020,7,15,3,50),
+            travel_date_time=datetime.datetime(2020,6,15,3,30),
             flexible_timings=False,
             asset_quantity=2,
             asset_type="BAG",
@@ -512,8 +512,7 @@ def populate_asset_matching_requests(populate_users):
             asset_sensitivity="LOW",
             deliver_to="user2",
             phone_number="1234567891",
-            user_id=1,
-            accepted_by_id=2
+            user_id=3
         ),
         AssetRequest(
             source="Delhi",
@@ -557,8 +556,8 @@ def asset_matching_dtos(base_asset_matching_request_dto):
     asset_matching_dtos = [
         AssetMatchingDto(
             asset_dto=base_asset_matching_request_dto,
-            ride_matching_id="",
-            travel_matching_id="",
+            ride_matching_id=0,
+            travel_matching_id=0,
             username="user2",
             user_phone_number="1234567891"
         )

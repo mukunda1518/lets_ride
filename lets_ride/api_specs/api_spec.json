@@ -219,6 +219,34 @@
                 }
             ]
         },
+        "ShareTravelInfoDisplayDetails": {
+            "allOf": [{
+                    "$ref": "#/definitions/ShareTravelInfo"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "travel_share_id": {
+                            "type": "integer"
+                        },
+                        "accepted_asset_quantity": {
+                            "type": "integer"
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "ACTIVE",
+                                "EXPIRED"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "accepted_asset_quantity",
+                        "status"
+                    ]
+                }
+            ]
+        },
         "ShareRide": {
             "allOf": [{
                     "$ref": "#/definitions/CommonRequest"
@@ -236,6 +264,39 @@
                 },
                 {
                     "$ref": "#/definitions/AssetQuantity"
+                }
+            ]
+        },
+        "ShareRideDisplayDetails": {
+            "allOf": [{
+                    "$ref": "#/definitions/ShareRide"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "ride_share_id": {
+                            "type": "integer"
+                        },
+                        "accepted_seats": {
+                            "type": "integer"
+                        },
+                        "accepted_asset_quantity": {
+                            "type": "integer"
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "ACTIVE",
+                                "EXPIRED"
+                            ]
+
+                        }
+                    },
+                    "required": [
+                        "accepted_seats",
+                        "accepted_asset_quantity",
+                        "status"
+                    ]
                 }
             ]
         },
@@ -640,7 +701,42 @@
                     "sort_options"
                 ]
             }
+        },
+        "ShareRideDisplayDetailsResponse": {
+            "description": "Success",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "ride_shares": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/ShareRideDisplayDetails"
+                        }
+                    },
+                    "total_ride_shares": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "ShareTravelInfoDisplayDetailsResponse": {
+            "description": "Success",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "travel_info_shares": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/ShareTravelInfoDisplayDetails"
+                        }
+                    },
+                    "total_travel_info_shares": {
+                        "type": "integer"
+                    }
+                }
+            }
         }
+
     },
     "paths": {
         "/sign_up/v1/": {
@@ -770,7 +866,7 @@
                     "$ref": "#/parameters/ShareTravelInfoRequest"
                 }],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "successfully created asset request"
                     }
                 }
@@ -939,7 +1035,7 @@
             }
         },
         "/accept_ride_request/v1/": {
-            "post": {
+            "put": {
                 "operationId": "accept_ride_request",
                 "summary": "to accept ride request",
                 "description": "user accepts the ride request. This api is not idempotent.",
@@ -961,7 +1057,7 @@
             }
         },
         "/accept_asset_request/v1/": {
-            "post": {
+            "put": {
                 "operationId": "accept_asset_request",
                 "summary": "to accept asset request",
                 "description": "user accepts the asset request. This api is not idempotent.",
@@ -980,6 +1076,72 @@
                     }
                 }
 
+            }
+        },
+        "/ride_shares/v1/": {
+            "get": {
+                "operationId": "my_ride_shares",
+                "summary": "user ride shares",
+                "description": "user ride share details. This api is not idempotent.",
+                "security": [{
+                    "oauth": [
+                        "write",
+                        "read"
+                    ]
+                }],
+                "parameters": [{
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset value where to start",
+                        "type": "integer",
+                        "default": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "limit value where to stop",
+                        "type": "integer",
+                        "default": 5
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/ShareRideDisplayDetailsResponse"
+                    }
+                }
+            }
+        },
+        "/travel_info_shares/v1/": {
+            "get": {
+                "operationId": "my_travel_shares",
+                "summary": "user travel shares",
+                "description": "user travel share details. This api is not idempotent.",
+                "security": [{
+                    "oauth": [
+                        "write",
+                        "read"
+                    ]
+                }],
+                "parameters": [{
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset value where to start",
+                        "type": "integer",
+                        "default": 1
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "limit value where to stop",
+                        "type": "integer",
+                        "default": 5
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/ShareTravelInfoDisplayDetailsResponse"
+                    }
+                }
             }
         }
     }

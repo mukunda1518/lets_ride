@@ -13,5 +13,5 @@ class AcceptRideRequestInteractor:
         self, user_id: int, ride_request_id: int, ride_matching_id: int
     ):
         self.storage.update_ride_request_status(
-            ride_request_id, ride_matching_id, user_id
+            user_id, ride_request_id, ride_matching_id
         )

@@ -170,7 +170,7 @@ def asset_matching_dtos(base_asset_request_dto):
     asset_matching_dtos = [
         AssetMatchingDto(
             asset_dto=base_asset_request_dto,
-            ride_matching_id="",
+            ride_matching_id=0,
             travel_matching_id=3,
             username="user1",
             user_phone_number="1234567895"
@@ -212,7 +212,7 @@ def get_ride_asset_matching_response():
             "assets": [
                 {
                     "asset_request_id": 1,
-                    "ride_matching_id": "",
+                    "ride_matching_id": 0,
                     "travel_matching_id": 3,
                     "source": "Kurnool",
                     "destination": "Hyderabad",

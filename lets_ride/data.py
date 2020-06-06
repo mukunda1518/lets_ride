@@ -126,13 +126,13 @@ import requests
 
 
 #matching_results
-url = "http://127.0.0.1:8080/api/lets_ride/matching_results/v1/?offset=0&limit=9"
-response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer tyeJnThvwtONiDlexKMG0xjPjvZib6'})
-print(response.content)
+# url = "http://127.0.0.1:8080/api/lets_ride/matching_results/v1/?offset=0&limit=9"
+# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer tyeJnThvwtONiDlexKMG0xjPjvZib6'})
+# print(response.content)
 
 
 #matching_results
-# data = '{"ride_request_id": 1}'
-# url = "http://127.0.0.1:8080/api/lets_ride/accept_ride_request/v1/"
-# response = requests.post(url=url, data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer tyeJnThvwtONiDlexKMG0xjPjvZib6'})
-# print(response.content)
+data = '{"ride_request_id": 23, "ride_matching_id": 22}'
+url = "http://127.0.0.1:8080/api/lets_ride/accept_ride_request/v1/"
+response = requests.put(url=url, data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer 1EMYrdy4BTt07FgBQihLWNxcOMbUKy'})
+print(response.content)

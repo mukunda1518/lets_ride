@@ -2,7 +2,7 @@
 
 APP_NAME = "lets_ride"
 OPERATION_NAME = "accept_asset_request"
-REQUEST_METHOD = "post"
+REQUEST_METHOD = "put"
 URL_SUFFIX = "accept_asset_request/v1/"
 
 from .test_case_01 import TestCase01AcceptAssetRequestAPITestCase
