@@ -25,7 +25,7 @@ ALLOWED_HOSTS = [
     "ib-miniprojects-backend-gamma.apigateway.in",
     "127.0.0.1",
     "localhost",
-    "52.221.241.14",
+    "54.254.139.77",
     "*",
 ]
 

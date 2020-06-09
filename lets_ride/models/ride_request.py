@@ -1,7 +1,16 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from lets_ride.models.user import User
 from lets_ride.models.share_ride import ShareRide
 from lets_ride.constants.constants import STATUS
+
+
+def validate_seats(value):
+    if value >= 0:
+        return value
+    else:
+        raise ValidationError("No of seats shouldn't be negative")
+
 
 class RideRequest(models.Model):
     source = models.CharField(max_length=50)
@@ -10,7 +19,7 @@ class RideRequest(models.Model):
     flexible_timings = models.BooleanField(default=False)
     flexible_from_date_time = models.DateTimeField(null=True, blank=True)
     flexible_to_date_time = models.DateTimeField(null=True, blank=True)
-    seats = models.IntegerField()
+    seats = models.IntegerField(validators=[validate_seats])
     laguage_quantity = models.IntegerField()
     user = models.ForeignKey(
         User,
@@ -21,5 +30,6 @@ class RideRequest(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name="rides_accepted",
-        null=True
+        null=True,
+        blank=True
     )

@@ -8,7 +8,7 @@ INVALID_PHONE_NUMBER = (
 )
 
 INVALID_PASSWORD = (
-    "Password should be valid",
+    "Incorrect Password",
     "INVALID_PASSWORD"
 )
 

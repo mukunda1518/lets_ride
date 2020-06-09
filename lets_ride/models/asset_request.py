@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from lets_ride.models.user import User
 from lets_ride.models.share_ride import ShareRide
 from lets_ride.constants.enums import AssetSensitivity
@@ -30,5 +31,7 @@ class AssetRequest(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name="assets_accepted",
-        null=True
+        null=True,
+        blank=True
     )
+
