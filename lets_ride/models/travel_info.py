@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from lets_ride.models.user import User
 from lets_ride.constants.constants import TRAVEL_MEDIUM
 
@@ -16,3 +17,10 @@ class TravelInfo(models.Model):
         on_delete = models.CASCADE,
         related_name = 'travel_info'
     )
+    
+    def save(self, *args, **kwargs):
+        if self.flexible_timings and self.travel_date_time:
+            raise ValidationError("you cannot select flexible timings and travel datetime at same time")
+        if self.flexible_timings is False:
+            if self.flexible_from_date_time or self.flexible_to_date_time:
+                raise ValidationError("you cannot select datetime range when flexible timings set to False")
