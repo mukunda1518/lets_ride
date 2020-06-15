@@ -14,40 +14,43 @@ class SignInInteractor:
     def __init__(
         self,
         storage: UserStorageInterface,
-        presenter: PresenterInterface,
         oauth_storage = OAuth2SQLStorage
     ):
         self.storage = storage
-        self.presenter = presenter
         self.oauth_storage = oauth_storage
 
     def login_wrapper(
         self,
         phone_number: str,
-        password: str
+        password: str,
+        presenter: PresenterInterface
     ):
         try:
-            self.storage.validate_phone_number(phone_number=phone_number)
-        except InvalidPhoneNumber:
-            self.presenter.raise_invalid_phone_number()
-        try:
-            self.storage.validate_password(
+            token_dto = self.login(
                 phone_number=phone_number, password=password
             )
+        except InvalidPhoneNumber:
+            presenter.raise_invalid_phone_number()
         except InvalidPassword:
-            self.presenter.raise_invalid_password()
+            presenter.raise_invalid_password()
 
+        response = presenter.get_login_response(
+            token_dto=token_dto
+        )
+        return response
+
+    def login(self, phone_number: str, password: str):
+        self.storage.validate_phone_number(phone_number=phone_number)
+        self.storage.validate_password(
+            phone_number=phone_number, password=password
+        )
         user_id = self.storage.login(
             phone_number=phone_number, password=password
         )
-
         service = OAuthUserAuthTokensService(
             oauth2_storage=self.oauth_storage
         )
         token_dto = service.create_user_auth_tokens(
             user_id=user_id
         )
-        response = self.presenter.get_login_response(
-            token_dto=token_dto
-        )
-        return response
+        return token_dto

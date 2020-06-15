@@ -1,10 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class User(models.Model):
+
+class User(AbstractUser):
     name = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=10)
+    phone_number = models.CharField(max_length=20)
     profile_pic = models.TextField()
-    role = models.CharField(max_length=100, default="user")
+    role = models.CharField(max_length=100, default="USER")
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -40,8 +42,10 @@ class Attachments(models.Model):
     url = models.TextField()
     observation = models.ForeignKey(Observation, on_delete=models.CASCADE)
 
+
 class Messages(models.Model):
     observation = models.ForeignKey(Observation, on_delete=models.CASCADE)
     content = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
+
