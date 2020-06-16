@@ -4,7 +4,7 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=10)
     profile_pic = models.TextField()
-    role = models.CharField(max_length=100, default="user")
+    role = models.CharField(max_length=100, default="USER")
 
 class Category(models.Model):
     name = models.CharField(max_length=100)

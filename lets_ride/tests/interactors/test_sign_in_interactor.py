@@ -64,6 +64,7 @@ def test_login(create_user_auth_tokens):
     )
     assert response == mock_presenter_response
 
+
 @patch.object(OAuthUserAuthTokensService, 'create_user_auth_tokens', return_value=token_dto)
 def test_login_with_invalid_phone_number_raise_exception(create_user_auth_tokens):
     # Arrange
@@ -85,6 +86,7 @@ def test_login_with_invalid_phone_number_raise_exception(create_user_auth_tokens
     storage.validate_phone_number.assert_called_once_with(
         phone_number=phone_number
     )
+
 
 @patch.object(OAuthUserAuthTokensService, 'create_user_auth_tokens', return_value=token_dto)
 def test_login_with_invalid_password_raise_exception(create_user_auth_tokens):
