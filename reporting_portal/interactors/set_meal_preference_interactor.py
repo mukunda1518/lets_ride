@@ -1,6 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
-from typing import List
+from typing import List, Union
 from reporting_portal.interactors.storages.storage_interface\
     import StorageInterface
 from reporting_portal.interactors.presenters.presenter_interface\
@@ -36,8 +36,8 @@ class SetMealPreferenceInteractor:
             presenter.raise_timeout_exception()
         except DuplicationOfItems as err:
             presenter.raise_duplication_of_items_exception(err)
-        # except InvalidItemId:
-        #     presenter.raise_invalid_item_id_exception()
+        except InvalidItemId as err:
+            presenter.raise_invalid_item_id_exception(err)
 
 
 
@@ -52,6 +52,7 @@ class SetMealPreferenceInteractor:
         if current_datetime > expire_meal_datetime:
             raise TimeOutException
 
+        actual_items_ids_list = self._get_item_ids_list(meal_dto)
         item_ids_list = self._get_item_ids_list(meal_details_dto)
         duplication_item_ids_list = self._get_duplication_of_items_list(
             item_ids_list
@@ -59,10 +60,16 @@ class SetMealPreferenceInteractor:
         if len(duplication_item_ids_list) != 0:
             raise DuplicationOfItems(duplication_item_ids_list)
 
-        item_quantity_list = self._get_item_quantity_list(meal_dto)
+        invalid_item_ids_list = self._validate_items(
+            actual_items_ids_list, item_ids_list
+        )
+        if len(invalid_item_ids_list) != 0:
+            raise InvalidItemId(invalid_item_ids_list)
 
 
-    def _get_item_ids_list(self, meal_details_dto: MealDetailsDto):
+    def _get_item_ids_list(
+            self, meal_details_dto: Union[MealDetailsDto, MealDto]
+    ):
         item_dtos = meal_details_dto.items
         item_ids_list = [
             item_dto.item_id
@@ -93,5 +100,12 @@ class SetMealPreferenceInteractor:
         return duplication_of_item_list
 
 
-
+    def _validate_items(
+        self, actual_items_ids_list: List[int], item_ids_list: List[int]
+    ) -> List[int]:
+        invalid_item_ids_list = []
+        for item in item_ids_list:
+            if item not in actual_items_ids_list:
+                invalid_item_ids_list.append(item)
+        return invalid_item_ids_list
 

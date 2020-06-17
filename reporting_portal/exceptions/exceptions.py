@@ -6,7 +6,9 @@ class InvalidMealId(Exception):
         self.meal_id = meal_id
 
 class InvalidItemId(Exception):
-    pass
+    
+    def __init__(self, invalid_item_ids_list: List[int]):
+        self.invalid_item_ids_list = invalid_item_ids_list
 
 class TimeOutException(Exception):
     pass
