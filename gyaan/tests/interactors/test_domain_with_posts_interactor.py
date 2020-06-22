@@ -82,7 +82,9 @@ def test_get_domain_with_posts_details_invalid_user_for_domain_raise_exception(
 
 
 @patch.object(DomainPostsInteractor, "get_domain_posts_details")
+@patch.object(DomainDetailsInteractor, "get_domain_details")
 def test_get_domain_with_posts_details_with_invalid_post_ids_for_domain_raise_exceptions(
+    get_domain_details_mock,
     get_domain_posts_details_mock
 ):
     # Arrange
@@ -93,6 +95,7 @@ def test_get_domain_with_posts_details_with_invalid_post_ids_for_domain_raise_ex
     invalid_post_ids = [100, 200]
     storage = create_autospec(StorageInterface)
     presenter = create_autospec(PresenterInterface)
+    get_domain_details_mock.return_value = get_domain_details_mock
     exception_obj = InvalidPostIds(invalid_post_ids=invalid_post_ids)
     get_domain_posts_details_mock.side_effect = exception_obj
     presenter.raise_invalid_post_ids.side_effect = NotFound
