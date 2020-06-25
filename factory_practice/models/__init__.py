@@ -1,17 +1,8 @@
 from .user import User
-from .asset_request import AssetRequest
-from .ride_request import RideRequest
-from .share_ride import ShareRide
-from .travel_info import TravelInfo
-from .fact import User1, Group
+
+
 __all__ = [
-    "User",
-    "AssetRequest",
-    "RideRequest",
-    "ShareRide",
-    "TravelInfo",
-    "User1",
-    "Group"
+    "User"
 ]
 
 # class DummyModel(AbstractDateTimeModel):
