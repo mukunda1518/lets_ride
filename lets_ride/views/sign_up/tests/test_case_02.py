@@ -2,23 +2,18 @@
 # TODO: Update test case description
 """
 
+import json
+
 from django_swagger_utils.utils.test import CustomAPITestCase
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
 from lets_ride.utils.custom_test_utils import CustomTestUtils
-from lets_ride.models.share_ride import ShareRide
-
 
 REQUEST_BODY = """
 {
-    "source": "Hyderabad",
-    "destination": "Kurnool",
-    "travel_date_time": "2020-07-09 5:30 PM",
-    "flexible_timings": false,
-    "flexible_from_date_time": "",
-    "flexible_to_date_time": "",
-    "seats": 2,
-    "asset_quantity": 1
+    "username": "username1",
+    "phone_number": "9231392457",
+    "password": "username123"
 }
 """
 
@@ -33,18 +28,17 @@ TEST_CASE = {
 }
 
 
-class TestCase01ShareRideAPITestCase(CustomTestUtils):
+class TestCase02SignUpAPITestCase(CustomTestUtils):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
     url_suffix = URL_SUFFIX
     test_case_dict = TEST_CASE
 
-
     def setupUser(self, username, password):
         super().setupUser(username=username, password=password)
         user_obj = self.foo_user
-        user_obj.phone_number = "9231392458"
+        user_obj.phone_number = "9231392457"
         user_obj.save()
         print("user_name = ",user_obj.username)
         print("password = ",user_obj.password)

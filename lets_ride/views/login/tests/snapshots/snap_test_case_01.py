@@ -7,15 +7,12 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase01LoginAPITestCase::test_case status'] = 400
+snapshots['TestCase01LoginAPITestCase::test_case status'] = 404
 
 snapshots['TestCase01LoginAPITestCase::test_case body'] = {
-    'password': [
-        'This field is required.'
-    ],
-    'phone_number': [
-        'This field is required.'
-    ]
+    'http_status_code': 404,
+    'res_status': 'INVALID_PHONE_NUMBER',
+    'response': 'PhoneNumber should be valid'
 }
 
 snapshots['TestCase01LoginAPITestCase::test_case header_params'] = {
@@ -24,12 +21,12 @@ snapshots['TestCase01LoginAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '83',
+        '106',
         'Content-Length'
     ],
     'content-type': [
         'Content-Type',
-        'application/json'
+        'text/html; charset=utf-8'
     ],
     'vary': [
         'Accept-Language, Origin',

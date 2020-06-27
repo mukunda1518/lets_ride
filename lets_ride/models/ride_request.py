@@ -40,4 +40,6 @@ class RideRequest(models.Model):
         if self.flexible_timings is False:
             if self.flexible_from_date_time or self.flexible_to_date_time:
                 raise ValidationError("you cannot select datetime range when flexible timings set to False")
+        super(RideRequest, self).save(*args, **kwargs)
+
 

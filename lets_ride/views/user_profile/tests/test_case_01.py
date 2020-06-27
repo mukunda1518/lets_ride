@@ -5,13 +5,16 @@
 from django_swagger_utils.utils.test import CustomAPITestCase
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
+from lets_ride.utils.custom_test_utils import CustomTestUtils
+
+
 REQUEST_BODY = """
 
 """
 
 TEST_CASE = {
     "request": {
-        "path_params": {"user_id": "1234"},
+        "path_params": {"user_id": "1"},
         "query_params": {},
         "header_params": {},
         "securities": {"oauth": {"tokenUrl": "http://auth.ibtspl.com/oauth2/", "flow": "password", "scopes": ["write", "read"], "type": "oauth2"}},
@@ -20,12 +23,23 @@ TEST_CASE = {
 }
 
 
-class TestCase01UserProfileAPITestCase(CustomAPITestCase):
+class TestCase01UserProfileAPITestCase(CustomTestUtils):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
     url_suffix = URL_SUFFIX
     test_case_dict = TEST_CASE
+
+
+    def setupUser(self, username, password):
+        super().setupUser(username=username, password=password)
+        user_obj = self.foo_user
+        user_obj.phone_number = "9231392458"
+        user_obj.save()
+        print("user_name = ",user_obj.username)
+        print("password = ",user_obj.password)
+        print("phone_number = ",user_obj.phone_number)
+
 
     def test_case(self):
         self.default_test_case() # Returns response object.

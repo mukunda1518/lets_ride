@@ -4,7 +4,7 @@ from lets_ride.models.user import User
 from lets_ride.models.share_ride import ShareRide
 from lets_ride.constants.enums import AssetSensitivity
 from lets_ride.constants.constants \
-    import ASSETTYPE, ASSET_SENSITIVITY, STATUS
+    import ASSETTYPE, ASSET_SENSITIVITY
 
 class AssetRequest(models.Model):
     source = models.CharField(max_length=100)
@@ -20,8 +20,6 @@ class AssetRequest(models.Model):
         choices=ASSET_SENSITIVITY,
         max_length=50
     )
-    deliver_to = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=20)
     user = models.ForeignKey(
         User,
         on_delete = models.CASCADE,
@@ -36,9 +34,9 @@ class AssetRequest(models.Model):
     )
 
     def save(self, *args, **kwargs):
-            if self.flexible_timings and self.travel_date_time:
-                raise ValidationError("you cannot select flexible timings and travel datetime at same time")
-            if self.flexible_timings is False:
-                if self.flexible_from_date_time or self.flexible_to_date_time:
-                    raise ValidationError("you cannot select datetime range when flexible timings set to False")
-
+        if self.flexible_timings and self.travel_date_time:
+            raise ValidationError("you cannot select flexible timings and travel datetime at same time")
+        if self.flexible_timings is False:
+            if self.flexible_from_date_time or self.flexible_to_date_time:
+                raise ValidationError("you cannot select datetime range when flexible timings set to False")
+        super(AssetRequest, self).save(*args, **kwargs)

@@ -7,21 +7,21 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase01SignUpAPITestCase::test_case status'] = 400
+snapshots['TestCase02LoginAPITestCase::test_case status'] = 404
 
-snapshots['TestCase01SignUpAPITestCase::test_case body'] = {
-    'http_status_code': 400,
-    'res_status': 'USERNMAE_ALREADY_EXIST',
-    'response': 'username already exist try another username'
+snapshots['TestCase02LoginAPITestCase::test_case body'] = {
+    'http_status_code': 404,
+    'res_status': 'INVALID_PASSWORD',
+    'response': 'Incorrect Password'
 }
 
-snapshots['TestCase01SignUpAPITestCase::test_case header_params'] = {
+snapshots['TestCase02LoginAPITestCase::test_case header_params'] = {
     'content-language': [
         'Content-Language',
         'en'
     ],
     'content-length': [
-        '124',
+        '93',
         'Content-Length'
     ],
     'content-type': [

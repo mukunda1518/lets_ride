@@ -15,6 +15,9 @@ FILTER_OPTIONS = [
 ]
 RIDE_SORT_OPTIONS = ["seats", "date_time"]
 ASSET_SORT_OPTIONS = ["asset_quantity", "date_time"]
+TRAVEL_MEDIUM_LIST = [item.value for item in TravelMedium]
+ASSET_SENSITIVITY_LIST = [item.value for item in AssetSensitivity]
+ASSETTYPE_LIST = [item.value for item in AssetType]
 
 USER_LIST = [
     {
