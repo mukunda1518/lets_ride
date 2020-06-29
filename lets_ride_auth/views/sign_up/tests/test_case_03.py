@@ -3,6 +3,7 @@
 """
 
 
+import json
 from unittest.mock import patch
 
 from datetime import datetime
@@ -10,10 +11,10 @@ from datetime import datetime
 from django_swagger_utils.utils.test import CustomAPITestCase
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
-from lets_ride.utils.custom_test_utils import CustomTestUtils
+from lets_ride_auth.utils.custom_test_utils import CustomTestUtils
 from common.dtos import UserAuthTokensDTO
 from common.oauth_user_auth_tokens_service import OAuthUserAuthTokensService
-from lets_ride.models.user import User
+from lets_ride_auth.models.user import User
 
 
 REQUEST_BODY = """

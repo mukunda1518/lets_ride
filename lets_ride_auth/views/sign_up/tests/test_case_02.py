@@ -7,7 +7,7 @@ import json
 from django_swagger_utils.utils.test import CustomAPITestCase
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
-from lets_ride.utils.custom_test_utils import CustomTestUtils
+from lets_ride_auth.utils.custom_test_utils import CustomTestUtils
 
 REQUEST_BODY = """
 {

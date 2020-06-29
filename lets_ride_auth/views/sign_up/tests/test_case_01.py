@@ -2,16 +2,18 @@
 # TODO: Update test case description
 """
 
+import json
+
 from django_swagger_utils.utils.test import CustomAPITestCase
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
-from lets_ride.utils.custom_test_utils import CustomTestUtils
-
+from lets_ride_auth.utils.custom_test_utils import CustomTestUtils
 
 REQUEST_BODY = """
 {
-    "phone_number": "9231392459",
-    "password": "password"
+    "username": "username",
+    "phone_number": "9231392457",
+    "password": "username123"
 }
 """
 
@@ -26,7 +28,7 @@ TEST_CASE = {
 }
 
 
-class TestCase01LoginAPITestCase(CustomTestUtils):
+class TestCase01SignUpAPITestCase(CustomTestUtils):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
@@ -36,7 +38,7 @@ class TestCase01LoginAPITestCase(CustomTestUtils):
     def setupUser(self, username, password):
         super().setupUser(username=username, password=password)
         user_obj = self.foo_user
-        user_obj.phone_number = "9231392458"
+        user_obj.phone_number = "9123567701"
         user_obj.save()
         print("user_name = ",user_obj.username)
         print("password = ",user_obj.password)

@@ -4,11 +4,11 @@ from django_swagger_utils.drf_server.utils.decorator.interface_decorator \
     import validate_decorator
 from .validator_class import ValidatorClass
 from .validator_class import ValidatorClass
-from lets_ride.storages.user_storage_implementation \
+from lets_ride_auth.storages.user_storage_implementation \
     import UserStorageImplementation
-from lets_ride.presenters.presenter_implementation \
+from lets_ride_auth.presenters.presenter_implementation \
     import PresenterImplementation
-from lets_ride.interactors.sign_in_interactor \
+from lets_ride_auth.interactors.sign_in_interactor \
     import SignInInteractor
 from common.oauth2_storage import OAuth2SQLStorage
 

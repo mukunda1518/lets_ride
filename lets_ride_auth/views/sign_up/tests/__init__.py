@@ -1,6 +1,6 @@
 # pylint: disable=wrong-import-position
 
-APP_NAME = "lets_ride"
+APP_NAME = "lets_ride_auth"
 OPERATION_NAME = "sign_up"
 REQUEST_METHOD = "post"
 URL_SUFFIX = "sign_up/v1/"

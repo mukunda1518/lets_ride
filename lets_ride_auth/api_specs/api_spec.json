@@ -1,212 +1,233 @@
 {
-        "swagger": "2.0",
-        "host": "127.0.0.1:8000",
-        "basePath": "/api/lets_ride_auth/",
-        "info": {
-            "version": "1.0.0",
-            "title": "Simple API",
-            "description": "A simple API to learn how to write OpenAPI Specification"
-        },
-        "schemes": [
-            "http"
-        ],
-        "consumes": [
-            "application/json"
-        ],
-        "produces": [
-            "application/json"
-        ],
-        "securityDefinitions": {
-            "oauth": {
-                "tokenUrl": "http://auth.ibtspl.com/oauth2/",
-                "flow": "password",
-                "scopes": {
-                    "read": "read users",
-                    "write": "create users",
-                    "update": "update users",
-                    "delete": "delete users"
+    "swagger": "2.0",
+    "host": "localhost:8080",
+    "basePath": "/api/lets_ride/",
+    "info": {
+        "version": "1.0.0",
+        "title": "Let's Ride",
+        "description": "API's for Let's Ride"
+    },
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "oauth": {
+            "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+            "flow": "password",
+            "scopes": {
+                "read": "read users",
+                "write": "create users",
+                "update": "update users",
+                "delete": "delete users",
+                "superuser": "super user permission"
+            },
+            "type": "oauth2"
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
                 },
-                "type": "oauth2"
-            }
-        },
-        "security": [],
-        "definitions": {
-            "TodoId": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer"
-                    }
+                "phone_number": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
                 }
             },
-            "BasicTodo": {
+            "required": [
+                "username",
+                "phone_number",
+                "password"
+            ]
+        },
+        "UserLogin": {
+            "type": "object",
+            "properties": {
+                "phone_number": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "phone_number",
+                "password"
+            ]
+        },
+        "UserProfile": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "profile_pic_url": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "username",
+                "phone_number",
+                "profile_pic_url"
+            ]
+        }
+    },
+    "parameters": {
+        "CreateNewUserRequest": {
+            "name": "create_user",
+            "description": "To create new user",
+            "in": "body",
+            "schema": {
+                "$ref": "#/definitions/User"
+            }
+        },
+        "LoginUserRequest": {
+            "name": "user_login",
+            "description": "login user",
+            "in": "body",
+            "schema": {
+                "$ref": "#/definitions/UserLogin"
+            }
+        },
+        "UserPathParameter": {
+            "name": "user_id",
+            "description": "user id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+        },
+        "UserPasswordRequest": {
+            "name": "password_update",
+            "description": "To update password user",
+            "in": "body",
+            "schema": {
                 "type": "object",
                 "properties": {
-                    "description": {
-                        "type": "string"
-                    },
-                    "is_completed": {
-                        "type": "boolean"
-                    },
-                    "remind_at": {
+                    "new_password": {
                         "type": "string"
                     }
                 },
                 "required": [
-                    "description"
+                    "new_password"
                 ]
-            },
-            "Todo": {
-                "allOf": [
-                    {
-                        "$ref": "#/definitions/BasicTodo"
+            }
+        }
+    },
+    "responses": {
+        "LoginUserResponse": {
+            "description": "Successfully user created",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "access_token": {
+                        "type": "string"
                     },
-                    {
-                        "$ref": "#/definitions/TodoId"
+                    "expires_in": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "refresh_token": {
+                        "type": "string"
                     }
+                },
+                "required": [
+                    "access_token",
+                    "expires_in",
+                    "refresh_token"
                 ]
             }
         },
-        "parameters": {
-            "TodoId": {
-                "description": "todo id",
-                "in": "path",
-                "name": "id",
-                "required": true,
-                "type": "integer"
-            },
-            "BasicTodo": {
-                "description": "Todo Parameter",
-                "in": "body",
-                "name": "todo",
-                "required": true,
-                "schema": {
-                    "$ref": "#/definitions/BasicTodo"
+        "UserProfileResponse": {
+            "description": "Success",
+            "schema": {
+                "$ref": "#/definitions/UserProfile"
+            }
+        }
+    },
+    "paths": {
+        "/sign_up/v1/": {
+            "post": {
+                "operationId": "sign_up",
+                "summary": "Create New user",
+                "description": "Creates a new user and return the user id. This api is not idempotent.",
+                "parameters": [{
+                    "$ref": "#/parameters/CreateNewUserRequest"
+                }],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/LoginUserResponse"
+                    }
                 }
             }
         },
-        "responses": {
-            "SuccessResponse": {
-                "description": "success response"
-            }
-        },
-        "paths": {
-            "/todos/": {
-                "get": {
-                    "summary": "Get all todos",
-                    "description": "Returns a list containing all todos.",
-                    "operationId": "get_todos",
-                    "security": [
-                        {
-                            "oauth": [
-                                "read"
-                            ]
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "description": "A list of todos",
-                            "schema": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/Todo"
-                                }
-                            }
-                        }
-                    }
-                },
-                "post": {
-                    "summary": "create a todo",
-                    "description": "Create a todo",
-                    "operationId": "create_todo",
-                    "security": [
-                        {
-                            "oauth": [
-                                "write"
-                            ]
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/parameters/BasicTodo"
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "description": "create a todo",
-                            "schema": {
-                                "$ref": "#/definitions/TodoId"
-                            }
-                        }
+        "/login/v1/": {
+            "post": {
+                "operationId": "login",
+                "summary": "user login",
+                "description": "user login and return the user id and access token. This api is not idempotent.",
+                "parameters": [{
+                    "$ref": "#/parameters/LoginUserRequest"
+                }],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/LoginUserResponse"
                     }
                 }
-            },
-            "/todos/{id}/": {
-                "parameters": [
-                    {
-                        "$ref": "#/parameters/TodoId"
+            }
+        },
+        "/user/profile/v1/": {
+            "get": {
+                "operationId": "user_profile",
+                "summary": "user profile",
+                "description": "displays user details. This api is not idempotent.",
+                "security": [{
+                    "oauth": [
+                        "write",
+                        "read"
+                    ]
+                }],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/UserProfileResponse"
                     }
-                ],
-                "get": {
-                    "summary": "Get a todo",
-                    "description": "Returns a todo.",
-                    "operationId": "get_todo",
-                    "security": [
-                        {
-                            "oauth": [
-                                "read"
-                            ]
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "description": "A todo",
-                            "schema": {
-                                "$ref": "#/definitions/Todo"
-                            }
-                        }
-                    }
-                },
-                "put": {
-                    "parameters": [
-                        {
-                            "$ref": "#/parameters/BasicTodo"
-                        }
-                    ],
-                    "summary": "Updates a todo",
-                    "description": "Updates a todo.",
-                    "operationId": "update_todo",
-                    "security": [
-                        {
-                            "oauth": [
-                                "update"
-                            ]
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/responses/SuccessResponse"
-                        }
-                    }
-                },
-                "delete": {
-                    "summary": "Deletes a todo",
-                    "description": "Deletes a todo.",
-                    "operationId": "delete_todo",
-                    "security": [
-                        {
-                            "oauth": [
-                                "delete"
-                            ]
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/responses/SuccessResponse"
-                        }
+                }
+            }
+        },
+        "/update_password/v1/": {
+            "put": {
+                "operationId": "update_user_password",
+                "summary": "update user password",
+                "description": "updating user password. This api is not idempotent.",
+                "security": [{
+                    "oauth": [
+                        "write",
+                        "read"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/UserPasswordRequest"
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Successfully upadted password"
                     }
                 }
             }
         }
     }
-    
+}

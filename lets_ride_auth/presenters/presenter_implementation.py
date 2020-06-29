@@ -11,10 +11,8 @@ from lets_ride.constants.exception_messages import (
     PHONE_NUMBER_WITH_USER_EXIST
 )
 
-from lets_ride.interactors.presenters.presenter_interface \
+from lets_ride_auth.interactors.presenters.presenter_interface \
     import PresenterInterface
-
-
 
 
 class PresenterImplementation(PresenterInterface):
