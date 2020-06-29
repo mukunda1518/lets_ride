@@ -1,8 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from lets_ride.models.user import User
-
 
 class ShareRide(models.Model):
     source = models.CharField(max_length=50)
@@ -13,11 +11,7 @@ class ShareRide(models.Model):
     flexible_to_date_time = models.DateTimeField(null=True, blank=True)
     seats = models.IntegerField()
     asset_quantity = models.IntegerField()
-    user = models.ForeignKey(
-        User,
-        on_delete = models.CASCADE,
-        related_name = 'share_rides'
-    )
+    user_id = models.IntegerField()
 
     def save(self, *args, **kwargs):
         if self.flexible_timings and self.travel_date_time:

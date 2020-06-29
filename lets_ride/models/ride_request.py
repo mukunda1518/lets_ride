@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from lets_ride.models.user import User
 from lets_ride.models.share_ride import ShareRide
 from lets_ride.constants.constants import STATUS
 
@@ -21,18 +20,8 @@ class RideRequest(models.Model):
     flexible_to_date_time = models.DateTimeField(null=True, blank=True)
     seats = models.IntegerField(validators=[validate_seats])
     laguage_quantity = models.IntegerField()
-    user = models.ForeignKey(
-        User,
-        on_delete = models.CASCADE,
-        related_name = 'ride_requests'
-    )
-    accepted_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="rides_accepted",
-        null=True,
-        blank=True
-    )
+    user_id = models.IntegerField()
+    accepted_by_id= models.IntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.flexible_timings and self.travel_date_time:
