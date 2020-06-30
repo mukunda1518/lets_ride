@@ -143,7 +143,7 @@ def test_my_ride_requests_wrapper_with_status_pending(
     status = Status.PENDING.value
     sort_key = "laguage_quantity"
     sort_value = "ASC"
-    get_user_dtos_mock.return_value = user_dtos
+    get_user_dtos_mock.return_value=user_d
     #current_datetime = Mock()
     current_datetime_obj = datetime.now()
     storage = create_autospec(RideRequestsStorageInterface)

@@ -32,59 +32,6 @@
         }
     },
     "definitions": {
-        "User": {
-            "type": "object",
-            "properties": {
-                "username": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "username",
-                "phone_number",
-                "password"
-            ]
-        },
-        "UserLogin": {
-            "type": "object",
-            "properties": {
-                "phone_number": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "phone_number",
-                "password"
-            ]
-        },
-        "UserProfile": {
-            "type": "object",
-            "properties": {
-                "username": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                },
-                "profile_pic_url": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "username",
-                "phone_number",
-                "profile_pic_url"
-            ]
-        },
         "CommonRequest": {
             "type": "object",
             "properties": {
@@ -478,45 +425,6 @@
         }
     },
     "parameters": {
-        "CreateNewUserRequest": {
-            "name": "create_user",
-            "description": "To create new user",
-            "in": "body",
-            "schema": {
-                "$ref": "#/definitions/User"
-            }
-        },
-        "LoginUserRequest": {
-            "name": "user_login",
-            "description": "login user",
-            "in": "body",
-            "schema": {
-                "$ref": "#/definitions/UserLogin"
-            }
-        },
-        "UserPathParameter": {
-            "name": "user_id",
-            "description": "user id",
-            "in": "path",
-            "required": true,
-            "type": "integer"
-        },
-        "UserPasswordRequest": {
-            "name": "password_update",
-            "description": "To update password user",
-            "in": "body",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "new_password": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "new_password"
-                ]
-            }
-        },
         "UserRideRequest": {
             "name": "ride_request",
             "description": "To create ride request for user",
@@ -595,35 +503,6 @@
         }
     },
     "responses": {
-        "LoginUserResponse": {
-            "description": "Successfully user created",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "access_token": {
-                        "type": "string"
-                    },
-                    "expires_in": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "refresh_token": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "access_token",
-                    "expires_in",
-                    "refresh_token"
-                ]
-            }
-        },
-        "UserProfileResponse": {
-            "description": "Success",
-            "schema": {
-                "$ref": "#/definitions/UserProfile"
-            }
-        },
         "RideAssetRequestMatchingDetailsResponse": {
             "description": "Success",
             "schema": {
@@ -739,76 +618,6 @@
 
     },
     "paths": {
-        "/sign_up/v1/": {
-            "post": {
-                "operationId": "sign_up",
-                "summary": "Create New user",
-                "description": "Creates a new user and return the user id. This api is not idempotent.",
-                "parameters": [{
-                    "$ref": "#/parameters/CreateNewUserRequest"
-                }],
-                "responses": {
-                    "201": {
-                        "$ref": "#/responses/LoginUserResponse"
-                    }
-                }
-            }
-        },
-        "/login/v1/": {
-            "post": {
-                "operationId": "login",
-                "summary": "user login",
-                "description": "user login and return the user id and access token. This api is not idempotent.",
-                "parameters": [{
-                    "$ref": "#/parameters/LoginUserRequest"
-                }],
-                "responses": {
-                    "200": {
-                        "$ref": "#/responses/LoginUserResponse"
-                    }
-                }
-            }
-        },
-        "/user/profile/v1/": {
-            "get": {
-                "operationId": "user_profile",
-                "summary": "user profile",
-                "description": "displays user details. This api is not idempotent.",
-                "security": [{
-                    "oauth": [
-                        "write",
-                        "read"
-                    ]
-                }],
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "$ref": "#/responses/UserProfileResponse"
-                    }
-                }
-            }
-        },
-        "/update_password/v1/": {
-            "put": {
-                "operationId": "update_user_password",
-                "summary": "update user password",
-                "description": "updating user password. This api is not idempotent.",
-                "security": [{
-                    "oauth": [
-                        "write",
-                        "read"
-                    ]
-                }],
-                "parameters": [{
-                    "$ref": "#/parameters/UserPasswordRequest"
-                }],
-                "responses": {
-                    "201": {
-                        "description": "Successfully upadted password"
-                    }
-                }
-            }
-        },
         "/ride_request/v1/": {
             "post": {
                 "operationId": "ride_request",

@@ -17,3 +17,9 @@ RESPONSE_201_JSON = """
 }
 """
 
+RESPONSE_400_JSON = """
+{
+    "res_status": "USERNMAE_ALREADY_EXIST"
+}
+"""
+

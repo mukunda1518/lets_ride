@@ -6,9 +6,10 @@ from lets_ride.constants.enums \
 
 @dataclass
 class UserDto():
+    user_id: int
     username: str
     phone_number: str
-    profile_pic: str
+
 
 @dataclass
 class BaseRideRequestDto:
@@ -41,8 +42,7 @@ class BaseAssetRequestDto:
 @dataclass
 class RideRequestDto:
     ride_dto: BaseRideRequestDto
-    accepted_person: str
-    accepted_person_phone_number: str
+    accepted_person_id: Optional[int]
     status: Optional[str]
 
 @dataclass

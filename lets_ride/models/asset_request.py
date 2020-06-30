@@ -20,7 +20,7 @@ class AssetRequest(models.Model):
         max_length=50
     )
     user_id = models.IntegerField()
-    accepted_by = models.IntegerField(null=True, blank=True)
+    accepted_by_id = models.IntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.flexible_timings and self.travel_date_time:

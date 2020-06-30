@@ -203,20 +203,9 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
         ride_request_obj: RideRequest,
         base_ride_request_dto: BaseRideRequestDto
     ):
-        accepted_person = ""
-        accepted_person_phone_number = ""
-        is_accepted_by = self._is_request_accepted(
-                request_obj=ride_request_obj
-        )
-        if is_accepted_by:
-            accepted_person = ride_request_obj.accepted_by.username
-            accepted_person_phone_number = \
-            ride_request_obj.accepted_by.phone_number
-
         ride_request_dto = RideRequestDto(
             ride_dto=base_ride_request_dto,
-            accepted_person=accepted_person,
-            accepted_person_phone_number=accepted_person_phone_number,
+            accepted_person_id=ride_request_obj.accepted_person_id,
             status=""
         )
         return ride_request_dto

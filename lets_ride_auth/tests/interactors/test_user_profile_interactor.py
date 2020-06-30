@@ -12,11 +12,13 @@ def test_user_profile():
     # Arrange
     user_id = 1
     user_dto = UserDto(
+        user_id=1,
         username="user1",
         phone_number="1234567890",
         profile_pic=""
     )
     mock_presenter_response = {
+        "user_id": 1,
         "username": "user1",
         "phone_number": "1234567890",
         "profile_url_pic": ""

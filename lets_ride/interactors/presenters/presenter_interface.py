@@ -1,5 +1,6 @@
 from abc import ABC
 from abc import abstractmethod
+from typing import List
 from common.dtos import UserAuthTokensDTO
 from lets_ride.dtos.dtos import (
     UserDto,
@@ -12,7 +13,10 @@ from lets_ride.dtos.dtos import (
 class PresenterInterface(ABC):
 
     @abstractmethod
-    def get_ride_requests_response(self, ride_requests_dto: RideRequestsDto):
+    def get_ride_requests_response(
+        self, ride_requests_dto: RideRequestsDto,
+        user_dtos: List[UserDto]
+    ):
         pass
 
     @abstractmethod

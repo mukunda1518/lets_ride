@@ -2,7 +2,6 @@ import factory
 
 from datetime import datetime, timedelta
 
-from lets_ride.tests.factories.user_factory import UserFactory
 from lets_ride.models.ride_request import RideRequest
 
 class RideRequestFactory(factory.django.DjangoModelFactory):
@@ -17,8 +16,8 @@ class RideRequestFactory(factory.django.DjangoModelFactory):
     laguage_quantity = 2
     flexible_from_date_time = None
     flexible_to_date_time = None
-    user = factory.SubFactory(UserFactory)
-    accepted_by = None
+    user_id = 1
+    accepted_by_id = None
 
     @factory.lazy_attribute
     def travel_date_time(self):
@@ -34,7 +33,7 @@ class RideRequestFactory(factory.django.DjangoModelFactory):
             )
         )
         accept = factory.Trait(
-            accepted_by=factory.SubFactory(UserFactory)
+            accepted_by_id=2
         )
 
 

@@ -4,15 +4,18 @@ from common.dtos import UserAuthTokensDTO
 from django_swagger_utils.drf_server.exceptions \
     import NotFound, BadRequest
 
-from lets_ride.constants.exception_messages import (
+from lets_ride_auth.constants.exception_messages import (
     INVALID_PHONE_NUMBER,
     INVALID_PASSWORD,
     INVALID_USERNAME,
-    PHONE_NUMBER_WITH_USER_EXIST
+    PHONE_NUMBER_WITH_USER_EXIST,
+    INVALID_USER_IDS
 )
+
 
 from lets_ride_auth.interactors.presenters.presenter_interface \
     import PresenterInterface
+from lets_ride_auth.exceptions.exceptions import InvalidUserIds
 
 
 class PresenterImplementation(PresenterInterface):
@@ -59,4 +62,13 @@ class PresenterImplementation(PresenterInterface):
 
     def raise_user_with_phone_number_already_exist(self):
         raise BadRequest(*PHONE_NUMBER_WITH_USER_EXIST)
+
+    def raise_invalid_user_ids_exception(self, err: InvalidUserIds):
+        user_ids = err.user_ids
+        user_ids = user_ids.__str__()
+        INVALID_USER_IDS = ("Invalid user_ids"+user_ids, "INVALID_USER_IDS")
+        raise NotFound(*INVALID_USER_IDS)
+
+
+
 

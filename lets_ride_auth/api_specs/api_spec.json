@@ -156,6 +156,21 @@
             "schema": {
                 "$ref": "#/definitions/UserProfile"
             }
+        },
+        "SignUpErrorResponse": {
+            "description": "Un Authorized",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "USERNMAE_ALREADY_EXIST",
+                            "PHONE_NUMBER_WITH_USER_EXIST"
+                        ]
+                    }
+                }
+            }
         }
     },
     "paths": {
@@ -170,6 +185,9 @@
                 "responses": {
                     "201": {
                         "$ref": "#/responses/LoginUserResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/SignUpErrorResponse"
                     }
                 }
             }

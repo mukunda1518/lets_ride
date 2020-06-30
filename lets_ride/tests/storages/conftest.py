@@ -19,39 +19,38 @@ from lets_ride.dtos.dtos import (
     RideMatchingDto,
     AssetMatchingDto
 )
-from lets_ride.models.user import User
 from lets_ride.dtos.dtos import UserDto
 
-@pytest.fixture
-def populate_user():
+# @pytest.fixture
+# def populate_user():
 
-    user_obj = User.objects.create(
-        username="user1",
-        password="user1",
-        phone_number="1234567890"
-    )
-    user_obj.set_password(user_obj.password)
-    user_obj.save()
+#     user_obj = User.objects.create(
+#         username="user1",
+#         password="user1",
+#         phone_number="1234567890"
+#     )
+#     user_obj.set_password(user_obj.password)
+#     user_obj.save()
 
-@pytest.fixture
-def user_dto():
-    user_dto = UserDto(
-        username="user1",
-        phone_number="1234567890",
-        profile_pic="https://cdn.zeplin.io/5d0afc9102b7fa56760995cc/assets/05bab6ee-6f73-4e37-b727-179336e41690.svg"
-    )
-    return user_dto
+# @pytest.fixture
+# def user_dto():
+#     user_dto = UserDto(
+#         username="user1",
+#         phone_number="1234567890",
+#         profile_pic="https://cdn.zeplin.io/5d0afc9102b7fa56760995cc/assets/05bab6ee-6f73-4e37-b727-179336e41690.svg"
+#     )
+#     return user_dto
 
-@pytest.fixture
-def populate_users():
-    for item in USER_LIST:
-        user_obj = User.objects.create(
-            username=item["username"],
-            password=item["password"],
-            phone_number=item["phone_number"]
-        )
-        user_obj.set_password(user_obj.password)
-        user_obj.save()
+# @pytest.fixture
+# def populate_users():
+#     for item in USER_LIST:
+#         user_obj = User.objects.create(
+#             username=item["username"],
+#             password=item["password"],
+#             phone_number=item["phone_number"]
+#         )
+#         user_obj.set_password(user_obj.password)
+#         user_obj.save()
 
 #-----------------Ride Request -----------------
 
@@ -101,8 +100,7 @@ def ride_request_dtos_with_status_accepted(
     ride_request_dtos = [
         RideRequestDto(
             ride_dto=base_ride_request_dto_with_status_accepted,
-            accepted_person="user2",
-            accepted_person_phone_number="1234567891",
+            accepted_person_id=3,
             status=""
         )
     ]

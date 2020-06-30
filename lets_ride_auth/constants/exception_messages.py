@@ -21,3 +21,8 @@ PHONE_NUMBER_WITH_USER_EXIST = (
     "phone number with user already exist",
     "PHONE_NUMBER_WITH_USER_EXIST"
 )
+
+INVALID_USER_IDS = (
+    "invalid user_ids",
+    "INVALID_USER_IDS"
+)

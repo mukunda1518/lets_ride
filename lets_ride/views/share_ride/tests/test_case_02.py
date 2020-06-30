@@ -13,10 +13,10 @@ REQUEST_BODY = """
 {
     "source": "Hyderabad",
     "destination": "Kurnool",
-    "travel_date_time": "2020-07-09 5:30 PM",
-    "flexible_timings": false,
-    "flexible_from_date_time": "",
-    "flexible_to_date_time": "",
+    "travel_date_time": "",
+    "flexible_timings": true,
+    "flexible_from_date_time": "2020-07-09 5:30 PM",
+    "flexible_to_date_time": "2020-08-09 5:30 PM",
     "seats": 2,
     "asset_quantity": 1
 }
@@ -33,7 +33,7 @@ TEST_CASE = {
 }
 
 
-class TestCase01ShareRideAPITestCase(CustomTestUtils):
+class TestCase02ShareRideAPITestCase(CustomTestUtils):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD

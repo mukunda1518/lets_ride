@@ -2,6 +2,7 @@ from abc import ABC
 from abc import abstractmethod
 from common.dtos import UserAuthTokensDTO
 from lets_ride_auth.dtos.dtos import UserDto
+from lets_ride_auth.exceptions.exceptions import InvalidUserIds
 
 
 class PresenterInterface(ABC):
@@ -32,4 +33,8 @@ class PresenterInterface(ABC):
 
     @abstractmethod
     def raise_username_already_exist(self):
+        pass
+
+    @abstractmethod
+    def raise_invalid_user_ids_exception(self, err: InvalidUserIds):
         pass

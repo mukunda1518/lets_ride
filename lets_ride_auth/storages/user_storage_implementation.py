@@ -1,3 +1,5 @@
+from typing import List
+
 from lets_ride_auth.interactors.storages.user_storage_interface \
     import UserStorageInterface
 from lets_ride_auth.models.user import User
@@ -74,11 +76,7 @@ class UserStorageImplementation(UserStorageInterface):
 
     def user_profile(self, user_id: int) -> UserDto:
         user_obj = User.objects.get(id=user_id)
-        user_dto = UserDto(
-            username=user_obj.username,
-            phone_number=user_obj.phone_number,
-            profile_pic=user_obj.profile_pic
-        )
+        user_dto = self._get_user_dto(user_obj)
         return user_dto
 
 
@@ -86,3 +84,26 @@ class UserStorageImplementation(UserStorageInterface):
         user_obj = User.objects.get(id=user_id)
         user_obj.set_password(password)
         user_obj.save()
+
+
+    def get_user_details_dtos(self, user_ids: List[int]) -> List[UserDto]:
+        user_objs = list(User.objects.filter(id__in=user_ids))
+        user_dtos = []
+        for user_obj in user_objs:
+            user_dto = self._get_user_dto(user_obj)
+            user_dtos.append(user_dto)
+        return user_dtos
+
+    def _get_user_dto(self, user_obj: User) -> UserDto:
+        user_dto = UserDto(
+            user_id=user_obj.id,
+            username=user_obj.username,
+            phone_number=user_obj.phone_number,
+            profile_pic=user_obj.profile_pic
+        )
+        return user_dto
+
+
+    def get_user_ids(self) -> List[int]:
+        user_ids = list(User.objects.values_list('id', flat=True))
+        return user_ids

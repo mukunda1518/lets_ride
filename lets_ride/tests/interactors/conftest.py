@@ -9,10 +9,23 @@ from lets_ride.dtos.dtos import (
     AssetRequestDto,
     AssetRequestsDto,
     BaseRideShareDto,
-    BaseTravelInfoDto
+    BaseTravelInfoDto,
+    UserDto
 )
 
 #-------------Ride Requests----------------
+
+@pytest.fixture
+def user_dtos():
+    user_dtos = [
+        UserDto(
+            user_id=2,
+            username="user2",
+            phone_number="1234567890"
+        )
+    ]
+    return user_dtos
+
 
 @pytest.fixture
 def base_ride_request_dto():
@@ -35,8 +48,7 @@ def ride_request_dtos(base_ride_request_dto):
     ride_request_dtos = [
         RideRequestDto(
             ride_dto= base_ride_request_dto,
-            accepted_person="User2",
-            accepted_person_phone_number="1234567890",
+            accepted_person_id=2,
             status=Status.ACCEPTED.value
         )
     ]
@@ -66,8 +78,7 @@ def get_my_ride_requests_response():
                 "flexible_to_date_time": "",
                 "seats": 4,
                 "laguage_quantity": 5,
-                "accepted_person": "User2",
-                "accepted_person_phone_number": "1234567890",
+                "accepted_person_id": 2,
                 "status": "ACCEPTED"
             }
         ],

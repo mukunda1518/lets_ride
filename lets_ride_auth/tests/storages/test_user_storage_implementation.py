@@ -1,9 +1,9 @@
 import pytest
-from lets_ride.storages.user_storage_implementation \
+from lets_ride_auth.storages.user_storage_implementation \
     import UserStorageImplementation
-from lets_ride.models.user import User
-from lets_ride.dtos.dtos import UserDto
-from lets_ride.exceptions.exceptions \
+from lets_ride_auth.models.user import User
+from lets_ride_auth.dtos.dtos import UserDto
+from lets_ride_auth.exceptions.exceptions \
     import InvalidPhoneNumber, InvalidPassword
 
 @pytest.mark.django_db
@@ -87,4 +87,21 @@ def test_update_user_password(populate_user):
     storage.update_user_password(user_id=user_id, password=new_password)
 
     # Assert
+
+
+@pytest.mark.django_db
+def test_get_user_details_dtos_given_user_ids_returns_user_dtos(
+    snapshot, populate_users, user_dtos
+):
+    # Arrange
+    user_ids = [1, 2]
+    storage = UserStorageImplementation()
+    expected_user_dtos = user_dtos
+
+    # Act
+    actual_user_dtos = storage.get_user_details_dtos(user_ids=user_ids)
+
+    # Assert
+    assert expected_user_dtos == actual_user_dtos
+    snapshot.assert_match(expected_user_dtos, "user_details")
 

@@ -1,3 +1,5 @@
+from typing import List
+
 from abc import abstractmethod
 from abc import ABC
 from lets_ride_auth.dtos.dtos import UserDto
@@ -47,4 +49,12 @@ class UserStorageInterface(ABC):
 
     @abstractmethod
     def check_phone_number_exists(self, phone_number: str):
+        pass
+
+    @abstractmethod
+    def get_user_details_dtos(self, user_ids: List[int]) -> List[UserDto]:
+        pass
+    
+    @abstractmethod
+    def get_user_ids(self) -> List[int]:
         pass
