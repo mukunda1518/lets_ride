@@ -6,13 +6,13 @@ from lets_ride.storages.ride_requests_storage_implementation \
 
 @pytest.mark.django_db
 def test_get_ride_request_with_status_accepted(
-    ride_requests_dto_with_status_accepted,
-    populate_ride_requests,
+    snapshot,
+    ride_request_factory_fixture_with_status_accepted,
 ):
     # Arrange
     user_id = 1
     offset = 0
-    limit = 1
+    limit = 3
     sort_key = "seats"
     sort_value = "ASC"
     storage = RideRequestsStorageImplementation()
@@ -24,20 +24,20 @@ def test_get_ride_request_with_status_accepted(
     )
 
     # Assert
-    assert ride_requests_dto_with_status_accepted == response
+    snapshot.assert_match(response, "my_ride_requests_with_status_accepted")
 
 @pytest.mark.django_db
 def test_get_ride_request_with_status_expired(
-    ride_requests_dto_with_status_expired,
-    populate_ride_requests,
+    snapshot,
+    ride_request_factory_fixture_with_status_expired
 ):
     # Arrange
     user_id = 1
     offset = 0
-    limit = 1
+    limit = 3
     sort_key = "seats"
     sort_value = "ASC"
-    current_datetime_obj = datetime.datetime(2020,5,8,9,50)
+    current_datetime_obj = datetime.datetime.now()
     storage = RideRequestsStorageImplementation()
 
     # Act
@@ -48,21 +48,21 @@ def test_get_ride_request_with_status_expired(
     )
 
     # Assert
-    assert ride_requests_dto_with_status_expired == response
+    snapshot.assert_match(response, "my_ride_requests_with_status_expired")
 
 
 @pytest.mark.django_db
 def test_get_ride_request_with_status_pending(
-    ride_requests_dto_with_status_pending,
-    populate_ride_requests,
+    snapshot,
+    ride_request_factory_fixture_with_status_pending
 ):
     # Arrange
-    user_id = 2
+    user_id = 1
     offset = 0
     limit = 1
     sort_key = "seats"
     sort_value = "ASC"
-    current_datetime_obj = datetime.datetime(2020,3,4,5,30)
+    current_datetime_obj = datetime.datetime.now()
     storage = RideRequestsStorageImplementation()
 
     # Act
@@ -73,27 +73,27 @@ def test_get_ride_request_with_status_pending(
     )
 
     # Assert
-    assert ride_requests_dto_with_status_pending == response
+    snapshot.assert_match(response, "my_ride_requests_with_status_pending")
 
 
-@pytest.mark.django_db
-def test_get_ride_request(
-    ride_requests_dto_with_status_pending,
-    populate_ride_requests,
-):
-    # Arrange
-    user_id = 2
-    offset = 0
-    limit = 1
-    sort_key = "seats"
-    sort_value = "ASC"
-    storage = RideRequestsStorageImplementation()
+# @pytest.mark.django_db
+# def test_get_ride_request(
+#     ride_requests_dto_with_status_pending,
+#     populate_ride_requests,
+# ):
+#     # Arrange
+#     user_id = 2
+#     offset = 0
+#     limit = 1
+#     sort_key = "seats"
+#     sort_value = "ASC"
+#     storage = RideRequestsStorageImplementation()
 
-    # Act
-    response = storage.get_ride_requests(
-        user_id=user_id, offset=offset, limit=limit,
-        sort_key=sort_key, sort_value=sort_value,
-    )
+#     # Act
+#     response = storage.get_ride_requests(
+#         user_id=user_id, offset=offset, limit=limit,
+#         sort_key=sort_key, sort_value=sort_value,
+#     )
 
-    # Assert
-    assert ride_requests_dto_with_status_pending == response
+#     # Assert
+#     assert ride_requests_dto_with_status_pending == response

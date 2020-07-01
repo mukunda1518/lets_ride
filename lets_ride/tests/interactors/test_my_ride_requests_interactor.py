@@ -1,3 +1,5 @@
+import pytest
+
 from datetime import datetime
 
 from unittest.mock import create_autospec, Mock, patch
@@ -12,7 +14,22 @@ from lets_ride.interactors.my_ride_requests_interactor \
     import MyRideRequestsInteractor
 from lets_ride.constants.enums import Status
 from lets_ride.adapters.auth_service import AuthService
+from lets_ride_auth.interface.service_interface import ServiceInterface
 
+from lets_ride_auth.dtos.dtos import UserDto
+
+
+@pytest.fixture
+def auth_user_dtos():
+    user_dtos = [
+        UserDto(
+            user_id=2,
+            username="user2",
+            phone_number="1234567890",
+            profile_pic=""
+        )
+    ]
+    return user_dtos
 
 
 @patch.object(AuthService, 'get_user_dtos')
@@ -23,6 +40,7 @@ def test_my_ride_requests_wrapper_without_status(
     get_my_ride_requests_response
 ):
     # Arrange
+    user_ids = [2]
     user_id = 1
     offset = 2
     limit = 1
@@ -53,19 +71,29 @@ def test_my_ride_requests_wrapper_without_status(
         ride_requests_dto=ride_requests_dto,
         user_dtos=user_dtos
     )
+    get_user_dtos_mock.assert_called_once_with(user_ids=user_ids)
     assert response == get_my_ride_requests_response
 
+
+@patch.object(AuthService, 'service_interface')
 def test_my_ride_requests_wrapper_with_status_accepted(
+        get_user_dtos_mock,
         ride_requests_dto,
+        auth_user_dtos,
+        user_dtos,
         get_my_ride_requests_response
     ):
     # Arrange
+    user_ids = [2]
     user_id = 1
     offset = 2
     limit = 1
     status = Status.ACCEPTED.value
     sort_key = "seats"
     sort_value = "ASC"
+    print("object = ", get_user_dtos_mock)
+    print("type = ", type(get_user_dtos_mock))
+    get_user_dtos_mock.get_user_dtos.return_value = auth_user_dtos
     storage = create_autospec(RideRequestsStorageInterface)
     presenter = create_autospec(PresenterInterface)
     interactor = MyRideRequestsInteractor(storage=storage, presenter=presenter)
@@ -86,22 +114,31 @@ def test_my_ride_requests_wrapper_with_status_accepted(
         limit=limit, sort_key=sort_key, sort_value=sort_value
     )
     presenter.get_ride_requests_response.assert_called_once_with(
-        ride_requests_dto=ride_requests_dto
+        ride_requests_dto=ride_requests_dto,
+        user_dtos=user_dtos
     )
+    get_user_dtos_mock.get_user_dtos.assert_called_once_with(user_ids=user_ids)
     assert get_my_ride_requests_response == response
 
 
+
+@patch.object(ServiceInterface, 'get_user_dtos')
 def test_my_ride_requests_wrapper_with_flexible_timings(
+        get_user_dtos_mock,
         ride_requests_dto,
+        auth_user_dtos,
+        user_dtos,
         get_my_ride_requests_response
     ):
     # Arrange
+    user_ids = [2]
     user_id = 1
     offset = 2
     limit = 1
     status = Status.ACCEPTED.value
     sort_key = "seats"
     sort_value = "ASC"
+    get_user_dtos_mock.return_value = auth_user_dtos
     storage = create_autospec(RideRequestsStorageInterface)
     presenter = create_autospec(PresenterInterface)
     interactor = MyRideRequestsInteractor(storage=storage, presenter=presenter)
@@ -122,8 +159,10 @@ def test_my_ride_requests_wrapper_with_flexible_timings(
         limit=limit, sort_key=sort_key, sort_value=sort_value
     )
     presenter.get_ride_requests_response.assert_called_once_with(
-        ride_requests_dto=ride_requests_dto
+        ride_requests_dto=ride_requests_dto,
+        user_dtos=user_dtos
     )
+    get_user_dtos_mock.assert_called_once_with(user_ids=user_ids)
     assert get_my_ride_requests_response == response
 
 

@@ -15,7 +15,7 @@ REQUEST_BODY = """
 TEST_CASE = {
     "request": {
         "path_params": {},
-        "query_params": {"offset": 0, "limit": 4, "status": "", "sort_key": "seats", "sort_value": "ASC"},
+        "query_params": {"offset": 0, "limit": 3, "status": "ACCEPTED", "sort_key": "seats", "sort_value": "ASC"},
         "header_params": {},
         "securities": {"oauth": {"tokenUrl": "http://auth.ibtspl.com/oauth2/", "flow": "password", "scopes": ["write", "read"], "type": "oauth2"}},
         "body": REQUEST_BODY,
@@ -23,7 +23,7 @@ TEST_CASE = {
 }
 
 
-class TestCase01MyRideRequestsAPITestCase(CustomTestUtils):
+class TestCase04MyRideRequestsAPITestCase(CustomTestUtils):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
@@ -34,9 +34,7 @@ class TestCase01MyRideRequestsAPITestCase(CustomTestUtils):
         super().setupUser(username=username, password=password)
         user_obj = self.foo_user
         user_id = user_obj.id
-        self.ride_request_fixture_for_status_expired(user_id)
         self.ride_request_fixture_for_status_accepted(user_id)
-        self.ride_request_fixture_for_status_pending(user_id)
 
     def test_case(self):
         self.default_test_case() # Returns response object.

@@ -17,7 +17,8 @@ from lets_ride.dtos.dtos import (
     RideMatchingDto,
     AssetMatchingDto,
     BaseRideRequestDto,
-    BaseAssetRequestDto
+    BaseAssetRequestDto,
+    UserDto,
 )
 from lets_ride.utils.datetime_conversion \
     import convert_datetime_object_to_string_format
@@ -64,12 +65,15 @@ class PresenterImplementation(PresenterInterface):
         return asset_request_dict
 
 
-    def get_ride_requests_response(self, ride_requests_dto: RideRequestsDto):
+    def get_ride_requests_response(
+        self, ride_requests_dto: RideRequestsDto, user_dtos: List[UserDto]
+    ):
         ride_request_dtos = ride_requests_dto.ride_dtos
         total_rides = ride_requests_dto.total_rides
         ride_request_list = []
         for ride_request_dto in ride_request_dtos:
-            ride_request_dict = self._get_ride_request_dict(ride_request_dto)
+            ride_request_dict = \
+                self._get_ride_request_dict(ride_request_dto, user_dtos)
             ride_request_list.append(ride_request_dict)
         response_dict = {
             "rides": ride_request_list,
@@ -80,13 +84,23 @@ class PresenterImplementation(PresenterInterface):
         return response_dict
 
 
-    def _get_ride_request_dict(self, ride_request_dto: RideRequestDto):
+    def _get_ride_request_dict(
+        self, ride_request_dto: RideRequestDto, user_dtos: List[UserDto]
+    ):
         base_ride_request_dto = ride_request_dto.ride_dto
         ride_request_dict = self._get_base_ride_dict(base_ride_request_dto)
-        ride_request_dict["accepted_person"] = \
-            ride_request_dto.accepted_person
-        ride_request_dict["accepted_person_phone_number"] = \
-            ride_request_dto.accepted_person_phone_number
+        accepted_by_id = ride_request_dto.accepted_person_id
+        for user_dto in user_dtos:
+            user_id = user_dto.user_id
+            if user_id == accepted_by_id:
+                ride_request_dict["accepted_person"] = \
+                    user_dto.username
+                ride_request_dict["accepted_person_phone_number"] = \
+                    user_dto.phone_number
+            else:
+                ride_request_dict["accepted_person"]= ""
+                ride_request_dict["accepted_person_phone_number"] = ""
+
         ride_request_dict["status"] = ride_request_dto.status
         return ride_request_dict
 

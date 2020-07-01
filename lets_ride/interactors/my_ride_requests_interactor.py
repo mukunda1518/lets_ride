@@ -30,7 +30,7 @@ class MyRideRequestsInteractor:
         offset: int,
         limit: int
     ):
-        if limit < 0 or offset < 0:
+        if limit <= 0 or offset < 0:
             self.presenter.raise_invalid_for_limit_and_offset()
             return
         current_datetime_obj = datetime.now()

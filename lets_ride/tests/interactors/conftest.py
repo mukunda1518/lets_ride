@@ -13,6 +13,7 @@ from lets_ride.dtos.dtos import (
     UserDto
 )
 
+
 #-------------Ride Requests----------------
 
 @pytest.fixture

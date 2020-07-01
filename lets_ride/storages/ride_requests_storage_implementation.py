@@ -38,6 +38,7 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
         sort_value: str, current_datetime_obj: datetime
     ) -> RideRequestsDto:
 
+        print(" objects ------- = ", RideRequest.objects.values())
         limit = offset+limit
         filtered_ride_request_objs = RideRequest.objects.filter(
             Q(
@@ -50,6 +51,7 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
             ),
             user_id=user_id
         )
+
         ride_request_objs = self._get_ordered_ride_requests(
             sort_key, sort_value, filtered_ride_request_objs,
         )
@@ -68,6 +70,7 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
     ) -> RideRequestsDto:
 
         limit = offset+limit
+        print("objects = ", RideRequest.objects.values())
         filtered_ride_request_objs = RideRequest.objects.filter(
             Q(
                 flexible_timings=False,
@@ -79,9 +82,11 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
             ),
             user_id=user_id, accepted_by_id__isnull=True
         )
+        print("filtered_ride_request_objs = ", filtered_ride_request_objs)
         ride_request_objs = self._get_ordered_ride_requests(
             sort_key, sort_value, filtered_ride_request_objs,
         )
+        print("ride_request_objs = ", ride_request_objs)
         total_rides = len(ride_request_objs)
         ride_request_objs = ride_request_objs[offset:limit]
         ride_request_dtos = self._get_ride_request_dtos(ride_request_objs)
@@ -103,7 +108,6 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
         ride_request_objs = self._get_ordered_ride_requests(
             sort_key, sort_value, filtered_ride_request_objs,
         )
-
         total_rides = len(ride_request_objs)
         ride_request_objs = ride_request_objs[offset:limit]
         ride_request_dtos = self._get_ride_request_dtos(ride_request_objs)
@@ -205,7 +209,7 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
     ):
         ride_request_dto = RideRequestDto(
             ride_dto=base_ride_request_dto,
-            accepted_person_id=ride_request_obj.accepted_person_id,
+            accepted_person_id=ride_request_obj.accepted_by_id,
             status=""
         )
         return ride_request_dto
@@ -215,8 +219,8 @@ class RideRequestsStorageImplementation(RideRequestsStorageInterface):
         self,
         request_obj: RideRequest
     ) -> bool:
-        accepted_by = request_obj.accepted_by
-        if accepted_by:
+        accepted_by_id = request_obj.accepted_by_id
+        if accepted_by_id:
             return True
         else:
             return False

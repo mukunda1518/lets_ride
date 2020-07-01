@@ -1,7 +1,6 @@
 import factory
 
 from datetime import datetime, timedelta
-
 from lets_ride.models.ride_request import RideRequest
 
 class RideRequestFactory(factory.django.DjangoModelFactory):
@@ -16,7 +15,7 @@ class RideRequestFactory(factory.django.DjangoModelFactory):
     laguage_quantity = 2
     flexible_from_date_time = None
     flexible_to_date_time = None
-    user_id = 1
+    user_id = factory.Sequence(lambda n: n)
     accepted_by_id = None
 
     @factory.lazy_attribute
@@ -32,8 +31,4 @@ class RideRequestFactory(factory.django.DjangoModelFactory):
                 lambda obj: obj.flexible_from_date_time + timedelta(10)
             )
         )
-        accept = factory.Trait(
-            accepted_by_id=2
-        )
-
 

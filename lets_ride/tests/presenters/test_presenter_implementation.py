@@ -26,19 +26,23 @@ def test_raise_invalid_for_limit_and_offset():
 
 
 def test_get_ride_requests(
+    snapshot,
     get_my_ride_requests_response,
     ride_requests_dto,
+    user_dtos_for_ride_request,
 ):
     # Arrange
     presenter = PresenterImplementation()
 
     # Act
     response = presenter.get_ride_requests_response(
-        ride_requests_dto=ride_requests_dto
+        ride_requests_dto=ride_requests_dto,
+        user_dtos=user_dtos_for_ride_request
     )
 
     # Assert
-    assert get_my_ride_requests_response == response
+    #assert get_my_ride_requests_response == response
+    snapshot.assert_match(response, "my_ride_requests")
 
 
 def test_get_asset_requests(
