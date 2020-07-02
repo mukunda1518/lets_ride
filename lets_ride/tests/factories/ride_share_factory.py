@@ -2,7 +2,6 @@ import factory
 
 from datetime import datetime, timedelta
 
-from lets_ride.tests.factories.user_factory import UserFactory
 from lets_ride.models.share_ride import ShareRide
 
 
@@ -19,7 +18,7 @@ class ShareRideFactory(factory.django.DjangoModelFactory):
     asset_quantity = 6
     flexible_from_date_time = None
     flexible_to_date_time = None
-    user = factory.SubFactory(UserFactory)
+    user_id = 1
 
     @factory.lazy_attribute
     def travel_date_time(self):

@@ -1,0 +1,1835 @@
+[1mdiff --git a/ib_miniprojects_backend/settings/base.py b/ib_miniprojects_backend/settings/base.py[m
+[1mindex 21c1214..5753d2d 100644[m
+[1m--- a/ib_miniprojects_backend/settings/base.py[m
+[1m+++ b/ib_miniprojects_backend/settings/base.py[m
+[36m@@ -339,8 +339,10 @@[m [mTEST_RUNNER = 'snapshottest.django.TestRunner'[m
+ MOCK_X_IB_REQUEST_ID = True[m
+ [m
+ STAGE = os.environ.get("STAGE", "local")[m
+[31m-AUTH_USER_MODEL = 'lets_ride.User'[m
+[31m-DEFAULT_OAUTH_APPLICATION_NAME ="lets_ride"[m
+[32m+[m
+[32m+[m[32mAUTH_USER_MODEL = 'lets_ride_auth.User'[m
+[32m+[m
+[32m+[m[32mDEFAULT_OAUTH_APPLICATION_NAME ="lets_ride_auth"[m
+ DEFAULT_OAUTH_CLIENT_ID =""[m
+ DEFAULT_OAUTH_CLIENT_SECRET = ""[m
+ DEFAULT_OAUTH_SCOPES = "read write"[m
+[1mdiff --git a/ib_miniprojects_backend/settings/base_swagger_utils.py b/ib_miniprojects_backend/settings/base_swagger_utils.py[m
+[1mindex 6a35191..2b83d71 100644[m
+[1m--- a/ib_miniprojects_backend/settings/base_swagger_utils.py[m
+[1m+++ b/ib_miniprojects_backend/settings/base_swagger_utils.py[m
+[36m@@ -18,7 +18,8 @@[m [mfrom django_swagger_utils.drf_server.utils.general.import_app_settings import \[m
+ [m
+ THIRD_PARTY_APPS = [][m
+ APPS = [[m
+[31m-    "lets_ride"[m
+[32m+[m[32m    "lets_ride",[m
+[32m+[m[32m    "lets_ride_auth",[m
+ ][m
+ [m
+ INSTALLED_APPS += THIRD_PARTY_APPS[m
+[36m@@ -61,7 +62,8 @@[m [mSWAGGER_UTILS = {[m
+         }[m
+     },[m
+     "APPS": {[m
+[31m-        "lets_ride": {}[m
+[32m+[m[32m        "lets_ride": {},[m
+[32m+[m[32m        "lets_ride_auth": {},[m
+     },[m
+     "HOST": os.environ.get('APIGATEWAY_ENDPOINT', '127.0.0.1:8000'),[m
+ }[m
+[1mdiff --git a/lets_ride/.~c9_invoke_3ty0WK.py b/lets_ride/.~c9_invoke_3ty0WK.py[m
+[1mdeleted file mode 100644[m
+[1mindex adee0cb..0000000[m
+[1m--- a/lets_ride/.~c9_invoke_3ty0WK.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,130 +0,0 @@[m
+[31m-import requests[m
+[31m-[m
+[31m-[m
+[31m-# create_user[m
+[31m-# print("----------------SignUp----------------------\n")[m
+[31m-# data = '{"username" : "user11","phone_number": "24354656545687","password":"user11"}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/sign_up/v1/"[m
+[31m-# response = requests.post(url=url, data=data, headers={'Content-Type':"application/json"})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# login_user[m
+[31m-# print("------------------LoginIn---------------------------\n")[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/login/v1/"[m
+[31m-# data = '{"phone_number": "1234567890","password":"user1"}'[m
+[31m-# response = requests.get(url=url, data=data, headers={'Content-Type':"application/json"})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# update_password[m
+[31m-# print("-----------------update_password------------------")[m
+[31m-# data = '{"new_password": "user111"}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/update_password/v1/"[m
+[31m-# response = requests.post(url=url, data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer uR7qqZVzwc4xo5iawocg4Ia1qDlGRO'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-#user_profile[m
+[31m-# print("----------------------user_profile------------------------\n")[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/user/profile/v1/"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-#ride_request[m
+[31m-# print("---------------------ride_request_with_flexible_timmings----------------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "", "flexible_timings": true, "flexible_from_date_time" : "2020-06-12 05:30 PM", "flexible_to_date_time" : "2020-06-12 05:30 PM", "seats" : 3, "laguage_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/ride_request/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #ride_request[m
+[31m-# print("---------------------ride_request----------------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "2020-06-12 05:30 PM", "flexible_timings": false, "flexible_from_date_time" : "", "flexible_to_date_time" : "", "seats" : 3, "laguage_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/ride_request/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-# #Asset Request[m
+[31m-# print("--------------------asset_request_with_flexible_timmings-----------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "", "flexible_timings": true, "flexible_from_date_time" : "2020-04-12 05:30 PM", "flexible_to_date_time" : "2020-06-12 05:30 PM", "asset_quantity" : 3, "asset_type": "BAG", "asset_type_others" : "", "asset_sensitivity": "HIGH", "deliver_to" : "user1", "phone_number":"1234567890"}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/asset_request/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-# #Asset Request[m
+[31m-# print("--------------------asset_request-----------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "2020-07-12 05:30 PM", "flexible_timings": false, "flexible_from_date_time" : "", "flexible_to_date_time" : "", "asset_quantity" : 3, "asset_type": "BAG", "asset_type_others" : "", "asset_sensitivity": "HIGH", "deliver_to" : "user1", "phone_number":"1234567890"}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/asset_request/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #ride_share[m
+[31m-# print("-------------ride_share_with_flexible_timmings--------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "", "flexible_timings": true, "flexible_from_date_time" : "2020-04-12 05:30 PM", "flexible_to_date_time" : "2020-06-12 05:30 PM", "seats" : 3, "asset_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/share_ride/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #ride_share[m
+[31m-# print("-------------ride_share--------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "2020-06-12 05:30 PM", "flexible_timings": false, "flexible_from_date_time" : "", "flexible_to_date_time" : "", "seats" : 3, "asset_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/share_ride/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-# #share_travel_info[m
+[31m-# print("-------------share_travel_info_with_flexible_timings--------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "", "flexible_timings": true, "flexible_from_date_time" : "2020-04-12 05:30 PM", "flexible_to_date_time" : "2020-06-12 05:30 PM", "travel_medium" : "BUS", "asset_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/share_travel_info/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #share_travel_info[m
+[31m-# print("-------------share_travel_info--------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "2020-07-12 05:30 PM", "flexible_timings": false, "flexible_from_date_time" : "", "flexible_to_date_time" : "", "travel_medium" : "BUS", "asset_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/share_travel_info/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #my_requests[m
+[31m-# print("\n---------------offset=3 and limit=1-----------------------------\n")[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/my_requests/v1/?offset=3&limit=1"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-#my_requests[m
+[31m-# print("\n---------------offset=3 and limit=4-----------------------------\n")[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/my_requests/v1/?offset=3&limit=4"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-# my_ride_requests[m
+[31m-[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/my_requests/rides/v1/?offset=1&limit=10"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# my_asset_requests[m
+[31m-[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/my_requests/assets/v1/?offset=1&limit=9&sort_key=date_time&sort_value=DESC"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-# matching_results[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/matching_results/v1/?offset=-1&limit=3"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[1mdiff --git a/lets_ride/.~c9_invoke_nHutw.py b/lets_ride/.~c9_invoke_nHutw.py[m
+[1mdeleted file mode 100644[m
+[1mindex 06ea539..0000000[m
+[1m--- a/lets_ride/.~c9_invoke_nHutw.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,130 +0,0 @@[m
+[31m-import requests[m
+[31m-[m
+[31m-[m
+[31m-# create_user[m
+[31m-# print("----------------SignUp----------------------\n")[m
+[31m-# data = '{"username" : "user11","phone_number": "24354656545687","password":"user11"}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/sign_up/v1/"[m
+[31m-# response = requests.post(url=url, data=data, headers={'Content-Type':"application/json"})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# login_user[m
+[31m-# print("------------------LoginIn---------------------------\n")[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/login/v1/"[m
+[31m-# data = '{"phone_number": "1234567890","password":"user1"}'[m
+[31m-# response = requests.get(url=url, data=data, headers={'Content-Type':"application/json"})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# update_password[m
+[31m-# print("-----------------update_password------------------")[m
+[31m-# data = '{"new_password": "user111"}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/update_password/v1/"[m
+[31m-# response = requests.post(url=url, data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer uR7qqZVzwc4xo5iawocg4Ia1qDlGRO'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-#user_profile[m
+[31m-# print("----------------------user_profile------------------------\n")[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/user/profile/v1/"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-#ride_request[m
+[31m-# print("---------------------ride_request_with_flexible_timmings----------------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "", "flexible_timings": true, "flexible_from_date_time" : "2020-06-12 05:30 PM", "flexible_to_date_time" : "2020-06-12 05:30 PM", "seats" : 3, "laguage_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/ride_request/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #ride_request[m
+[31m-# print("---------------------ride_request----------------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "2020-06-12 05:30 PM", "flexible_timings": false, "flexible_from_date_time" : "", "flexible_to_date_time" : "", "seats" : 3, "laguage_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/ride_request/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-# #Asset Request[m
+[31m-# print("--------------------asset_request_with_flexible_timmings-----------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "", "flexible_timings": true, "flexible_from_date_time" : "2020-04-12 05:30 PM", "flexible_to_date_time" : "2020-06-12 05:30 PM", "asset_quantity" : 3, "asset_type": "BAG", "asset_type_others" : "", "asset_sensitivity": "HIGH", "deliver_to" : "user1", "phone_number":"1234567890"}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/asset_request/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-# #Asset Request[m
+[31m-# print("--------------------asset_request-----------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "2020-07-12 05:30 PM", "flexible_timings": false, "flexible_from_date_time" : "", "flexible_to_date_time" : "", "asset_quantity" : 3, "asset_type": "BAG", "asset_type_others" : "", "asset_sensitivity": "HIGH", "deliver_to" : "user1", "phone_number":"1234567890"}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/asset_request/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #ride_share[m
+[31m-# print("-------------ride_share_with_flexible_timmings--------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "", "flexible_timings": true, "flexible_from_date_time" : "2020-04-12 05:30 PM", "flexible_to_date_time" : "2020-06-12 05:30 PM", "seats" : 3, "asset_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/share_ride/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #ride_share[m
+[31m-# print("-------------ride_share--------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "2020-06-12 05:30 PM", "flexible_timings": false, "flexible_from_date_time" : "", "flexible_to_date_time" : "", "seats" : 3, "asset_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/share_ride/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-# #share_travel_info[m
+[31m-# print("-------------share_travel_info_with_flexible_timings--------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "", "flexible_timings": true, "flexible_from_date_time" : "2020-04-12 05:30 PM", "flexible_to_date_time" : "2020-06-12 05:30 PM", "travel_medium" : "BUS", "asset_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/share_travel_info/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #share_travel_info[m
+[31m-# print("-------------share_travel_info--------------------\n")[m
+[31m-# data = '{"source" : "kurnool", "destination" : "Hyderabad", "travel_date_time": "2020-07-12 05:30 PM", "flexible_timings": false, "flexible_from_date_time" : "", "flexible_to_date_time" : "", "travel_medium" : "BUS", "asset_quantity": 4}'[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/share_travel_info/v1/"[m
+[31m-# response = requests.post(url=url,data=data, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# #my_requests[m
+[31m-# print("\n---------------offset=3 and limit=1-----------------------------\n")[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/my_requests/v1/?offset=3&limit=1"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-#my_requests[m
+[31m-# print("\n---------------offset=3 and limit=4-----------------------------\n")[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/my_requests/v1/?offset=3&limit=4"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-# my_ride_requests[m
+[31m-[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/my_requests/rides/v1/?offset=1&limit=10"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[31m-[m
+[31m-[m
+[31m-# my_asset_requests[m
+[31m-[m
+[31m-url = "http://127.0.0.1:8080/api/lets_ride/my_requests/assets/v1/?offset=-1&limit=9&sort_key=date_time&sort_value=DESC"[m
+[31m-response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-print(response.content)[m
+[31m-[m
+[31m-# matching_results[m
+[31m-# url = "http://127.0.0.1:8080/api/lets_ride/matching_results/v1/?offset=-1&limit=3"[m
+[31m-# response = requests.get(url=url, headers={'Content-Type':"application/json", 'Authorization': 'Bearer gq8BtgYdBEIpUmvuxA2YGycsI4CUhz'})[m
+[31m-# print(response.content)[m
+[1mdiff --git a/lets_ride/admin.py b/lets_ride/admin.py[m
+[1mindex 643e935..e7918d1 100644[m
+[1m--- a/lets_ride/admin.py[m
+[1m+++ b/lets_ride/admin.py[m
+[36m@@ -1,12 +1,11 @@[m
+ from django.contrib import admin[m
+[31m-from django.contrib.auth.admin import UserAdmin[m
+[31m-from lets_ride.models.user import User[m
+ from lets_ride.models.asset_request import AssetRequest[m
+ from lets_ride.models.ride_request import RideRequest[m
+ from lets_ride.models.share_ride import ShareRide[m
+ from lets_ride.models.travel_info import TravelInfo[m
+ [m
+[31m-admin.site.register(User, UserAdmin)[m
+[32m+[m
+[32m+[m
+ admin.site.register(AssetRequest)[m
+ admin.site.register(ShareRide)[m
+ admin.site.register(RideRequest)[m
+[1mdiff --git a/lets_ride/constants/exception_messages.py b/lets_ride/constants/exception_messages.py[m
+[1mindex 8a02950..abc3586 100644[m
+[1m--- a/lets_ride/constants/exception_messages.py[m
+[1m+++ b/lets_ride/constants/exception_messages.py[m
+[36m@@ -2,27 +2,9 @@[m [mINVALID_OFFSET_LENGTH = ([m
+     'Offset should be greater than or equal to zero and length should be '[m
+     'greater than zero', 'INVALID_OFFSET_LENGTH'[m
+ )[m
+[31m-INVALID_PHONE_NUMBER = ([m
+[31m-    "PhoneNumber should be valid",[m
+[31m-    "INVALID_PHONE_NUMBER"[m
+[31m-)[m
+ [m
+[31m-INVALID_PASSWORD = ([m
+[31m-    "Incorrect Password",[m
+[31m-    "INVALID_PASSWORD"[m
+[31m-)[m
+ [m
+ INVALID_OFFSET_LIMIT_VALUE = ([m
+     "offset or limit should be positive values",[m
+     "INVALID_OFFSET_LIMIT_VALUE"[m
+ )[m
+[31m-[m
+[31m-INVALID_USERNAME = ([m
+[31m-    "username already exist try another username",[m
+[31m-    "USERNMAE_ALREADY_EXIST"[m
+[31m-)[m
+[31m-[m
+[31m-PHONE_NUMBER_WITH_USER_EXIST = ([m
+[31m-    "phone number with user already exist",[m
+[31m-    "PHONE_NUMBER_WITH_USER_EXIST"[m
+[31m-)[m
+[1mdiff --git a/lets_ride/dtos/dtos.py b/lets_ride/dtos/dtos.py[m
+[1mindex bee1510..c0eb9b4 100644[m
+[1m--- a/lets_ride/dtos/dtos.py[m
+[1m+++ b/lets_ride/dtos/dtos.py[m
+[36m@@ -4,11 +4,6 @@[m [mfrom typing import Optional, List[m
+ from lets_ride.constants.enums \[m
+     import AssetType, AssetSensitivity, Status, TravelMedium[m
+ [m
+[31m-@dataclass[m
+[31m-class UserDto():[m
+[31m-    username: str[m
+[31m-    phone_number: str[m
+[31m-    profile_pic: str[m
+ [m
+ @dataclass[m
+ class BaseRideRequestDto:[m
+[1mdiff --git a/lets_ride/interactors/.~c9_invoke_05xKFC.py b/lets_ride/interactors/.~c9_invoke_05xKFC.py[m
+[1mdeleted file mode 100644[m
+[1mindex 0cb451a..0000000[m
+[1m--- a/lets_ride/interactors/.~c9_invoke_05xKFC.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,66 +0,0 @@[m
+[31m-from datetime import datetime[m
+[31m-from typing import List[m
+[31m-from lets_ride.interactors.storages.storage_interface \[m
+[31m-    import StorageInterface[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-from lets_ride.constants.enums import Status[m
+[31m-from lets_ride.dtos.dtos[m
+[31m-[m
+[31m-class MyRideRequestsInteractor:[m
+[31m-[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: StorageInterface,[m
+[31m-        presenter: PresenterInterface[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-        self.presenter = presenter[m
+[31m-    [m
+[31m-    def my_ride_requests_wrapper([m
+[31m-        self,[m
+[31m-        user_id: int,[m
+[31m-        filter_key: str,[m
+[31m-        filter_value: str,[m
+[31m-        sort_key: str,[m
+[31m-        sort_value: str,[m
+[31m-        offset: int,[m
+[31m-        limit: int[m
+[31m-    ):[m
+[31m-        now_datetime_obj = datetime.now()[m
+[31m-        is_filter_key = not filter_key[m
+[31m-        is_sort_key = not filter_key[m
+[31m-        if is_filter_key and is_sort_key:[m
+[31m-            ride_request_dtos = self.storage.get_matching_ride_requests([m
+[31m-                user_id,offset,limit[m
+[31m-            )[m
+[31m-        elif is_filter_key:[m
+[31m-            ride_request_dtos = self.storage.get_matching_ride_requests_by_appling_sort([m
+[31m-                user_id, sort_key, sort_value, offset, limit[m
+[31m-            )[m
+[31m-        else:[m
+[31m-            if filter_key is "source":[m
+[31m-                ride_request_dtos = self.storage.get_matching_ride_requests_by_appling_source_filter([m
+[31m-                    user_id,[m
+[31m-                    filter_value[m
+[31m-                )[m
+[31m-            else: [m
+[31m-                ride_request_dtos = self.storage.get_matching_ride_requests_by_appling_destination_filter([m
+[31m-                    user_id,[m
+[31m-                    filter_value[m
+[31m-                )[m
+[31m-        ride_dtos = ride_request_dtos.ride_dtos[m
+[31m-        self._set_status_for_ride_requests(ride_dtos, now_datetime_obj)[m
+[31m-[m
+[31m-[m
+[31m-    def _set_status_for_ride_requests([m
+[31m-        self,[m
+[31m-        ride_dtos: List[RideRequestDto],[m
+[31m-        now_datetime_obj: datetime[m
+[31m-    ):[m
+[31m-        for ride_dto in ride_dtos:[m
+[31m-            ride_status = self._get_ride_request_status([m
+[31m-                ride_request_dto=ride_request_dto,[m
+[31m-                now_datetime_obj=now_datetime_obj[m
+[31m-            )[m
+[31m-            ride_request_dto.status = ride_status[m
+\ No newline at end of file[m
+[1mdiff --git a/lets_ride/interactors/.~c9_invoke_Cc0LL.py b/lets_ride/interactors/.~c9_invoke_Cc0LL.py[m
+[1mdeleted file mode 100644[m
+[1mindex 67dd67a..0000000[m
+[1m--- a/lets_ride/interactors/.~c9_invoke_Cc0LL.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,145 +0,0 @@[m
+[31m-import datetime[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-from lets_ride.interactors.storages.storage_interface \[m
+[31m-    import StorageInterface[m
+[31m-from lets_ride.constants.constants import DEFAULT_DATE_TIME_FORMAT[m
+[31m-[m
+[31m-class RideRequestInteractor:[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: StorageInterface,[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-[m
+[31m-    def ride_request_wrapper([m
+[31m-        self,[m
+[31m-        user_id: int,[m
+[31m-        source: str,[m
+[31m-        destination: str,[m
+[31m-        travel_date_time: str,[m
+[31m-        flexible_timings: bool,[m
+[31m-        flexible_travel_from_date_time: str,[m
+[31m-        flexible_travel_to_date_time: str,[m
+[31m-        seats: int,[m
+[31m-        laguage_quantity: int[m
+[31m-    ):[m
+[31m-        if flexible_timings:[m
+[31m-            from_datetime_obj = datetime.datetime.strptime([m
+[31m-                flexible_travel_from_date_time, DEFAULT_DATE_TIME_FORMAT[m
+[31m-            )[m
+[31m-            to_datetime_obj = datetime.datetime.strptime([m
+[31m-                flexible_travel_to_date_time, DEFAULT_DATE_TIME_FORMAT[m
+[31m-            )[m
+[31m-            self.storage.ride_request_with_flexible_timings([m
+[31m-                user_id=user_id,[m
+[31m-                source=source,[m
+[31m-                destination=destination,[m
+[31m-                flexible_timings=flexible_timings,[m
+[31m-                flexible_travel_from_date_time=from_datetime_obj,[m
+[31m-                flexible_travel_to_date_time=to_datetime_obj,[m
+[31m-                seats=seats,[m
+[31m-                laguage_quantity=laguage_quantity[m
+[31m-            )[m
+[31m-[m
+[31m-        else:[m
+[31m-            datetime_obj = datetime.datetime.strptime([m
+[31m-                travel_date_time, DEFAULT_DATE_TIME_FORMAT[m
+[31m-            )[m
+[31m-            self.storage.ride_request([m
+[31m-                user_id=user_id,[m
+[31m-                source=source,[m
+[31m-                destination=destination,[m
+[31m-                travel_date_time=datetime_obj,[m
+[31m-                flexible_timings=flexible_timings,[m
+[31m-                seats=seats,[m
+[31m-                laguage_quantity=laguage_quantity[m
+[31m-            )[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[1mdiff --git a/lets_ride/interactors/.~c9_invoke_i4FWNt.py b/lets_ride/interactors/.~c9_invoke_i4FWNt.py[m
+[1mdeleted file mode 100644[m
+[1mindex 786bd44..0000000[m
+[1m--- a/lets_ride/interactors/.~c9_invoke_i4FWNt.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,180 +0,0 @@[m
+[31m-from datetime import datetime[m
+[31m-from datetime import timedelta[m
+[31m-from typing import Tuple, Union, List[m
+[31m-from lets_ride.constants.constants import DEFAULT_DATE_TIME_FORMAT[m
+[31m-from lets_ride.interactors.storages.matching_shares_results_storage_interface \[m
+[31m-    import MatchingSharesStorageInterface[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-[m
+[31m-[m
+[31m-from lets_ride.dtos.dtos import ([m
+[31m-    BaseRideShareDto,[m
+[31m-    BaseTravelInfoDto,[m
+[31m-    RideAssetMatchingDto,[m
+[31m-    RideMatchingDto,[m
+[31m-    AssetMatchingDto[m
+[31m-)[m
+[31m-[m
+[31m-class MatchingSharesResultsInteractor:[m
+[31m-[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: MatchingSharesStorageInterface,[m
+[31m-        presenter: PresenterInterface[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-        self.presenter = presenter[m
+[31m-[m
+[31m-[m
+[31m-    def matching_share_results_wrapper([m
+[31m-        self, user_id: int, offset: int, limit: int[m
+[31m-    ):[m
+[31m-        if limit < 0 or offset < 0:[m
+[31m-            self.presenter.raise_invalid_for_limit_and_offset()[m
+[31m-            return[m
+[31m-        limit = offset + limit[m
+[31m-        ride_share_dtos = self.storage.get_ride_shares(user_id=user_id)[m
+[31m-        travel_info_dtos = self.storage.get_travel_shares(user_id=user_id)[m
+[31m-[m
+[31m-        ride_matching_dtos = self._get_all_ride_matching_dtos(ride_share_dtos)[m
+[31m-        total_matching_rides = len(ride_matching_dtos)[m
+[31m-        ride_matching_dtos = ride_matching_dtos[offset:limit][m
+[31m-[m
+[31m-        asset_matching_for_ride_share_dtos = \[m
+[31m-            self._get_all_asset_request_matching_dtos(ride_share_dtos)[m
+[31m-[m
+[31m-        asset_request_matching_dtos = \[m
+[31m-            self._get_all_asset_request_matching_dtos(travel_info_dtos)[m
+[31m-[m
+[31m-        asset_request_matching_dtos = self._get_asset_request_matching_dtos_without_duplications([m
+[31m-            asset_matching_for_ride_share_dtos, asset_request_matching_dtos[m
+[31m-        )[m
+[31m-        total_matching_asset_requests = len(asset_request_matching_dtos)[m
+[31m-        total_matching_asset_requests = len(asset_request_matching_dtos)[m
+[31m-        asset_request_matching_dtos = asset_request_matching_dtos[offset:limit][m
+[31m-[m
+[31m-        ride_asset_matching_dto = RideAssetMatchingDto([m
+[31m-            ride_dtos=ride_matching_dtos,[m
+[31m-            total_rides=total_matching_rides,[m
+[31m-            asset_dtos=asset_request_matching_dtos,[m
+[31m-            total_assets=total_matching_asset_requests[m
+[31m-        )[m
+[31m-        response = self.presenter.get_ride_asset_matching_response([m
+[31m-            ride_asset_matching_dto=ride_asset_matching_dto[m
+[31m-        )[m
+[31m-        return response[m
+[31m-[m
+[31m-[m
+[31m-    def _get_all_ride_matching_dtos([m
+[31m-        self,[m
+[31m-        ride_share_dtos: List[BaseRideShareDto][m
+[31m-    ) -> List[RideMatchingDto]:[m
+[31m-[m
+[31m-        all_ride_matching_dtos = [][m
+[31m-        for ride_share_dto in ride_share_dtos:[m
+[31m-            ride_matching_dtos = self._get_ride_matching_dtos(ride_share_dto)[m
+[31m-            all_ride_matching_dtos += ride_matching_dtos[m
+[31m-        return all_ride_matching_dtos[m
+[31m-[m
+[31m-[m
+[31m-    def _get_ride_matching_dtos([m
+[31m-        self,[m
+[31m-        ride_share_dto:BaseRideShareDto[m
+[31m-    ) -> List[RideMatchingDto]:[m
+[31m-[m
+[31m-        source = ride_share_dto.source[m
+[31m-        destination = ride_share_dto.destination[m
+[31m-        seats = ride_share_dto.seats[m
+[31m-        asset_quantity = ride_share_dto.asset_quantity[m
+[31m-        ride_share_id = ride_share_dto.ride_share_id[m
+[31m-        from_datetime, to_datetime = \[m
+[31m-            self._get_from_and_to_datetime(ride_share_dto)[m
+[31m-[m
+[31m-        ride_matching_dtos = self.storage.get_ride_matching_requests([m
+[31m-            source, destination,[m
+[31m-            seats, asset_quantity,[m
+[31m-            from_datetime, to_datetime,[m
+[31m-        )[m
+[31m-        for ride_matching_dto in ride_matching_dtos:[m
+[31m-            ride_matching_dto.ride_matching_id = ride_share_id[m
+[31m-        return ride_matching_dtos[m
+[31m-[m
+[31m-[m
+[31m-    def _get_all_asset_request_matching_dtos([m
+[31m-        self,[m
+[31m-        base_info_dtos: Union[List[BaseTravelInfoDto], List[BaseRideShareDto]][m
+[31m-    ) ->List[AssetMatchingDto]:[m
+[31m-[m
+[31m-        all_asset_matching_dtos = [][m
+[31m-        for base_info_dto in base_info_dtos:[m
+[31m-            asset_matching_dtos = \[m
+[31m-                self._get_asset_matching_dtos(base_info_dto)[m
+[31m-            all_asset_matching_dtos += asset_matching_dtos[m
+[31m-        return all_asset_matching_dtos[m
+[31m-[m
+[31m-[m
+[31m-    def _get_asset_matching_dtos([m
+[31m-        self,[m
+[31m-        base_info_dto: Union[BaseTravelInfoDto, BaseRideShareDto][m
+[31m-    ) -> List[AssetMatchingDto]:[m
+[31m-[m
+[31m-        source = base_info_dto.source[m
+[31m-        destination = base_info_dto.destination[m
+[31m-        asset_quantity = base_info_dto.asset_quantity[m
+[31m-        from_datetime, to_datetime = \[m
+[31m-            self._get_from_and_to_datetime(base_info_dto)[m
+[31m-        asset_matching_dtos = self.storage.get_travel_matching_requests([m
+[31m-            source, destination,[m
+[31m-            asset_quantity,[m
+[31m-            from_datetime,[m
+[31m-            to_datetime[m
+[31m-        )[m
+[31m-[m
+[31m-        if isinstance(base_info_dto, BaseRideShareDto):[m
+[31m-            ride_matching_id = base_info_dto.ride_share_id[m
+[31m-            for asset_matching_dto in asset_matching_dtos:[m
+[31m-                asset_matching_dto.ride_matching_id = ride_matching_id[m
+[31m-        else:[m
+[31m-            travel_matching_id = base_info_dto.travel_share_id[m
+[31m-            for asset_matching_dto in asset_matching_dtos:[m
+[31m-                asset_matching_dto.travel_matching_id = travel_matching_id[m
+[31m-        return asset_matching_dtos[m
+[31m-[m
+[31m-[m
+[31m-    def _get_from_and_to_datetime([m
+[31m-        self,[m
+[31m-        share_obj: Union[BaseRideShareDto,[m
+[31m-        BaseTravelInfoDto][m
+[31m-    ) -> Tuple:[m
+[31m-[m
+[31m-        flexible_timings = share_obj.flexible_timings[m
+[31m-        if flexible_timings:[m
+[31m-            from_datetime = \[m
+[31m-                share_obj.flexible_from_date_time - timedelta(days=1)[m
+[31m-            to_datetime = share_obj.flexible_to_date_time + timedelta(days=1)[m
+[31m-        else:[m
+[31m-            from_datetime = share_obj.travel_date_time[m
+[31m-            to_datetime = share_obj.travel_date_time + timedelta(days=1)[m
+[31m-        return from_datetime,to_datetime[m
+[31m-[m
+[31m-[m
+[31m-    def _get_asset_request_matching_dtos_without_duplications([m
+[31m-        self,[m
+[31m-        ride_matching_asset_dtos: List[AssetMatchingDto],[m
+[31m-        travel_matching_asset_dtos: List[AssetMatchingDto][m
+[31m-    ) -> List[AssetMatchingDto]:[m
+[31m-[m
+[31m-        asset_matching_dtos = [][m
+[31m-        for ride_matching_asset_dto in ride_matching_asset_dtos:[m
+[31m-            ride_matched_asset_id = \[m
+[31m-                ride_matching_asset_dto.asset_dto.asset_request_id[m
+[31m-            for travel_matching_asset_dto in travel_matching_asset_dtos:[m
+[31m-                travel_matched_asset_id = \[m
+[31m-                    travel_matching_asset_dto.asset_dto.asset_request_id[m
+[31m-                if ride_matched_asset_id == travel_matched_asset_id:[m
+[31m-                    continue[m
+[31m-                asset_matching_dtos.append(ride_matching_asset_dto)[m
+[31m-[m
+[31m-        asset_matching_dtos += travel_matching_asset_dtos[m
+[31m-        return asset_matching_dtos[m
+[1mdiff --git a/lets_ride/interactors/.~c9_invoke_j1LqJk.py b/lets_ride/interactors/.~c9_invoke_j1LqJk.py[m
+[1mdeleted file mode 100644[m
+[1mindex 68a55e1..0000000[m
+[1m--- a/lets_ride/interactors/.~c9_invoke_j1LqJk.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,18 +0,0 @@[m
+[31m-import datetime[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-from lets_ride.interactors.storages.storage_interface \[m
+[31m-    import StorageInterface[m
+[31m-from lets_ride.constants.constants import DEFAULT_DATE_TIME_FORMAT[m
+[31m-[m
+[31m-class ShareTravelInfo:[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: StorageInterface,[m
+[31m-        presenter: PresenterInterface,[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-        self.presenter = presenter[m
+[31m-        [m
+[31m-    def share_travel_info(self,):[m
+[31m-        pass[m
+\ No newline at end of file[m
+[1mdiff --git a/lets_ride/interactors/.~c9_invoke_rabPdM.py b/lets_ride/interactors/.~c9_invoke_rabPdM.py[m
+[1mdeleted file mode 100644[m
+[1mindex 67dd67a..0000000[m
+[1m--- a/lets_ride/interactors/.~c9_invoke_rabPdM.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,145 +0,0 @@[m
+[31m-import datetime[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-from lets_ride.interactors.storages.storage_interface \[m
+[31m-    import StorageInterface[m
+[31m-from lets_ride.constants.constants import DEFAULT_DATE_TIME_FORMAT[m
+[31m-[m
+[31m-class RideRequestInteractor:[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: StorageInterface,[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-[m
+[31m-    def ride_request_wrapper([m
+[31m-        self,[m
+[31m-        user_id: int,[m
+[31m-        source: str,[m
+[31m-        destination: str,[m
+[31m-        travel_date_time: str,[m
+[31m-        flexible_timings: bool,[m
+[31m-        flexible_travel_from_date_time: str,[m
+[31m-        flexible_travel_to_date_time: str,[m
+[31m-        seats: int,[m
+[31m-        laguage_quantity: int[m
+[31m-    ):[m
+[31m-        if flexible_timings:[m
+[31m-            from_datetime_obj = datetime.datetime.strptime([m
+[31m-                flexible_travel_from_date_time, DEFAULT_DATE_TIME_FORMAT[m
+[31m-            )[m
+[31m-            to_datetime_obj = datetime.datetime.strptime([m
+[31m-                flexible_travel_to_date_time, DEFAULT_DATE_TIME_FORMAT[m
+[31m-            )[m
+[31m-            self.storage.ride_request_with_flexible_timings([m
+[31m-                user_id=user_id,[m
+[31m-                source=source,[m
+[31m-                destination=destination,[m
+[31m-                flexible_timings=flexible_timings,[m
+[31m-                flexible_travel_from_date_time=from_datetime_obj,[m
+[31m-                flexible_travel_to_date_time=to_datetime_obj,[m
+[31m-                seats=seats,[m
+[31m-                laguage_quantity=laguage_quantity[m
+[31m-            )[m
+[31m-[m
+[31m-        else:[m
+[31m-            datetime_obj = datetime.datetime.strptime([m
+[31m-                travel_date_time, DEFAULT_DATE_TIME_FORMAT[m
+[31m-            )[m
+[31m-            self.storage.ride_request([m
+[31m-                user_id=user_id,[m
+[31m-                source=source,[m
+[31m-                destination=destination,[m
+[31m-                travel_date_time=datetime_obj,[m
+[31m-                flexible_timings=flexible_timings,[m
+[31m-                seats=seats,[m
+[31m-                laguage_quantity=laguage_quantity[m
+[31m-            )[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[31m-[m
+[1mdiff --git a/lets_ride/interactors/.~c9_invoke_s5of1u.py b/lets_ride/interactors/.~c9_invoke_s5of1u.py[m
+[1mdeleted file mode 100644[m
+[1mindex 68a55e1..0000000[m
+[1m--- a/lets_ride/interactors/.~c9_invoke_s5of1u.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,18 +0,0 @@[m
+[31m-import datetime[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-from lets_ride.interactors.storages.storage_interface \[m
+[31m-    import StorageInterface[m
+[31m-from lets_ride.constants.constants import DEFAULT_DATE_TIME_FORMAT[m
+[31m-[m
+[31m-class ShareTravelInfo:[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: StorageInterface,[m
+[31m-        presenter: PresenterInterface,[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-        self.presenter = presenter[m
+[31m-        [m
+[31m-    def share_travel_info(self,):[m
+[31m-        pass[m
+\ No newline at end of file[m
+[1mdiff --git a/lets_ride/interactors/presenters/presenter_interface.py b/lets_ride/interactors/presenters/presenter_interface.py[m
+[1mindex dd42adf..dc5bb34 100644[m
+[1m--- a/lets_ride/interactors/presenters/presenter_interface.py[m
+[1m+++ b/lets_ride/interactors/presenters/presenter_interface.py[m
+[36m@@ -2,7 +2,6 @@[m [mfrom abc import ABC[m
+ from abc import abstractmethod[m
+ from common.dtos import UserAuthTokensDTO[m
+ from lets_ride.dtos.dtos import ([m
+[31m-    UserDto,[m
+     RideAssetMatchingDto,[m
+     RideRequestsDto,[m
+     AssetRequestsDto[m
+[36m@@ -11,26 +10,6 @@[m [mfrom lets_ride.dtos.dtos import ([m
+ [m
+ class PresenterInterface(ABC):[m
+ [m
+[31m-    @abstractmethod[m
+[31m-    def get_sign_up_response(self, token_dto: UserAuthTokensDTO):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def get_login_response(self, token_dto: UserAuthTokensDTO):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def user_profile_response(self, user_dto: UserDto):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def raise_invalid_phone_number(self):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def raise_invalid_password(self):[m
+[31m-        pass[m
+[31m-[m
+     @abstractmethod[m
+     def get_ride_requests_response(self, ride_requests_dto: RideRequestsDto):[m
+         pass[m
+[36m@@ -47,11 +26,3 @@[m [mclass PresenterInterface(ABC):[m
+         ride_asset_matching_dto: RideAssetMatchingDto[m
+     ):[m
+         pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def raise_username_already_exist(self):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def raise_user_with_phone_number_already_exist(self):[m
+[31m-        pass[m
+[1mdiff --git a/lets_ride/interactors/sign_in_interactor.py b/lets_ride/interactors/sign_in_interactor.py[m
+[1mdeleted file mode 100644[m
+[1mindex 056d1b2..0000000[m
+[1m--- a/lets_ride/interactors/sign_in_interactor.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,53 +0,0 @@[m
+[31m-from lets_ride.interactors.storages.user_storage_interface \[m
+[31m-    import UserStorageInterface[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-from common.oauth_user_auth_tokens_service import OAuthUserAuthTokensService[m
+[31m-from common.dtos import UserAuthTokensDTO[m
+[31m-from common.oauth2_storage import OAuth2SQLStorage[m
+[31m-from lets_ride.exceptions.exceptions \[m
+[31m-    import InvalidPhoneNumber, InvalidPassword[m
+[31m-[m
+[31m-[m
+[31m-class SignInInteractor:[m
+[31m-[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: UserStorageInterface,[m
+[31m-        presenter: PresenterInterface,[m
+[31m-        oauth_storage = OAuth2SQLStorage[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-        self.presenter = presenter[m
+[31m-        self.oauth_storage = oauth_storage[m
+[31m-[m
+[31m-    def login_wrapper([m
+[31m-        self,[m
+[31m-        phone_number: str,[m
+[31m-        password: str[m
+[31m-    ):[m
+[31m-        try:[m
+[31m-            self.storage.validate_phone_number(phone_number=phone_number)[m
+[31m-        except InvalidPhoneNumber:[m
+[31m-            self.presenter.raise_invalid_phone_number()[m
+[31m-        try:[m
+[31m-            self.storage.validate_password([m
+[31m-                phone_number=phone_number, password=password[m
+[31m-            )[m
+[31m-        except InvalidPassword:[m
+[31m-            self.presenter.raise_invalid_password()[m
+[31m-[m
+[31m-        user_id = self.storage.login([m
+[31m-            phone_number=phone_number, password=password[m
+[31m-        )[m
+[31m-[m
+[31m-        service = OAuthUserAuthTokensService([m
+[31m-            oauth2_storage=self.oauth_storage[m
+[31m-        )[m
+[31m-        token_dto = service.create_user_auth_tokens([m
+[31m-            user_id=user_id[m
+[31m-        )[m
+[31m-        response = self.presenter.get_login_response([m
+[31m-            token_dto=token_dto[m
+[31m-        )[m
+[31m-        return response[m
+[1mdiff --git a/lets_ride/interactors/sign_up_interactor.py b/lets_ride/interactors/sign_up_interactor.py[m
+[1mdeleted file mode 100644[m
+[1mindex 3d1f766..0000000[m
+[1m--- a/lets_ride/interactors/sign_up_interactor.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,49 +0,0 @@[m
+[31m-from lets_ride.interactors.storages.user_storage_interface \[m
+[31m-    import UserStorageInterface[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-from common.oauth_user_auth_tokens_service import OAuthUserAuthTokensService[m
+[31m-from common.dtos import UserAuthTokensDTO[m
+[31m-from common.oauth2_storage import OAuth2SQLStorage[m
+[31m-[m
+[31m-[m
+[31m-class SignUpInteractor:[m
+[31m-[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: UserStorageInterface,[m
+[31m-        presenter: PresenterInterface,[m
+[31m-        oauth_storage: OAuth2SQLStorage[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-        self.presenter = presenter[m
+[31m-        self.oauth_storage = oauth_storage[m
+[31m-[m
+[31m-    def sign_up_wrapper([m
+[31m-        self,[m
+[31m-        username: str,[m
+[31m-        phone_number: str,[m
+[31m-        password: str[m
+[31m-    ):[m
+[31m-        is_user_exist = self.storage.check_username_exists(username)[m
+[31m-        if is_user_exist:[m
+[31m-            self.presenter.raise_username_already_exist()[m
+[31m-[m
+[31m-        is_user_with_phone_number_exist = \[m
+[31m-            self.storage.check_phone_number_exists(phone_number)[m
+[31m-        if is_user_with_phone_number_exist:[m
+[31m-            self.presenter.raise_user_with_phone_number_already_exist()[m
+[31m-[m
+[31m-        user_id = self.storage.sign_up([m
+[31m-            username=username,[m
+[31m-            phone_number=phone_number,[m
+[31m-            password=password[m
+[31m-        )[m
+[31m-        service = OAuthUserAuthTokensService([m
+[31m-            oauth2_storage=self.oauth_storage[m
+[31m-        )[m
+[31m-        token_dto= service.create_user_auth_tokens(user_id=user_id)[m
+[31m-        response = self.presenter.get_sign_up_response([m
+[31m-            token_dto=token_dto[m
+[31m-        )[m
+[31m-        return response[m
+[1mdiff --git a/lets_ride/interactors/storages/user_storage_interface.py b/lets_ride/interactors/storages/user_storage_interface.py[m
+[1mdeleted file mode 100644[m
+[1mindex 93eac22..0000000[m
+[1m--- a/lets_ride/interactors/storages/user_storage_interface.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,50 +0,0 @@[m
+[31m-from abc import abstractmethod[m
+[31m-from abc import ABC[m
+[31m-from lets_ride.dtos.dtos import UserDto[m
+[31m-[m
+[31m-[m
+[31m-class UserStorageInterface(ABC):[m
+[31m-[m
+[31m-    def __init__(self):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def sign_up([m
+[31m-        self,[m
+[31m-        username: str,[m
+[31m-        phone_number: str,[m
+[31m-        password: str[m
+[31m-    ) -> int:[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def validate_password(self, phone_number: str, password: str):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def validate_phone_number(self, phone_number: str):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def login([m
+[31m-        self,[m
+[31m-        phone_number: str,[m
+[31m-        password: str[m
+[31m-    ) -> int:[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def user_profile(self, user_id: int) -> UserDto:[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def update_user_password(self,user_id: int, password: str):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def check_username_exists(self, username: str):[m
+[31m-        pass[m
+[31m-[m
+[31m-    @abstractmethod[m
+[31m-    def check_phone_number_exists(self, phone_number: str):[m
+[31m-        pass[m
+[1mdiff --git a/lets_ride/interactors/update_user_password_interactor.py b/lets_ride/interactors/update_user_password_interactor.py[m
+[1mdeleted file mode 100644[m
+[1mindex 4471d29..0000000[m
+[1m--- a/lets_ride/interactors/update_user_password_interactor.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,17 +0,0 @@[m
+[31m-from lets_ride.interactors.storages.user_storage_interface \[m
+[31m-    import UserStorageInterface[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-[m
+[31m-class UpdateUserPasswordInteractor:[m
+[31m-[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: UserStorageInterface,[m
+[31m-        presenter: PresenterInterface,[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-        self.presenter = presenter[m
+[31m-[m
+[31m-    def update_user_password_wrapper(self, user_id: int, new_password: str):[m
+[31m-        self.storage.update_user_password(user_id=user_id, password=new_password)[m
+[1mdiff --git a/lets_ride/interactors/user_profile_interactor.py b/lets_ride/interactors/user_profile_interactor.py[m
+[1mdeleted file mode 100644[m
+[1mindex 11a7b97..0000000[m
+[1m--- a/lets_ride/interactors/user_profile_interactor.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,20 +0,0 @@[m
+[31m-from lets_ride.interactors.storages.user_storage_interface \[m
+[31m-    import UserStorageInterface[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-from lets_ride.dtos.dtos import UserDto[m
+[31m-[m
+[31m-class UserProfileInteractor:[m
+[31m-[m
+[31m-    def __init__([m
+[31m-        self,[m
+[31m-        storage: UserStorageInterface,[m
+[31m-        presenter: PresenterInterface,[m
+[31m-    ):[m
+[31m-        self.storage = storage[m
+[31m-        self.presenter = presenter[m
+[31m-[m
+[31m-    def user_profile_wrapper(self, user_id: int):[m
+[31m-        user_dto = self.storage.user_profile(user_id=user_id)[m
+[31m-        response = self.presenter.user_profile_response(user_dto=user_dto)[m
+[31m-        return response[m
+[1mdiff --git a/lets_ride/migrations/0001_initial.py b/lets_ride/migrations/0001_initial.py[m
+[1mindex d7e531d..618510c 100644[m
+[1m--- a/lets_ride/migrations/0001_initial.py[m
+[1m+++ b/lets_ride/migrations/0001_initial.py[m
+[36m@@ -1,11 +1,6 @@[m
+[31m-# Generated by Django 3.0.5 on 2020-06-26 22:06[m
+[32m+[m[32m# Generated by Django 3.0.5 on 2020-06-29 16:21[m
+ [m
+[31m-from django.conf import settings[m
+[31m-import django.contrib.auth.models[m
+[31m-import django.contrib.auth.validators[m
+ from django.db import migrations, models[m
+[31m-import django.db.models.deletion[m
+[31m-import django.utils.timezone[m
+ import lets_ride.models.ride_request[m
+ [m
+ [m
+[36m@@ -14,55 +9,29 @@[m [mclass Migration(migrations.Migration):[m
+     initial = True[m
+ [m
+     dependencies = [[m
+[31m-        ('auth', '0011_update_proxy_permissions'),[m
+     ][m
+ [m
+     operations = [[m
+         migrations.CreateModel([m
+[31m-            name='User',[m
+[31m-            fields=[[m
+[31m-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),[m
+[31m-                ('password', models.CharField(max_length=128, verbose_name='password')),[m
+[31m-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),[m
+[31m-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),[m
+[31m-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),[m
+[31m-                ('first_name', models.CharField(blank=True, max_length=30, verbose_name='first name')),[m
+[31m-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),[m
+[31m-                ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),[m
+[31m-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),[m
+[31m-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),[m
+[31m-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),[m
+[31m-                ('phone_number', models.CharField(max_length=30, unique=True)),[m
+[31m-                ('profile_pic', models.TextField(default='https://cdn.zeplin.io/5d0afc9102b7fa56760995cc/assets/05bab6ee-6f73-4e37-b727-179336e41690.svg')),[m
+[31m-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),[m
+[31m-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),[m
+[31m-            ],[m
+[31m-            options={[m
+[31m-                'verbose_name': 'user',[m
+[31m-                'verbose_name_plural': 'users',[m
+[31m-                'abstract': False,[m
+[31m-            },[m
+[31m-            managers=[[m
+[31m-                ('objects', django.contrib.auth.models.UserManager()),[m
+[31m-            ],[m
+[31m-        ),[m
+[31m-        migrations.CreateModel([m
+[31m-            name='TravelInfo',[m
+[32m+[m[32m            name='AssetRequest',[m
+             fields=[[m
+                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),[m
+[31m-                ('source', models.CharField(max_length=50)),[m
+[31m-                ('destination', models.CharField(max_length=50)),[m
+[32m+[m[32m                ('source', models.CharField(max_length=100)),[m
+[32m+[m[32m                ('destination', models.CharField(max_length=100)),[m
+                 ('travel_date_time', models.DateTimeField(blank=True, null=True)),[m
+                 ('flexible_timings', models.BooleanField(default=False)),[m
+                 ('flexible_from_date_time', models.DateTimeField(blank=True, null=True)),[m
+                 ('flexible_to_date_time', models.DateTimeField(blank=True, null=True)),[m
+[31m-                ('travel_medium', models.CharField(choices=[('BUS', 'BUS'), ('TRAIN', 'TRAIN'), ('FLIGHT', 'FLIGHT')], max_length=50)),[m
+                 ('asset_quantity', models.IntegerField()),[m
+[31m-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='travel_info', to=settings.AUTH_USER_MODEL)),[m
+[32m+[m[32m                ('asset_type', models.CharField(choices=[('BAG', 'BAG'), ('LAPTOP', 'LAPTOP'), ('DOCUMENTS', 'DOCUMENTS'), ('OTHERS', 'OTHERS')], max_length=50)),[m
+[32m+[m[32m                ('asset_type_others', models.CharField(blank=True, max_length=100, null=True)),[m
+[32m+[m[32m                ('asset_sensitivity', models.CharField(choices=[('LOW', 'LOW'), ('HIGH', 'HIGH'), ('MEDIUM', 'MEDIUM')], max_length=50)),[m
+[32m+[m[32m                ('user_id', models.IntegerField()),[m
+[32m+[m[32m                ('accepted_by_id', models.IntegerField(null=True)),[m
+             ],[m
+         ),[m
+         migrations.CreateModel([m
+[31m-            name='ShareRide',[m
+[32m+[m[32m            name='RideRequest',[m
+             fields=[[m
+                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),[m
+                 ('source', models.CharField(max_length=50)),[m
+[36m@@ -71,13 +40,14 @@[m [mclass Migration(migrations.Migration):[m
+                 ('flexible_timings', models.BooleanField(default=False)),[m
+                 ('flexible_from_date_time', models.DateTimeField(blank=True, null=True)),[m
+                 ('flexible_to_date_time', models.DateTimeField(blank=True, null=True)),[m
+[31m-                ('seats', models.IntegerField()),[m
+[31m-                ('asset_quantity', models.IntegerField()),[m
+[31m-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='share_rides', to=settings.AUTH_USER_MODEL)),[m
+[32m+[m[32m                ('seats', models.IntegerField(validators=[lets_ride.models.ride_request.validate_seats])),[m
+[32m+[m[32m                ('laguage_quantity', models.IntegerField()),[m
+[32m+[m[32m                ('user_id', models.IntegerField()),[m
+[32m+[m[32m                ('accepted_by_id', models.IntegerField(null=True)),[m
+             ],[m
+         ),[m
+         migrations.CreateModel([m
+[31m-            name='RideRequest',[m
+[32m+[m[32m            name='ShareRide',[m
+             fields=[[m
+                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),[m
+                 ('source', models.CharField(max_length=50)),[m
+[36m@@ -86,28 +56,24 @@[m [mclass Migration(migrations.Migration):[m
+                 ('flexible_timings', models.BooleanField(default=False)),[m
+                 ('flexible_from_date_time', models.DateTimeField(blank=True, null=True)),[m
+                 ('flexible_to_date_time', models.DateTimeField(blank=True, null=True)),[m
+[31m-                ('seats', models.IntegerField(validators=[lets_ride.models.ride_request.validate_seats])),[m
+[31m-                ('laguage_quantity', models.IntegerField()),[m
+[31m-                ('accepted_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='rides_accepted', to=settings.AUTH_USER_MODEL)),[m
+[31m-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ride_requests', to=settings.AUTH_USER_MODEL)),[m
+[32m+[m[32m                ('seats', models.IntegerField()),[m
+[32m+[m[32m                ('asset_quantity', models.IntegerField()),[m
+[32m+[m[32m                ('user_id', models.IntegerField()),[m
+             ],[m
+         ),[m
+         migrations.CreateModel([m
+[31m-            name='AssetRequest',[m
+[32m+[m[32m            name='TravelInfo',[m
+             fields=[[m
+                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),[m
+[31m-                ('source', models.CharField(max_length=100)),[m
+[31m-                ('destination', models.CharField(max_length=100)),[m
+[32m+[m[32m                ('source', models.CharField(max_length=50)),[m
+[32m+[m[32m                ('destination', models.CharField(max_length=50)),[m
+                 ('travel_date_time', models.DateTimeField(blank=True, null=True)),[m
+                 ('flexible_timings', models.BooleanField(default=False)),[m
+                 ('flexible_from_date_time', models.DateTimeField(blank=True, null=True)),[m
+                 ('flexible_to_date_time', models.DateTimeField(blank=True, null=True)),[m
+[32m+[m[32m                ('travel_medium', models.CharField(choices=[('BUS', 'BUS'), ('TRAIN', 'TRAIN'), ('FLIGHT', 'FLIGHT')], max_length=50)),[m
+                 ('asset_quantity', models.IntegerField()),[m
+[31m-                ('asset_type', models.CharField(choices=[('BAG', 'BAG'), ('LAPTOP', 'LAPTOP'), ('DOCUMENTS', 'DOCUMENTS'), ('OTHERS', 'OTHERS')], max_length=50)),[m
+[31m-                ('asset_type_others', models.CharField(blank=True, max_length=100, null=True)),[m
+[31m-                ('asset_sensitivity', models.CharField(choices=[('LOW', 'LOW'), ('HIGH', 'HIGH'), ('MEDIUM', 'MEDIUM')], max_length=50)),[m
+[31m-                ('accepted_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='assets_accepted', to=settings.AUTH_USER_MODEL)),[m
+[31m-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='asset_requests', to=settings.AUTH_USER_MODEL)),[m
+[32m+[m[32m                ('user_id', models.IntegerField()),[m
+             ],[m
+         ),[m
+     ][m
+[1mdiff --git a/lets_ride/models/__init__.py b/lets_ride/models/__init__.py[m
+[1mindex a4ac5b3..f87fa1d 100644[m
+[1m--- a/lets_ride/models/__init__.py[m
+[1m+++ b/lets_ride/models/__init__.py[m
+[36m@@ -1,10 +1,8 @@[m
+[31m-from .user import User[m
+ from .asset_request import AssetRequest[m
+ from .ride_request import RideRequest[m
+ from .share_ride import ShareRide[m
+ from .travel_info import TravelInfo[m
+ __all__ = [[m
+[31m-    "User",[m
+     "AssetRequest",[m
+     "RideRequest",[m
+     "ShareRide",[m
+[1mdiff --git a/lets_ride/models/asset_request.py b/lets_ride/models/asset_request.py[m
+[1mindex f76dad9..71c9104 100644[m
+[1m--- a/lets_ride/models/asset_request.py[m
+[1m+++ b/lets_ride/models/asset_request.py[m
+[36m@@ -1,6 +1,5 @@[m
+ from django.db import models[m
+ from django.core.exceptions import ValidationError[m
+[31m-from lets_ride.models.user import User[m
+ from lets_ride.models.share_ride import ShareRide[m
+ from lets_ride.constants.enums import AssetSensitivity[m
+ from lets_ride.constants.constants \[m
+[36m@@ -20,18 +19,8 @@[m [mclass AssetRequest(models.Model):[m
+         choices=ASSET_SENSITIVITY,[m
+         max_length=50[m
+     )[m
+[31m-    user = models.ForeignKey([m
+[31m-        User,[m
+[31m-        on_delete = models.CASCADE,[m
+[31m-        related_name = 'asset_requests'[m
+[31m-    )[m
+[31m-    accepted_by = models.ForeignKey([m
+[31m-        User,[m
+[31m-        on_delete=models.CASCADE,[m
+[31m-        related_name="assets_accepted",[m
+[31m-        null=True,[m
+[31m-        blank=True[m
+[31m-    )[m
+[32m+[m[32m    user_id = models.IntegerField()[m
+[32m+[m[32m    accepted_by_id = models.IntegerField(null=True)[m
+ [m
+     def save(self, *args, **kwargs):[m
+         if self.flexible_timings and self.travel_date_time:[m
+[1mdiff --git a/lets_ride/models/ride_request.py b/lets_ride/models/ride_request.py[m
+[1mindex 7d27421..082c269 100644[m
+[1m--- a/lets_ride/models/ride_request.py[m
+[1m+++ b/lets_ride/models/ride_request.py[m
+[36m@@ -1,6 +1,5 @@[m
+ from django.db import models[m
+ from django.core.exceptions import ValidationError[m
+[31m-from lets_ride.models.user import User[m
+ from lets_ride.models.share_ride import ShareRide[m
+ from lets_ride.constants.constants import STATUS[m
+ [m
+[36m@@ -21,18 +20,8 @@[m [mclass RideRequest(models.Model):[m
+     flexible_to_date_time = models.DateTimeField(null=True, blank=True)[m
+     seats = models.IntegerField(validators=[validate_seats])[m
+     laguage_quantity = models.IntegerField()[m
+[31m-    user = models.ForeignKey([m
+[31m-        User,[m
+[31m-        on_delete = models.CASCADE,[m
+[31m-        related_name = 'ride_requests'[m
+[31m-    )[m
+[31m-    accepted_by = models.ForeignKey([m
+[31m-        User,[m
+[31m-        on_delete=models.CASCADE,[m
+[31m-        related_name="rides_accepted",[m
+[31m-        null=True,[m
+[31m-        blank=True[m
+[31m-    )[m
+[32m+[m[32m    user_id = models.IntegerField()[m
+[32m+[m[32m    accepted_by_id = models.IntegerField(null=True)[m
+ [m
+     def save(self, *args, **kwargs):[m
+         if self.flexible_timings and self.travel_date_time:[m
+[1mdiff --git a/lets_ride/models/share_ride.py b/lets_ride/models/share_ride.py[m
+[1mindex e47b102..59559a3 100644[m
+[1m--- a/lets_ride/models/share_ride.py[m
+[1m+++ b/lets_ride/models/share_ride.py[m
+[36m@@ -1,7 +1,6 @@[m
+ from django.db import models[m
+ from django.core.exceptions import ValidationError[m
+ [m
+[31m-from lets_ride.models.user import User[m
+ [m
+ [m
+ class ShareRide(models.Model):[m
+[36m@@ -13,11 +12,7 @@[m [mclass ShareRide(models.Model):[m
+     flexible_to_date_time = models.DateTimeField(null=True, blank=True)[m
+     seats = models.IntegerField()[m
+     asset_quantity = models.IntegerField()[m
+[31m-    user = models.ForeignKey([m
+[31m-        User,[m
+[31m-        on_delete = models.CASCADE,[m
+[31m-        related_name = 'share_rides'[m
+[31m-    )[m
+[32m+[m[32m    user_id = models.IntegerField()[m
+ [m
+     def save(self, *args, **kwargs):[m
+         if self.flexible_timings and self.travel_date_time:[m
+[1mdiff --git a/lets_ride/models/travel_info.py b/lets_ride/models/travel_info.py[m
+[1mindex 2824273..eb89925 100644[m
+[1m--- a/lets_ride/models/travel_info.py[m
+[1m+++ b/lets_ride/models/travel_info.py[m
+[36m@@ -1,6 +1,5 @@[m
+ from django.db import models[m
+ from django.core.exceptions import ValidationError[m
+[31m-from lets_ride.models.user import User[m
+ from lets_ride.constants.constants import TRAVEL_MEDIUM[m
+ [m
+ class TravelInfo(models.Model):[m
+[36m@@ -12,11 +11,7 @@[m [mclass TravelInfo(models.Model):[m
+     flexible_to_date_time = models.DateTimeField(null=True, blank=True)[m
+     travel_medium = models.CharField(choices=TRAVEL_MEDIUM, max_length=50)[m
+     asset_quantity = models.IntegerField()[m
+[31m-    user = models.ForeignKey([m
+[31m-        User,[m
+[31m-        on_delete = models.CASCADE,[m
+[31m-        related_name = 'travel_info'[m
+[31m-    )[m
+[32m+[m[32m    user_id = models.IntegerField()[m
+ [m
+     def save(self, *args, **kwargs):[m
+         if self.flexible_timings and self.travel_date_time:[m
+[1mdiff --git a/lets_ride/models/user.py b/lets_ride/models/user.py[m
+[1mdeleted file mode 100644[m
+[1mindex fd5f867..0000000[m
+[1m--- a/lets_ride/models/user.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,7 +0,0 @@[m
+[31m-from django.db import models[m
+[31m-from django.contrib.auth.models import AbstractUser[m
+[31m-[m
+[31m-class User(AbstractUser):[m
+[31m-    phone_number = models.CharField(max_length=30, unique=True)[m
+[31m-    profile_pic = models.TextField(default="https://cdn.zeplin.io/5d0afc9102b7fa56760995cc/assets/05bab6ee-6f73-4e37-b727-179336e41690.svg")[m
+[31m-[m
+[1mdiff --git a/lets_ride/presenters/presenter_implementation.py b/lets_ride/presenters/presenter_implementation.py[m
+[1mindex 2fa32b2..f26cd88 100644[m
+[1m--- a/lets_ride/presenters/presenter_implementation.py[m
+[1m+++ b/lets_ride/presenters/presenter_implementation.py[m
+[36m@@ -4,14 +4,9 @@[m [mfrom django_swagger_utils.drf_server.exceptions \[m
+     import NotFound, Forbidden, BadRequest[m
+ from lets_ride.interactors.presenters.presenter_interface \[m
+     import PresenterInterface[m
+[31m-from lets_ride.dtos.dtos import UserDto[m
+[31m-from common.dtos import UserAuthTokensDTO[m
+[32m+[m
+ from lets_ride.constants.exception_messages import ([m
+[31m-    INVALID_PHONE_NUMBER,[m
+[31m-    INVALID_PASSWORD,[m
+[31m-    INVALID_OFFSET_LIMIT_VALUE,[m
+[31m-    INVALID_USERNAME,[m
+[31m-    PHONE_NUMBER_WITH_USER_EXIST[m
+[32m+[m[32m    INVALID_OFFSET_LIMIT_VALUE[m
+ )[m
+ from lets_ride.dtos.dtos import ([m
+     RideRequestDto,[m
+[36m@@ -34,54 +29,11 @@[m [mfrom lets_ride.constants.constants import DEFAULT_DATE_TIME_FORMAT[m
+ [m
+ class PresenterImplementation(PresenterInterface):[m
+ [m
+[31m-    def get_sign_up_response(self, token_dto: UserAuthTokensDTO):[m
+[31m-        response_dict = {[m
+[31m-            "user_id": token_dto.user_id,[m
+[31m-            "access_token": token_dto.access_token,[m
+[31m-            "refresh_token": token_dto.refresh_token,[m
+[31m-            "expires_in": token_dto.expires_in[m
+[31m-        }[m
+[31m-        return response_dict[m
+[31m-[m
+[31m-[m
+[31m-    def get_login_response(self, token_dto: UserAuthTokensDTO):[m
+[31m-        response_dict = {[m
+[31m-            "user_id": token_dto.user_id,[m
+[31m-            "access_token": token_dto.access_token,[m
+[31m-            "refresh_token": token_dto.refresh_token,[m
+[31m-            "expires_in": token_dto.expires_in[m
+[31m-        }[m
+[31m-        return response_dict[m
+[31m-[m
+[31m-[m
+[31m-    def user_profile_response(self, user_dto: UserDto):[m
+[31m-        user_dict = {[m
+[31m-            "username": user_dto.username,[m
+[31m-            "phone_number": user_dto.phone_number,[m
+[31m-            "profile_pic_url": user_dto.profile_pic[m
+[31m-        }[m
+[31m-        return user_dict[m
+[31m-[m
+[31m-    def raise_invalid_phone_number(self):[m
+[31m-        raise NotFound(*INVALID_PHONE_NUMBER)[m
+[31m-[m
+[31m-[m
+[31m-    def raise_invalid_password(self):[m
+[31m-        raise NotFound(*INVALID_PASSWORD)[m
+[31m-[m
+ [m
+     def raise_invalid_for_limit_and_offset(self):[m
+         raise BadRequest(*INVALID_OFFSET_LIMIT_VALUE)[m
+ [m
+ [m
+[31m-    def raise_username_already_exist(self):[m
+[31m-        raise BadRequest(*INVALID_USERNAME)[m
+[31m-[m
+[31m-[m
+[31m-    def raise_user_with_phone_number_already_exist(self):[m
+[31m-        raise BadRequest(*PHONE_NUMBER_WITH_USER_EXIST)[m
+[31m-[m
+[31m-[m
+     def  get_asset_requests_response([m
+         self, asset_requests_dto: AssetRequestsDto[m
+     ):[m
+[1mdiff --git a/lets_ride/storages/user_storage_implementation.py b/lets_ride/storages/user_storage_implementation.py[m
+[1mdeleted file mode 100644[m
+[1mindex ff60f8d..0000000[m
+[1m--- a/lets_ride/storages/user_storage_implementation.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,88 +0,0 @@[m
+[31m-from lets_ride.interactors.storages.user_storage_interface \[m
+[31m-    import UserStorageInterface[m
+[31m-from lets_ride.models.user import User[m
+[31m-from lets_ride.dtos.dtos import UserDto[m
+[31m-from lets_ride.exceptions.exceptions import ([m
+[31m-    InvalidPhoneNumber,[m
+[31m-    InvalidPassword[m
+[31m-)[m
+[31m-[m
+[31m-[m
+[31m-class UserStorageImplementation(UserStorageInterface):[m
+[31m-[m
+[31m-    def sign_up([m
+[31m-        self,[m
+[31m-        username: str,[m
+[31m-        phone_number: str,[m
+[31m-        password: str[m
+[31m-    ) -> int:[m
+[31m-        user_obj = User.objects.create([m
+[31m-            username=username,[m
+[31m-            phone_number=phone_number,[m
+[31m-            password=password[m
+[31m-        )[m
+[31m-        user_obj.set_password(user_obj.password)[m
+[31m-        user_obj.save()[m
+[31m-        return user_obj.id[m
+[31m-[m
+[31m-[m
+[31m-    def validate_password(self, phone_number: str, password: str):[m
+[31m-        try:[m
+[31m-            user_obj = User.objects.get(phone_number=phone_number)[m
+[31m-        except User.DoesNotExist:[m
+[31m-            raise InvalidPhoneNumber[m
+[31m-[m
+[31m-        is_invalid_password = not user_obj.check_password(password)[m
+[31m-[m
+[31m-        if is_invalid_password:[m
+[31m-            raise InvalidPassword[m
+[31m-[m
+[31m-[m
+[31m-    def validate_phone_number(self, phone_number: str):[m
+[31m-        try:[m
+[31m-            User.objects.get(phone_number=phone_number)[m
+[31m-        except User.DoesNotExist:[m
+[31m-            raise InvalidPhoneNumber[m
+[31m-[m
+[31m-[m
+[31m-    def check_username_exists(self, username: str):[m
+[31m-[m
+[31m-        try:[m
+[31m-            User.objects.get(username=username)[m
+[31m-        except User.DoesNotExist:[m
+[31m-            return False[m
+[31m-        return True[m
+[31m-[m
+[31m-    def check_phone_number_exists(self, phone_number: str):[m
+[31m-        try:[m
+[31m-            User.objects.get(phone_number=phone_number)[m
+[31m-        except  User.DoesNotExist:[m
+[31m-            return False[m
+[31m-        return True[m
+[31m-[m
+[31m-[m
+[31m-    def login([m
+[31m-        self,[m
+[31m-        phone_number: str,[m
+[31m-        password: str[m
+[31m-    ) -> int:[m
+[31m-        user_obj = User.objects.get([m
+[31m-            phone_number=phone_number,[m
+[31m-        )[m
+[31m-        return user_obj.id[m
+[31m-[m
+[31m-[m
+[31m-    def user_profile(self, user_id: int) -> UserDto:[m
+[31m-        user_obj = User.objects.get(id=user_id)[m
+[31m-        user_dto = UserDto([m
+[31m-            username=user_obj.username,[m
+[31m-            phone_number=user_obj.phone_number,[m
+[31m-            profile_pic=user_obj.profile_pic[m
+[31m-        )[m
+[31m-        return user_dto[m
+[31m-[m
+[31m-[m
+[31m-    def update_user_password(self, user_id: int, password: str):[m
+[31m-        user_obj = User.objects.get(id=user_id)[m
+[31m-        user_obj.set_password(password)[m
+[31m-        user_obj.save()[m
+[1mdiff --git a/lets_ride/tests/interactors/test_sign_in_interactor.py b/lets_ride/tests/interactors/test_sign_in_interactor.py[m
+[1mdeleted file mode 100644[m
+[1mindex 310cb02..0000000[m
+[1m--- a/lets_ride/tests/interactors/test_sign_in_interactor.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,110 +0,0 @@[m
+[31m-import pytest[m
+[31m-from unittest.mock import create_autospec, patch[m
+[31m-from django_swagger_utils.drf_server.exceptions import NotFound[m
+[31m-from common.oauth_user_auth_tokens_service import OAuthUserAuthTokensService[m
+[31m-from lets_ride.interactors.sign_in_interactor import SignInInteractor[m
+[31m-from lets_ride.interactors.presenters.presenter_interface \[m
+[31m-    import PresenterInterface[m
+[31m-from lets_ride.interactors.storages.user_storage_interface \[m
+[31m-    import UserStorageInterface[m
+[31m-from common.dtos import UserAuthTokensDTO[m
+[31m-from common.oauth2_storage import OAuth2SQLStorage[m
+[31m-[m
+[31m-token_dto = UserAuthTokensDTO([m
+[31m-        user_id=1,[m
+[31m-        access_token="JBSJBNKJ",[m
+[31m-        refresh_token="DKBKVJBKJV",[m
+[31m-        expires_in=3436564574[m
+[31m-    )[m
+[31m-[m
+[31m-@patch.object(OAuthUserAuthTokensService, 'create_user_auth_tokens', return_value=token_dto)[m
+[31m-def test_login(create_user_auth_tokens):[m
+[31m-    # Arrange[m
+[31m-    user_id = 1[m
+[31m-    password = "user1"[m
+[31m-    phone_number = "1234354657689"[m
+[31m-[m
+[31m-    mock_presenter_response = {[m
+[31m-        "user_id": 1,[m
+[31m-        "access_token": "JBSJBNKJ",[m
+[31m-        "refresh_token": "DKBKVJBKJV",[m
+[31m-        "expires_in": 3436564574[m
+[31m-    }[m
+[31m-    presenter = create_autospec(PresenterInterface)[m
+[31m-    storage = create_autospec(UserStorageInterface)[m
+[31m-    oauth_storage =OAuth2SQLStorage()[m
+[31m-    interactor = SignInInteractor([m
+[31m-        storage=storage,[m
+[31m-        presenter=presenter,[m
+[31m-        oauth_storage=oauth_storage[m
+[31m-    )[m
+[31m-    storage.login.return_value = user_id[m
+[31m-    presenter.get_login_response.return_value = mock_presenter_response[m
+[31m-[m
+[31m-    # Act[m
+[31m-    response = interactor.login_wrapper([m
+[31m-        phone_number=phone_number,[m
+[31m-        password=password[m
+[31m-        )[m
+[31m-[m
+[31m-    # Assert[m
+[31m-    storage.login.assert_called_once_with([m
+[31m-        phone_number=phone_number,[m
+[31m-        password=password[m
+[31m-    )[m
+[31m-    presenter.get_login_response.assert_called_once_with([m
+[31m-        token_dto=token_dto[m
+[31m-    )[m
+[31m-    storage.validate_phone_number.assert_called_once_with([m
+[31m-        phone_number=phone_number[m
+[31m-    )[m
+[31m-    storage.validate_password.assert_called_once_with([m
+[31m-        phone_number=phone_number,[m
+[31m-        password=password[m
+[31m-    )[m
+[31m-    assert response == mock_presenter_response[m
+[31m-[m
+[31m-@patch.object(OAuthUserAuthTokensService, 'create_user_auth_tokens', return_value=token_dto)[m
+[31m-def test_login_with_invalid_phone_number_raise_exception(create_user_auth_tokens):[m
+[31m-    # Arrange[m
+[31m-    password = "user1"[m
+[31m-    phone_number = "1234354657689"[m
+[31m-    presenter = create_autospec(PresenterInterface)[m
+[31m-    storage = create_autospec(UserStorageInterface)[m
+[31m-    oauth_storage =OAuth2SQLStorage()[m
+[31m-    interactor = SignInInteractor([m
+[31m-        storage=storage,[m
+[31m-        presenter=presenter,[m
+[31m-        oauth_storage=oauth_storage[m
+[31m-    )[m
+[31m-    presenter.raise_invalid_phone_number.side_effect = NotFound[m
+[31m-    # Act[m
+[31m-    interactor.login_wrapper(phone_number=phone_number, password=password)[m
+[31m-[m
+[31m-    # Assert[m
+[31m-    storage.validate_phone_number.assert_called_once_with([m
+[31m-        phone_number=phone_number[m
+[31m-    )[m
+[31m-[m
+[31m-@patch.object(OAuthUserAuthTokensService, 'create_user_auth_tokens', return_value=token_dto)[m
+[31m-def test_login_with_invalid_password_raise_exception(create_user_auth_tokens):[m
+[31m-    # Arrange[m
+[31m-    password = "user1"[m
+[31m-    phone_number = "1234354657689"[m
+[31m-    presenter = create_autospec(PresenterInterface)[m
+[31m-    storage = create_autospec(UserStorageInterface)[m
+[31m-    oauth_storage =OAuth2SQLStorage()[m
+[31m-    interactor = SignInInteractor([m
+[31m-        storage=storage,[m
+[31m-        presenter=presenter,[m
+[31m-        oauth_storage=oauth_storage[m
+[31m-    )[m
+[31m-    presenter.raise_invalid_password.side_effect = NotFound[m
+[31m-    # Act[m
+[31m-    interactor.login_wrapper(phone_number=phone_number, password=password)[m
+[31m-[m
+[31m-    # Assert[m
+[31m-    storage.validate_password.assert_called_once_with([m
+[31m-        phone_number=phone_number,[m
+[31m-        password=password[m
+[31m-    )[m
+[1mdiff --git a/lets_ride/tests/interactors/test_sign_up_interactor.py b/lets_ride/tests/interactors/test_sign_up_interactor.py[m
+[1mdeleted file mode 100644[m
+[1mindex 0b21e06..0000000[m
+[1m--- a/lets_ride/tests/interactors/test_sign_up_interactor.py[m
+[1m+++ /dev/null[m
+[36m@@ -1,122 +0,0 @@[m
+[31m-import pytest[m
+[31m-from unittest.mock import create_autospec, patch[m
+[31m-from django_swagger_utils.drf_server.exceptions import BadReq

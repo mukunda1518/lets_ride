@@ -9,14 +9,138 @@ from lets_ride.dtos.dtos import (
     AssetRequestDto,
     AssetRequestsDto,
     BaseRideShareDto,
-    BaseTravelInfoDto
+    BaseTravelInfoDto,
+    UserDto,
+    RideRequestDTO
 )
+
+# -------- create_ride_request_dto---------
+
+@pytest.fixture
+def create_ride_request_dto_without_flexible_timings():
+    create_ride_request_dto=RideRequestDTO(
+        source="kurnool",
+        destination="Hyderabad",
+        travel_date_time="2023-04-12 05:30 PM",
+        flexible_timings=False,
+        flexible_from_date_time="",
+        flexible_to_date_time="",
+        seats=3,
+        laguage_quantity=3,
+    )
+    return create_ride_request_dto
+
+
+@pytest.fixture
+def create_ride_request_dto_with_flexible_timings():
+    create_ride_request_dto=RideRequestDTO(
+        source="kurnool",
+        destination="Hyderabad",
+        travel_date_time="",
+        flexible_timings=True,
+        flexible_from_date_time="2023-04-12 05:30 PM",
+        flexible_to_date_time="2023-05-12 05:30 AM",
+        seats=7,
+        laguage_quantity=8,
+    )
+    return create_ride_request_dto
+
+
+@pytest.fixture
+def create_ride_request_dto_invalid_travel_datetime():
+    create_ride_request_dto=RideRequestDTO(
+        source="kurnool",
+        destination="Hyderabad",
+        travel_date_time="2020-04-12 05:30 PM",
+        flexible_timings=False,
+        flexible_from_date_time="",
+        flexible_to_date_time="",
+        seats=3,
+        laguage_quantity=3,
+    )
+    return create_ride_request_dto
+
+
+@pytest.fixture
+def create_ride_request_dto_with_invalid_from_datetime():
+    create_ride_request_dto=RideRequestDTO(
+        source="kurnool",
+        destination="Hyderabad",
+        travel_date_time="",
+        flexible_timings=True,
+        flexible_from_date_time="2020-04-12 05:30 PM",
+        flexible_to_date_time="2023-05-12 05:30 AM",
+        seats=7,
+        laguage_quantity=8,
+    )
+    return create_ride_request_dto
+
+
+@pytest.fixture
+def create_ride_request_dto_with_invalid_to_datetime():
+    create_ride_request_dto=RideRequestDTO(
+        source="kurnool",
+        destination="Hyderabad",
+        travel_date_time="",
+        flexible_timings=True,
+        flexible_from_date_time="2022-04-12 05:30 PM",
+        flexible_to_date_time="2020-05-12 05:30 AM",
+        seats=7,
+        laguage_quantity=8,
+    )
+    return create_ride_request_dto
+
+
+@pytest.fixture
+def create_ride_request_wrapper_with_negative_no_of_seats():
+
+    create_ride_request_dto=RideRequestDTO(
+        source="kurnool",
+        destination="Hyderabad",
+        travel_date_time="",
+        flexible_timings=True,
+        flexible_from_date_time="2022-04-12 05:30 PM",
+        flexible_to_date_time="2020-05-12 05:30 AM",
+        seats=-7,
+        laguage_quantity=8,
+    )
+    return create_ride_request_dto
+
+
+@pytest.fixture
+def create_ride_request_wrapper_with_negative_values_for_laguage_quantity():
+
+    create_ride_request_dto=RideRequestDTO(
+        source="kurnool",
+        destination="Hyderabad",
+        travel_date_time="",
+        flexible_timings=True,
+        flexible_from_date_time="2022-04-12 05:30 PM",
+        flexible_to_date_time="2020-05-12 05:30 AM",
+        seats=7,
+        laguage_quantity=-8,
+    )
+    return create_ride_request_dto
+
+
 
 #-------------Ride Requests----------------
 
 @pytest.fixture
+def user_dtos():
+    user_dtos=[
+        UserDto(
+            user_id=2,
+            username="user2",
+            phone_number="1234567890"
+        )
+    ]
+    return user_dtos
+
+
+@pytest.fixture
 def base_ride_request_dto():
-    base_ride_request_dto = BaseRideRequestDto(
+    base_ride_request_dto=BaseRideRequestDto(
         ride_request_id=1,
         source="Kurnool",
         destination="Hyderabad",
@@ -32,11 +156,10 @@ def base_ride_request_dto():
 
 @pytest.fixture
 def ride_request_dtos(base_ride_request_dto):
-    ride_request_dtos = [
+    ride_request_dtos=[
         RideRequestDto(
             ride_dto= base_ride_request_dto,
-            accepted_person="User2",
-            accepted_person_phone_number="1234567890",
+            accepted_person_id=2,
             status=Status.ACCEPTED.value
         )
     ]
@@ -46,7 +169,7 @@ def ride_request_dtos(base_ride_request_dto):
 def ride_requests_dto(
     ride_request_dtos
 ):
-    ride_requests_dto = RideRequestsDto(
+    ride_requests_dto=RideRequestsDto(
         ride_dtos=ride_request_dtos,
         total_rides=1
     )
@@ -55,7 +178,7 @@ def ride_requests_dto(
 
 @pytest.fixture()
 def get_my_ride_requests_response():
-    my_ride_requests_response = {
+    my_ride_requests_response={
         "rides": [
             {
                 "source": "Kurnool",
@@ -66,8 +189,7 @@ def get_my_ride_requests_response():
                 "flexible_to_date_time": "",
                 "seats": 4,
                 "laguage_quantity": 5,
-                "accepted_person": "User2",
-                "accepted_person_phone_number": "1234567890",
+                "accepted_person_id": 2,
                 "status": "ACCEPTED"
             }
         ],
@@ -80,7 +202,7 @@ def get_my_ride_requests_response():
 
 @pytest.fixture
 def base_asset_request_dto():
-    base_asset_request_dto = BaseAssetRequestDto(
+    base_asset_request_dto=BaseAssetRequestDto(
         asset_request_id=1,
         source="Kurnool",
         destination="Hyderabad",
@@ -99,7 +221,7 @@ def base_asset_request_dto():
 
 @pytest.fixture
 def base_asset_request_dto_with_flexiable_timings():
-    base_asset_request_dto = BaseAssetRequestDto(
+    base_asset_request_dto=BaseAssetRequestDto(
         source="Kurnool",
         destination="Hyderabad",
         travel_date_time="",
@@ -119,7 +241,7 @@ def base_asset_request_dto_with_flexiable_timings():
 def asset_request_dtos_with_flexible_timings(
     base_asset_request_dto_with_flexiable_timings
 ):
-    asset_request_dtos = [
+    asset_request_dtos=[
         AssetRequestDto(
             asset_dto=base_asset_request_dto_with_flexiable_timings,
             accepted_person=1,
@@ -132,7 +254,7 @@ def asset_request_dtos_with_flexible_timings(
 
 @pytest.fixture
 def asset_request_dtos(base_asset_request_dto):
-    asset_request_dtos = [
+    asset_request_dtos=[
         AssetRequestDto(
             asset_dto=base_asset_request_dto,
             accepted_person="",
@@ -147,7 +269,7 @@ def asset_request_dtos(base_asset_request_dto):
 def asset_requests_dto_with_flexible_timings(
     asset_request_dtos_with_flexible_timings
 ):
-    asset_requests_dto = AssetRequestsDto(
+    asset_requests_dto=AssetRequestsDto(
         asset_dtos=asset_request_dtos_with_flexible_timings,
         total_assets=1
     )
@@ -155,7 +277,7 @@ def asset_requests_dto_with_flexible_timings(
 
 @pytest.fixture
 def asset_requests_dto(asset_request_dtos):
-    asset_requests_dto = AssetRequestsDto(
+    asset_requests_dto=AssetRequestsDto(
         asset_dtos=asset_request_dtos,
         total_assets=1
     )
@@ -163,7 +285,7 @@ def asset_requests_dto(asset_request_dtos):
 
 @pytest.fixture()
 def get_my_asset_requests_response():
-    my_asset_requests_response = {
+    my_asset_requests_response={
         "assets" : [
             {
                 "source": "Kurnool",
@@ -192,7 +314,7 @@ def get_my_asset_requests_response():
 
 @pytest.fixture
 def base_ride_share_dtos():
-    base_share_request_dtos = [
+    base_share_request_dtos=[
         BaseRideShareDto(
             ride_share_id=1,
             source="Kurnool",
@@ -224,7 +346,7 @@ def base_ride_share_dtos():
 
 @pytest.fixture
 def base_travel_share_dtos():
-    base_travel_share_dtos = [
+    base_travel_share_dtos=[
         BaseTravelInfoDto(
             travel_share_id=1,
             source="Kurnool",

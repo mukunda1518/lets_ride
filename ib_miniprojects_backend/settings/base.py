@@ -339,8 +339,9 @@ TEST_RUNNER = 'snapshottest.django.TestRunner'
 MOCK_X_IB_REQUEST_ID = True
 
 STAGE = os.environ.get("STAGE", "local")
-AUTH_USER_MODEL = 'lets_ride.User'
-DEFAULT_OAUTH_APPLICATION_NAME ="lets_ride"
+AUTH_USER_MODEL = 'lets_ride_auth.User'
+
+DEFAULT_OAUTH_APPLICATION_NAME ="lets_ride_auth"
 DEFAULT_OAUTH_CLIENT_ID =""
 DEFAULT_OAUTH_CLIENT_SECRET = ""
 DEFAULT_OAUTH_SCOPES = "read write"

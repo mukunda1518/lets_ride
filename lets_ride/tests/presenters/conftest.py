@@ -9,7 +9,8 @@ from lets_ride.dtos.dtos import (
     AssetRequestsDto,
     RideMatchingDto,
     AssetMatchingDto,
-    RideAssetMatchingDto
+    RideAssetMatchingDto,
+    UserDto
 )
 from lets_ride.constants.enums import Status
 from lets_ride.constants.constants \
@@ -31,12 +32,22 @@ def base_ride_request_dto():
     return base_ride_request_dto
 
 @pytest.fixture
+def user_dtos_for_ride_request():
+    user_dtos = [
+        UserDto(
+            user_id=2,
+            username="user2",
+            phone_number="1234567890"
+        )
+    ]
+    return user_dtos
+
+@pytest.fixture
 def ride_request_dtos(base_ride_request_dto):
     ride_request_dtos = [
         RideRequestDto(
             ride_dto=base_ride_request_dto,
-            accepted_person="user2",
-            accepted_person_phone_number="1234567895",
+            accepted_person_id=2,
             status="ACCEPTED"
         )
     ]
@@ -67,7 +78,7 @@ def get_my_ride_requests_response():
                 "seats": 4,
                 "laguage_quantity": 5,
                 "accepted_person": "user2",
-                "accepted_person_phone_number": "1234567895",
+                "accepted_person_phone_number": "1234567890",
                 "status": Status.ACCEPTED.value
             }
         ],

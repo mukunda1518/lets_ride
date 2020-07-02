@@ -1,10 +1,8 @@
-from .user import User
 from .asset_request import AssetRequest
 from .ride_request import RideRequest
 from .share_ride import ShareRide
 from .travel_info import TravelInfo
 __all__ = [
-    "User",
     "AssetRequest",
     "RideRequest",
     "ShareRide",

@@ -2,11 +2,10 @@ import factory
 
 from datetime import datetime, timedelta
 
-from lets_ride.tests.factories.user_factory import UserFactory
 from lets_ride.models import TravelInfo
 from lets_ride.constants.constants import TRAVEL_MEDIUM_LIST
 
-class TravelInfoFactory(factory.django.DjangoModelFactory):
+class TravelInfoFactory(factory.django.DjangoModelFactory):AttributeError
 
     class Meta:
         model = TravelInfo
@@ -18,7 +17,7 @@ class TravelInfoFactory(factory.django.DjangoModelFactory):
     travel_medium = factory.Iterator(TRAVEL_MEDIUM_LIST)
     flexible_from_date_time = None
     flexible_to_date_time = None
-    user = factory.SubFactory(UserFactory)
+    user_id = 1
 
     @factory.lazy_attribute
     def travel_date_time(self):

@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from lets_ride.models.user import User
 from lets_ride.constants.constants import TRAVEL_MEDIUM
 
 class TravelInfo(models.Model):
@@ -12,11 +11,7 @@ class TravelInfo(models.Model):
     flexible_to_date_time = models.DateTimeField(null=True, blank=True)
     travel_medium = models.CharField(choices=TRAVEL_MEDIUM, max_length=50)
     asset_quantity = models.IntegerField()
-    user = models.ForeignKey(
-        User,
-        on_delete = models.CASCADE,
-        related_name = 'travel_info'
-    )
+    user_id = models.IntegerField()
 
     def save(self, *args, **kwargs):
         if self.flexible_timings and self.travel_date_time:

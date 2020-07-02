@@ -8,6 +8,8 @@ from lets_ride.constants.enums import Status
 from lets_ride.dtos.dtos import (
     RideRequestDto
 )
+from lets_ride.adapters.services import get_service
+
 
 class MyRideRequestsInteractor:
 
@@ -28,7 +30,7 @@ class MyRideRequestsInteractor:
         offset: int,
         limit: int
     ):
-        if limit < 0 or offset < 0:
+        if limit <= 0 or offset < 0:
             self.presenter.raise_invalid_for_limit_and_offset()
             return
         current_datetime_obj = datetime.now()
@@ -52,10 +54,24 @@ class MyRideRequestsInteractor:
             )
         ride_dtos = ride_requests_dto.ride_dtos
         self._set_status_for_ride_requests(ride_dtos)
+        user_ids = self._get_user_ids(ride_dtos)
+        service = get_service()
+        user_dtos = service.auth_service.get_user_dtos(user_ids=user_ids)
+
         response = self.presenter.get_ride_requests_response(
-            ride_requests_dto=ride_requests_dto
+            ride_requests_dto=ride_requests_dto,
+            user_dtos=user_dtos
         )
         return response
+
+
+    @staticmethod
+    def _get_user_ids(ride_dtos: List[RideRequestDto]) -> List[int]:
+        user_ids = []
+        for ride_dto in ride_dtos:
+            if ride_dto.accepted_person_id:
+                user_ids.append(ride_dto.accepted_person_id)
+        return user_ids
 
 
     def _set_status_for_ride_requests(
@@ -74,7 +90,7 @@ class MyRideRequestsInteractor:
 
         current_datetime_obj = datetime.now()
         flexible_timings = ride_dto.ride_dto.flexible_timings
-        is_accepted = ride_dto.accepted_person
+        is_accepted = ride_dto.accepted_person_id
 
         if flexible_timings:
             request_datetime_obj = \
@@ -90,3 +106,4 @@ class MyRideRequestsInteractor:
         else:
             status = Status.PENDING.value
         return status
+

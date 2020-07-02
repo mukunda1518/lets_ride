@@ -6,9 +6,22 @@ from lets_ride.constants.enums \
 
 @dataclass
 class UserDto():
+    user_id: int
     username: str
     phone_number: str
-    profile_pic: str
+
+
+@dataclass
+class RideRequestDTO:
+    source: str
+    destination: str
+    travel_date_time: Optional[datetime]
+    flexible_timings: bool
+    flexible_from_date_time: Optional[datetime]
+    flexible_to_date_time: Optional[datetime]
+    seats: int
+    laguage_quantity: int
+
 
 @dataclass
 class BaseRideRequestDto:
@@ -41,8 +54,7 @@ class BaseAssetRequestDto:
 @dataclass
 class RideRequestDto:
     ride_dto: BaseRideRequestDto
-    accepted_person: str
-    accepted_person_phone_number: str
+    accepted_person_id: Optional[int]
     status: Optional[str]
 
 @dataclass
