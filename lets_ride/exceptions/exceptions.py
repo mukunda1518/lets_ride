@@ -13,3 +13,9 @@ class UserNameAlreadyExist(Exception):
 
 class PhoneNumberAlreadyExist(Exception):
     pass
+
+class InvalidDateTime(Exception):
+    pass
+
+class NegativeValue(Exception):
+    pass

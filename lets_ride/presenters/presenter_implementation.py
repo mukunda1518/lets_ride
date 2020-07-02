@@ -4,14 +4,11 @@ from django_swagger_utils.drf_server.exceptions \
     import NotFound, Forbidden, BadRequest
 from lets_ride.interactors.presenters.presenter_interface \
     import PresenterInterface
-from lets_ride.dtos.dtos import UserDto
-from common.dtos import UserAuthTokensDTO
+
 from lets_ride.constants.exception_messages import (
-    INVALID_PHONE_NUMBER,
-    INVALID_PASSWORD,
     INVALID_OFFSET_LIMIT_VALUE,
-    INVALID_USERNAME,
-    PHONE_NUMBER_WITH_USER_EXIST
+    INVALID_DATE_TIME,
+    NEGATIVE_VALUES_NOT_ALLOWED,
 )
 from lets_ride.dtos.dtos import (
     RideRequestDto,
@@ -22,7 +19,8 @@ from lets_ride.dtos.dtos import (
     RideMatchingDto,
     AssetMatchingDto,
     BaseRideRequestDto,
-    BaseAssetRequestDto
+    BaseAssetRequestDto,
+    UserDto,
 )
 from lets_ride.utils.datetime_conversion \
     import convert_datetime_object_to_string_format
@@ -34,52 +32,9 @@ from lets_ride.constants.constants import DEFAULT_DATE_TIME_FORMAT
 
 class PresenterImplementation(PresenterInterface):
 
-    def get_sign_up_response(self, token_dto: UserAuthTokensDTO):
-        response_dict = {
-            "user_id": token_dto.user_id,
-            "access_token": token_dto.access_token,
-            "refresh_token": token_dto.refresh_token,
-            "expires_in": token_dto.expires_in
-        }
-        return response_dict
-
-
-    def get_login_response(self, token_dto: UserAuthTokensDTO):
-        response_dict = {
-            "user_id": token_dto.user_id,
-            "access_token": token_dto.access_token,
-            "refresh_token": token_dto.refresh_token,
-            "expires_in": token_dto.expires_in
-        }
-        return response_dict
-
-
-    def user_profile_response(self, user_dto: UserDto):
-        user_dict = {
-            "username": user_dto.username,
-            "phone_number": user_dto.phone_number,
-            "profile_pic_url": user_dto.profile_pic
-        }
-        return user_dict
-
-    def raise_invalid_phone_number(self):
-        raise NotFound(*INVALID_PHONE_NUMBER)
-
-
-    def raise_invalid_password(self):
-        raise NotFound(*INVALID_PASSWORD)
-
 
     def raise_invalid_for_limit_and_offset(self):
         raise BadRequest(*INVALID_OFFSET_LIMIT_VALUE)
-
-
-    def raise_username_already_exist(self):
-        raise BadRequest(*INVALID_USERNAME)
-
-
-    def raise_user_with_phone_number_already_exist(self):
-        raise BadRequest(*PHONE_NUMBER_WITH_USER_EXIST)
 
 
     def  get_asset_requests_response(
@@ -112,12 +67,15 @@ class PresenterImplementation(PresenterInterface):
         return asset_request_dict
 
 
-    def get_ride_requests_response(self, ride_requests_dto: RideRequestsDto):
+    def get_ride_requests_response(
+        self, ride_requests_dto: RideRequestsDto, user_dtos: List[UserDto]
+    ):
         ride_request_dtos = ride_requests_dto.ride_dtos
         total_rides = ride_requests_dto.total_rides
         ride_request_list = []
         for ride_request_dto in ride_request_dtos:
-            ride_request_dict = self._get_ride_request_dict(ride_request_dto)
+            ride_request_dict = \
+                self._get_ride_request_dict(ride_request_dto, user_dtos)
             ride_request_list.append(ride_request_dict)
         response_dict = {
             "rides": ride_request_list,
@@ -128,13 +86,23 @@ class PresenterImplementation(PresenterInterface):
         return response_dict
 
 
-    def _get_ride_request_dict(self, ride_request_dto: RideRequestDto):
+    def _get_ride_request_dict(
+        self, ride_request_dto: RideRequestDto, user_dtos: List[UserDto]
+    ):
         base_ride_request_dto = ride_request_dto.ride_dto
         ride_request_dict = self._get_base_ride_dict(base_ride_request_dto)
-        ride_request_dict["accepted_person"] = \
-            ride_request_dto.accepted_person
-        ride_request_dict["accepted_person_phone_number"] = \
-            ride_request_dto.accepted_person_phone_number
+        accepted_by_id = ride_request_dto.accepted_person_id
+        for user_dto in user_dtos:
+            user_id = user_dto.user_id
+            if user_id == accepted_by_id:
+                ride_request_dict["accepted_person"] = \
+                    user_dto.username
+                ride_request_dict["accepted_person_phone_number"] = \
+                    user_dto.phone_number
+            else:
+                ride_request_dict["accepted_person"]= ""
+                ride_request_dict["accepted_person_phone_number"] = ""
+
         ride_request_dict["status"] = ride_request_dto.status
         return ride_request_dict
 
@@ -263,3 +231,10 @@ class PresenterImplementation(PresenterInterface):
                 travel_datetime_obj
              )
         return travel_date_time_str, from_datetime_str, to_datetime_str
+
+
+    def raise_invalid_datetime_exception(self):
+        raise BadRequest(*INVALID_DATE_TIME)
+
+    def raise_invalid_value_exception(self):
+        raise BadRequest(*NEGATIVE_VALUES_NOT_ALLOWED)

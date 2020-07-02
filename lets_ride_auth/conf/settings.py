@@ -1,0 +1,1 @@
+# write your lets_ride_auth settings

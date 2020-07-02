@@ -2,7 +2,6 @@ import factory
 
 from datetime import datetime, timedelta
 
-from lets_ride.tests.factories.user_factory import UserFactory
 from lets_ride.models.asset_request import AssetRequest
 from lets_ride.constants.constants \
     import ASSETTYPE_LIST, ASSET_SENSITIVITY_LIST
@@ -21,7 +20,8 @@ class AssetRequestFactory(factory.django.DjangoModelFactory):
 
     flexible_from_date_time = None
     flexible_to_date_time = None
-    user = factory.SubFactory(UserFactory)
+    user_id = 1
+    accepted_by_id = None
 
     @factory.lazy_attribute
     def travel_date_time(self):
@@ -35,4 +35,7 @@ class AssetRequestFactory(factory.django.DjangoModelFactory):
             flexible_to_date_time=factory.LazyAttribute(
                 lambda obj: obj.flexible_from_date_time + timedelta(10)
             )
+        )
+        accept = factory.Trait(
+            accepted_by_id=2
         )

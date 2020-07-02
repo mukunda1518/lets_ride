@@ -52,6 +52,53 @@ class TestCase01ShareRideAPITestCase(CustomTestUtils):
 
 
     def test_case(self):
-        self.default_test_case() # Returns response object.
+        self.default_test_case()
+
+        user_obj = self.foo_user
+        user_id = user_obj.id
+        ride_share_obj = ShareRide.objects.get(user_id=user_id)
+
+        self.assert_match_snapshot(
+            name="ride_request_id",
+            value=ride_share_obj.id
+        )
+
+        self.assert_match_snapshot(
+            name="source",
+            value=ride_share_obj.source
+        )
+
+        self.assert_match_snapshot(
+            name="destination",
+            value=ride_share_obj.destination
+        )
+
+        self.assert_match_snapshot(
+            name="travel_date_time",
+            value=ride_share_obj.travel_date_time
+        )
+
+        self.assert_match_snapshot(
+            name="flexible_timings",
+            value=ride_share_obj.flexible_from_date_time
+        )
+
+        self.assert_match_snapshot(
+            name="flexible_to_date_time",
+            value=ride_share_obj.flexible_to_date_time
+        )
+
+        self.assert_match_snapshot(
+            name="seats",
+            value=ride_share_obj.seats
+        )
+
+        self.assert_match_snapshot(
+            name="asset_quantity",
+            value=ride_share_obj.asset_quantity
+        )
+
+
+        # Returns response object.
         # Which can be used for further response object checks.
         # Add database state checks here.

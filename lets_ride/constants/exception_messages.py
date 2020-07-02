@@ -26,3 +26,13 @@ PHONE_NUMBER_WITH_USER_EXIST = (
     "phone number with user already exist",
     "PHONE_NUMBER_WITH_USER_EXIST"
 )
+
+INVALID_DATE_TIME = (
+    "travelling datetime should be greater than current datetime",
+    "INVALID_DATE_TIME"
+)
+
+NEGATIVE_VALUES_NOT_ALLOWED = (
+    "this field should contain positive values",
+    "NEGATIVE_VALUES_NOT_ALLOWED"
+)
