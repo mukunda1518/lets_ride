@@ -106,4 +106,3 @@ class MyRideRequestsInteractor:
         else:
             status = Status.PENDING.value
         return status
-
