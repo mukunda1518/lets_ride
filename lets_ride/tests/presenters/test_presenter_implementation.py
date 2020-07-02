@@ -4,8 +4,13 @@ from lets_ride.presenters.presenter_implementation \
     import PresenterImplementation
 from common.dtos import UserAuthTokensDTO
 from lets_ride.dtos.dtos import UserDto
-from lets_ride.constants.exception_messages \
-    import INVALID_PHONE_NUMBER, INVALID_PASSWORD, INVALID_OFFSET_LIMIT_VALUE
+from lets_ride.constants.exception_messages import (
+    INVALID_PHONE_NUMBER,
+    INVALID_PASSWORD,
+    INVALID_OFFSET_LIMIT_VALUE,
+    INVALID_DATE_TIME,
+    NEGATIVE_VALUES_NOT_ALLOWED,
+)
 
 
 def test_raise_invalid_for_limit_and_offset():
@@ -75,3 +80,43 @@ def test_get_ride_asset_matching_requests(
 
     # Assert
     assert get_ride_asset_matching_response == response
+
+
+def test_raise_invalid_datetime():
+    # Arrange
+    presenter = PresenterImplementation()
+    exception_message = INVALID_DATE_TIME[0]
+    exception_res_status = INVALID_DATE_TIME[1]
+    # print("--- ",exception_message)
+    # print("--- ",exception_res_status)
+
+    # Act
+    with pytest.raises(BadRequest) as exception:
+        presenter.raise_invalid_datetime_exception()
+
+    # Assert
+    # print(" actual = ", exception.value.message)
+    # print(" actual = ", exception.value.res_status)
+    assert exception.value.message == exception_message
+    assert exception.value.res_status == exception_res_status
+
+
+def test_raise_invalid_value_exception():
+    # Arrange
+    presenter = PresenterImplementation()
+    exception_message = NEGATIVE_VALUES_NOT_ALLOWED[0]
+    exception_res_status = NEGATIVE_VALUES_NOT_ALLOWED[1]
+    # print("--- ",exception_message)
+    # print("--- ",exception_res_status)
+
+    # Act
+    with pytest.raises(BadRequest) as exception:
+        presenter.raise_invalid_value_exception()
+
+    # Assert
+    # print(" actual = ", exception.value.message)
+    # print(" actual = ", exception.value.res_status)
+    assert exception.value.message == exception_message
+    assert exception.value.res_status == exception_res_status
+
+

@@ -12,6 +12,18 @@ class UserDto():
 
 
 @dataclass
+class RideRequestDTO:
+    source: str
+    destination: str
+    travel_date_time: Optional[datetime]
+    flexible_timings: bool
+    flexible_from_date_time: Optional[datetime]
+    flexible_to_date_time: Optional[datetime]
+    seats: int
+    laguage_quantity: int
+
+
+@dataclass
 class BaseRideRequestDto:
     ride_request_id: int
     source: str

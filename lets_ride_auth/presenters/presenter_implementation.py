@@ -9,7 +9,7 @@ from lets_ride_auth.constants.exception_messages import (
     INVALID_PASSWORD,
     INVALID_USERNAME,
     PHONE_NUMBER_WITH_USER_EXIST,
-    INVALID_USER_IDS
+    INVALID_USER_IDS,
 )
 
 
@@ -68,7 +68,5 @@ class PresenterImplementation(PresenterInterface):
         user_ids = user_ids.__str__()
         INVALID_USER_IDS = ("Invalid user_ids"+user_ids, "INVALID_USER_IDS")
         raise NotFound(*INVALID_USER_IDS)
-
-
 
 

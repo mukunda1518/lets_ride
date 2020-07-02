@@ -20,7 +20,7 @@ TEST_CASE = {
         "path_params": {},
         "query_params": {},
         "header_params": {},
-        "securities": {"oauth": {"tokenUrl": "http://auth.ibtspl.com/oauth2/", "flow": "password", "scopes": ["write", "read"], "type": "oauth2"}},
+        "securities": {},
         "body": REQUEST_BODY,
     },
 }
@@ -44,6 +44,7 @@ class TestCase01LoginAPITestCase(CustomTestUtils):
 
 
     def test_case(self):
+        #self.setupUser(username="", password="")
         self.default_test_case() # Returns response object.
         # Which can be used for further response object checks.
         # Add database state checks here.

@@ -45,8 +45,8 @@ snapshots['TestCase01MyRideRequestsAPITestCase::test_case body'] = {
             'travel_date_time': '2020-01-30 04:50 AM'
         },
         {
-            'accepted_person': 'username 0',
-            'accepted_person_phone_number': '9234567111',
+            'accepted_person': '',
+            'accepted_person_phone_number': '',
             'destination': 'destination2',
             'flexible_from_date_time': '',
             'flexible_timings': False,
@@ -59,8 +59,8 @@ snapshots['TestCase01MyRideRequestsAPITestCase::test_case body'] = {
             'travel_date_time': '2023-01-30 04:50 AM'
         },
         {
-            'accepted_person': 'username 0',
-            'accepted_person_phone_number': '9234567111',
+            'accepted_person': '',
+            'accepted_person_phone_number': '',
             'destination': 'destination3',
             'flexible_from_date_time': '',
             'flexible_timings': False,
@@ -71,13 +71,97 @@ snapshots['TestCase01MyRideRequestsAPITestCase::test_case body'] = {
             'source': 'source3',
             'status': 'ACCEPTED',
             'travel_date_time': '2023-01-30 04:50 AM'
+        },
+        {
+            'accepted_person': 'username 1',
+            'accepted_person_phone_number': '9234567112',
+            'destination': 'destination4',
+            'flexible_from_date_time': '2023-01-20 04:50 AM',
+            'flexible_timings': True,
+            'flexible_to_date_time': '2023-01-30 04:50 AM',
+            'laguage_quantity': 2,
+            'ride_request_id': 5,
+            'seats': 3,
+            'source': 'source4',
+            'status': 'ACCEPTED',
+            'travel_date_time': ''
+        },
+        {
+            'accepted_person': 'username 1',
+            'accepted_person_phone_number': '9234567112',
+            'destination': 'destination5',
+            'flexible_from_date_time': '2023-01-20 04:50 AM',
+            'flexible_timings': True,
+            'flexible_to_date_time': '2023-01-30 04:50 AM',
+            'laguage_quantity': 2,
+            'ride_request_id': 6,
+            'seats': 3,
+            'source': 'source5',
+            'status': 'ACCEPTED',
+            'travel_date_time': ''
+        },
+        {
+            'accepted_person': '',
+            'accepted_person_phone_number': '',
+            'destination': 'destination6',
+            'flexible_from_date_time': '',
+            'flexible_timings': False,
+            'flexible_to_date_time': '',
+            'laguage_quantity': 2,
+            'ride_request_id': 7,
+            'seats': 3,
+            'source': 'source6',
+            'status': 'PENDING',
+            'travel_date_time': '2023-01-30 04:50 AM'
+        },
+        {
+            'accepted_person': '',
+            'accepted_person_phone_number': '',
+            'destination': 'destination7',
+            'flexible_from_date_time': '',
+            'flexible_timings': False,
+            'flexible_to_date_time': '',
+            'laguage_quantity': 2,
+            'ride_request_id': 8,
+            'seats': 3,
+            'source': 'source7',
+            'status': 'PENDING',
+            'travel_date_time': '2023-01-30 04:50 AM'
+        },
+        {
+            'accepted_person': '',
+            'accepted_person_phone_number': '',
+            'destination': 'destination8',
+            'flexible_from_date_time': '2023-01-20 04:50 AM',
+            'flexible_timings': True,
+            'flexible_to_date_time': '2023-01-30 04:50 AM',
+            'laguage_quantity': 2,
+            'ride_request_id': 9,
+            'seats': 3,
+            'source': 'source8',
+            'status': 'PENDING',
+            'travel_date_time': ''
+        },
+        {
+            'accepted_person': '',
+            'accepted_person_phone_number': '',
+            'destination': 'destination9',
+            'flexible_from_date_time': '2023-01-20 04:50 AM',
+            'flexible_timings': True,
+            'flexible_to_date_time': '2023-01-30 04:50 AM',
+            'laguage_quantity': 2,
+            'ride_request_id': 10,
+            'seats': 3,
+            'source': 'source9',
+            'status': 'PENDING',
+            'travel_date_time': ''
         }
     ],
     'sort_options': [
         'seats',
         'date_time'
     ],
-    'total_rides': 6
+    'total_rides': 10
 }
 
 snapshots['TestCase01MyRideRequestsAPITestCase::test_case header_params'] = {
@@ -86,7 +170,7 @@ snapshots['TestCase01MyRideRequestsAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '1449',
+        '3451',
         'Content-Length'
     ],
     'content-type': [

@@ -6,7 +6,9 @@ from lets_ride.interactors.presenters.presenter_interface \
     import PresenterInterface
 
 from lets_ride.constants.exception_messages import (
-    INVALID_OFFSET_LIMIT_VALUE
+    INVALID_OFFSET_LIMIT_VALUE,
+    INVALID_DATE_TIME,
+    NEGATIVE_VALUES_NOT_ALLOWED,
 )
 from lets_ride.dtos.dtos import (
     RideRequestDto,
@@ -229,3 +231,10 @@ class PresenterImplementation(PresenterInterface):
                 travel_datetime_obj
              )
         return travel_date_time_str, from_datetime_str, to_datetime_str
+
+
+    def raise_invalid_datetime_exception(self):
+        raise BadRequest(*INVALID_DATE_TIME)
+
+    def raise_invalid_value_exception(self):
+        raise BadRequest(*NEGATIVE_VALUES_NOT_ALLOWED)

@@ -30,17 +30,17 @@ class CustomTestUtils(CustomAPITestCase):
         RideRequestFactory.create_batch(
             size=2, accepted_by_id=user_objs[0].id, user_id=user_id
         )
-        # RideRequestFactory.create_batch(
-        #     size=2, is_flexible_timings=True,
-        #     accepted_by_id=user_objs[1].id, user_id=user_id
-        # )
+        RideRequestFactory.create_batch(
+            size=2, is_flexible_timings=True,
+            accepted_by_id=user_objs[1].id, user_id=user_id
+        )
 
     @freeze_time("2023-01-20 4:50")
     def ride_request_fixture_for_status_pending(self, user_id: int):
         RideRequestFactory.create_batch(size=2, user_id=user_id)
-        # RideRequestFactory.create_batch(
-        #     size=2, is_flexible_timings=True, user_id=user_id
-        # )
+        RideRequestFactory.create_batch(
+            size=2, is_flexible_timings=True, user_id=user_id
+        )
 
     @freeze_time("2023-01-20 4:50")
     def ride_request_fixture_for_sort_by_seats(self, user_id: int):

@@ -17,8 +17,8 @@ snapshots['TestCase04MyRideRequestsAPITestCase::test_case body'] = {
     ],
     'rides': [
         {
-            'accepted_person': 'username 0',
-            'accepted_person_phone_number': '9234567111',
+            'accepted_person': '',
+            'accepted_person_phone_number': '',
             'destination': 'destination0',
             'flexible_from_date_time': '',
             'flexible_timings': False,
@@ -31,8 +31,8 @@ snapshots['TestCase04MyRideRequestsAPITestCase::test_case body'] = {
             'travel_date_time': '2023-01-30 04:50 AM'
         },
         {
-            'accepted_person': 'username 0',
-            'accepted_person_phone_number': '9234567111',
+            'accepted_person': '',
+            'accepted_person_phone_number': '',
             'destination': 'destination1',
             'flexible_from_date_time': '',
             'flexible_timings': False,
@@ -43,13 +43,27 @@ snapshots['TestCase04MyRideRequestsAPITestCase::test_case body'] = {
             'source': 'source1',
             'status': 'ACCEPTED',
             'travel_date_time': '2023-01-30 04:50 AM'
+        },
+        {
+            'accepted_person': 'username 1',
+            'accepted_person_phone_number': '9234567112',
+            'destination': 'destination2',
+            'flexible_from_date_time': '2023-01-20 04:50 AM',
+            'flexible_timings': True,
+            'flexible_to_date_time': '2023-01-30 04:50 AM',
+            'laguage_quantity': 2,
+            'ride_request_id': 3,
+            'seats': 3,
+            'source': 'source2',
+            'status': 'ACCEPTED',
+            'travel_date_time': ''
         }
     ],
     'sort_options': [
         'seats',
         'date_time'
     ],
-    'total_rides': 2
+    'total_rides': 4
 }
 
 snapshots['TestCase04MyRideRequestsAPITestCase::test_case header_params'] = {
@@ -58,7 +72,7 @@ snapshots['TestCase04MyRideRequestsAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '807',
+        '1127',
         'Content-Length'
     ],
     'content-type': [

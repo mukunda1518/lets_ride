@@ -13,6 +13,14 @@ from lets_ride.dtos.dtos import (
 class PresenterInterface(ABC):
 
     @abstractmethod
+    def raise_invalid_datetime_exception(self):
+        pass
+
+    @abstractmethod
+    def raise_invalid_value_exception(self):
+        pass
+
+    @abstractmethod
     def get_ride_requests_response(
         self, ride_requests_dto: RideRequestsDto,
         user_dtos: List[UserDto]

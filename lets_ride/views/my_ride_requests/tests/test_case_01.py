@@ -15,7 +15,7 @@ REQUEST_BODY = """
 TEST_CASE = {
     "request": {
         "path_params": {},
-        "query_params": {"offset": 0, "limit": 4, "status": "", "sort_key": "seats", "sort_value": "ASC"},
+        "query_params": {"offset": 0, "limit": 10, "status": "", "sort_key": "seats", "sort_value": "ASC"},
         "header_params": {},
         "securities": {"oauth": {"tokenUrl": "http://auth.ibtspl.com/oauth2/", "flow": "password", "scopes": ["write", "read"], "type": "oauth2"}},
         "body": REQUEST_BODY,

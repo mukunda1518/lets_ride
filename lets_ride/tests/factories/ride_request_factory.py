@@ -1,7 +1,13 @@
 import factory
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 from lets_ride.models.ride_request import RideRequest
+
+
+def get_datetime():
+    from datetime import datetime
+    return datetime.now()
+
 
 class RideRequestFactory(factory.django.DjangoModelFactory):
 
@@ -20,15 +26,17 @@ class RideRequestFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def travel_date_time(self):
+        from datetime import datetime
         return datetime.now() + timedelta(10)
 
     class Params:
         is_flexible_timings = factory.Trait(
             flexible_timings=True,
             travel_date_time=None,
-            flexible_from_date_time=factory.LazyFunction(datetime.now),
+            flexible_from_date_time=factory.LazyFunction(get_datetime),
             flexible_to_date_time=factory.LazyAttribute(
                 lambda obj: obj.flexible_from_date_time + timedelta(10)
             )
         )
+
 
