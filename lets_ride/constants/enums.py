@@ -21,3 +21,14 @@ class Status(BaseEnumClass, enum.Enum):
     ACCEPTED = "ACCEPTED"
     PENDING = "PENDING"
     EXPIRED = "EXPIRED"
+
+class FilterByEnums(BaseEnumClass, enum.Enum):
+    STATUS = "STATUS"
+
+class SortByEnums(enum.Enum):
+    SEATS = "SEATS"
+    DATE_TIME = "TRAVEL_DATETIME"
+
+class OrderByEnums(enum.Enum):
+    ASC = "ASC"
+    DESC = "DESC"

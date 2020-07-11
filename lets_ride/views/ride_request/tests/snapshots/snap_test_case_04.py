@@ -7,13 +7,9 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase04RideRequestAPITestCase::test_case status'] = 400
+snapshots['TestCase04RideRequestAPITestCase::test_case status'] = 201
 
-snapshots['TestCase04RideRequestAPITestCase::test_case body'] = {
-    'http_status_code': 400,
-    'res_status': 'NEGATIVE_VALUES_NOT_ALLOWED',
-    'response': 'this field should contain positive values'
-}
+snapshots['TestCase04RideRequestAPITestCase::test_case body'] = b''
 
 snapshots['TestCase04RideRequestAPITestCase::test_case header_params'] = {
     'content-language': [
@@ -21,7 +17,7 @@ snapshots['TestCase04RideRequestAPITestCase::test_case header_params'] = {
         'en'
     ],
     'content-length': [
-        '127',
+        '0',
         'Content-Length'
     ],
     'content-type': [

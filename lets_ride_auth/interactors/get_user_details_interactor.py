@@ -22,7 +22,7 @@ class GetUserDetailsInteractor:
         try:
             user_dtos = self.get_user_details_dtos(user_ids=user_ids)
         except InvalidUserIds as err:
-            print("error = ",repr(err))
+            #print("error = ",repr(err))
             raise presenter.raise_invalid_user_ids_exception(err)
         return user_dtos
 

@@ -1,0 +1,18 @@
+To be Implemented
+
+TODO : creating ride request with following details 
+        to_place
+        from_place
+        travel_date_time
+        no.of seats
+
+TODO : from_place , to_place shouldn't be empty
+        travel_date_time greater than current datetime
+        no.of seats shouldn't be negative
+    
+
+Progress
+1. creating ride request
+
+
+completed

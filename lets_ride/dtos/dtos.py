@@ -15,6 +15,18 @@ class UserDto():
 class RideRequestDTO:
     source: str
     destination: str
+    travel_date_time: Optional[str]
+    flexible_timings: bool
+    flexible_from_date_time: Optional[str]
+    flexible_to_date_time: Optional[str]
+    seats: int
+    laguage_quantity: int
+
+
+@dataclass
+class CreateRideRequestDTO:
+    source: str
+    destination: str
     travel_date_time: Optional[datetime]
     flexible_timings: bool
     flexible_from_date_time: Optional[datetime]

@@ -21,3 +21,4 @@ class AuthService:
             user_details_dtos.append(user_details_dto)
         return user_details_dtos
 
+    

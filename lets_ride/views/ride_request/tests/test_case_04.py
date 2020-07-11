@@ -14,12 +14,12 @@ REQUEST_BODY = """
 {
     "source": "Hyderabad",
     "destination": "Kurnool",
-    "travel_date_time": "2020-07-09 5:30 PM",
+    "travel_date_time": "2022-07-09 5:30 PM",
     "flexible_timings": false,
     "flexible_from_date_time": "",
     "flexible_to_date_time": "",
     "seats": 2,
-    "laguage_quantity": -1
+    "laguage_quantity": 1
 }
 """
 

@@ -2,7 +2,8 @@ from typing import List
 
 from abc import abstractmethod
 from abc import ABC
-from lets_ride_auth.dtos.dtos import UserDto
+
+from lets_ride_auth.interactors.storages.dtos import UserDTO
 
 
 class UserStorageInterface(ABC):
@@ -11,12 +12,7 @@ class UserStorageInterface(ABC):
         pass
 
     @abstractmethod
-    def sign_up(
-        self,
-        username: str,
-        phone_number: str,
-        password: str
-    ) -> int:
+    def sign_up(self, username: str, phone_number: str, password: str) -> int:
         pass
 
     @abstractmethod
@@ -28,15 +24,11 @@ class UserStorageInterface(ABC):
         pass
 
     @abstractmethod
-    def login(
-        self,
-        phone_number: str,
-        password: str
-    ) -> int:
+    def login(self, phone_number: str, password: str) -> int:
         pass
 
     @abstractmethod
-    def user_profile(self, user_id: int) -> UserDto:
+    def user_profile(self, user_id: int) -> UserDTO:
         pass
 
     @abstractmethod
@@ -52,9 +44,9 @@ class UserStorageInterface(ABC):
         pass
 
     @abstractmethod
-    def get_user_details_dtos(self, user_ids: List[int]) -> List[UserDto]:
+    def get_user_details_dtos(self, user_ids: List[int]) -> List[UserDTO]:
         pass
-    
+
     @abstractmethod
     def get_user_ids(self) -> List[int]:
         pass

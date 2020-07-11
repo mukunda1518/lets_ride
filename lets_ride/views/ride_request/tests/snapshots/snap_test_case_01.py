@@ -40,7 +40,7 @@ snapshots['TestCase01RideRequestAPITestCase::test_case source'] = 'Hyderabad'
 
 snapshots['TestCase01RideRequestAPITestCase::test_case destination'] = 'Kurnool'
 
-snapshots['TestCase01RideRequestAPITestCase::test_case travel_date_time'] = GenericRepr('datetime.datetime(2020, 7, 9, 17, 30)')
+snapshots['TestCase01RideRequestAPITestCase::test_case travel_date_time'] = GenericRepr('datetime.datetime(2022, 7, 9, 17, 30)')
 
 snapshots['TestCase01RideRequestAPITestCase::test_case flexible_timings'] = None
 

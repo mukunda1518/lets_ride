@@ -8,28 +8,37 @@ from lets_ride.storages.ride_requests_storage_implementation \
 from lets_ride.presenters.presenter_implementation \
     import PresenterImplementation
 from lets_ride.interactors.my_ride_requests_interactor \
-    import MyRideRequestsInteractor
+    import GetRideRequestsInteractor
 
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
     user_obj = kwargs["user"]
     user_id = user_obj.id
+
     query_parameter_dict = kwargs['request_query_params'].__dict__
     offset = query_parameter_dict['offset']
     limit = query_parameter_dict['limit']
-    status = query_parameter_dict['status']
-    sort_key = query_parameter_dict['sort_key']
-    sort_value = query_parameter_dict['sort_value']
+    filter_by = query_parameter_dict['filter_by']
+    value = query_parameter_dict['filter_value']
+    sort_by = query_parameter_dict['sort_by']
+    order = query_parameter_dict['order']
+
+    from interactor.dtos.dtos import SortByDTO, FilterByDTO, RideRequestMetricsDTO
+    sort_by_dto = SortByDTO(sort_by=sort_by, order=order)
+    filter_by_dto = FilterByDTO(filter_by=filter_by, value=value)
+    ride_request_metrics_dto = RideRequestMetricsDTO(
+        user_id=user_id, offset=offset, limit=limit,
+        sort_by_dto=sort_by_dto, filter_by_dto=filter_by_dto
+    )
+
     storage = RideRequestsStorageImplementation()
     presenter = PresenterImplementation()
-    interactor = MyRideRequestsInteractor(
-        storage=storage,
-        presenter=presenter
+    interactor = GetRideRequestsInteractor(
+        storage=storage
     )
-    my_ride_requests_dict = interactor.my_ride_requests_wrapper(
-        user_id=user_id, offset=offset, limit=limit, status=status,
-        sort_key=sort_key, sort_value=sort_value
+    my_ride_requests_dict = interactor.get_ride_requests_wrapper(
+        ride_request_metrics_dto
     )
     response_data = json.dumps(my_ride_requests_dict)
     return HttpResponse(response_data, status=200)

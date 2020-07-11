@@ -10,6 +10,27 @@ from lets_ride.interactors.ride_request_interactor \
     import RideRequestInteractor
 
 
+class TestCreateRideRequestInteractor:
+    
+    def test_with_invalid_travel_datetime_raise_exception():
+        # Arrange
+        
+        # Act
+        
+        # Assert
+        
+    
+
+
+
+
+
+
+
+
+
+
+
 def test_create_ride_request_wrapper_with_invalid_travel_datetime(
         create_ride_request_dto_invalid_travel_datetime
 ):

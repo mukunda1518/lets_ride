@@ -158,15 +158,44 @@
             }
         },
         "SignUpErrorResponse": {
-            "description": "Un Authorized",
+            "description": "BadRequest",
             "schema": {
                 "type": "object",
                 "properties": {
+                    "response": {
+                        "type": "string"
+                    },
+                    "http_status_code": {
+                        "type": "integer",
+                        "example": 400
+                    },
                     "res_status": {
                         "type": "string",
                         "enum": [
                             "USERNMAE_ALREADY_EXIST",
                             "PHONE_NUMBER_WITH_USER_EXIST"
+                        ]
+                    }
+                }
+            }
+        },
+        "LoginFailureResponse": {
+            "description": "Un Authorized",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "response": {
+                        "type": "string"
+                    },
+                    "http_status_code": {
+                        "type": "integer",
+                        "example": 401
+                    },
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "INVALID_USERNAME",
+                            "INVALID_PASSWORD"
                         ]
                     }
                 }
@@ -203,6 +232,9 @@
                 "responses": {
                     "200": {
                         "$ref": "#/responses/LoginUserResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/LoginFailureResponse"
                     }
                 }
             }

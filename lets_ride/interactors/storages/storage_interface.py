@@ -4,35 +4,22 @@ from abc import abstractmethod
 from abc import ABC
 from lets_ride.dtos.dtos import (
     RideRequestsDto,
-    AssetRequestsDto
+    AssetRequestsDto,
+    RideRequestDTO,
+    CreateRideRequestDTO,
 )
 
 class StorageInterface(ABC):
 
     @abstractmethod
     def create_ride_request(
-        self,
-        user_id: int,
-        source: str,
-        destination: str,
-        travel_date_time: datetime,
-        flexible_timings: bool,
-        seats: int,
-        laguage_quantity: int
+        self, user_id: int, create_ride_request_dto: CreateRideRequestDTO
     ):
         pass
 
     @abstractmethod
     def create_ride_request_with_flexible_timings(
-        self,
-        user_id: int,
-        source: str,
-        destination: str,
-        flexible_travel_from_date_time: datetime,
-        flexible_travel_to_date_time: datetime,
-        flexible_timings: bool,
-        seats: int,
-        laguage_quantity: int
+        self, user_id: int, create_ride_request_dto: CreateRideRequestDTO
     ):
         pass
 

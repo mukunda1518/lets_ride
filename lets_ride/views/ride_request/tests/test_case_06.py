@@ -16,8 +16,8 @@ REQUEST_BODY = """
     "destination": "Kurnool",
     "travel_date_time": "",
     "flexible_timings": true,
-    "flexible_from_date_time": "2010-07-09 5:30 PM",
-    "flexible_to_date_time": "2020-07-19 5:30 PM",
+    "flexible_from_date_time": "2022-07-09 05:30",
+    "flexible_to_date_time": "2022-07-19 05:30",
     "seats": 2,
     "laguage_quantity": 1
 }

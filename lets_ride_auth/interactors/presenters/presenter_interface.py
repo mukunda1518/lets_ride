@@ -38,3 +38,4 @@ class PresenterInterface(ABC):
     @abstractmethod
     def raise_invalid_user_ids_exception(self, err: InvalidUserIds):
         pass
+

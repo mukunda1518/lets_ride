@@ -8,10 +8,10 @@ RESPONSE_200_JSON = """
             "ride_request_id": 1,
             "source": "string",
             "destination": "string",
-            "travel_date_time": "string",
+            "travel_date_time": "2099-12-31 00:00:00",
             "flexible_timings": true,
-            "flexible_from_date_time": "string",
-            "flexible_to_date_time": "string",
+            "flexible_from_date_time": "2099-12-31 00:00:00",
+            "flexible_to_date_time": "2099-12-31 00:00:00",
             "seats": 1,
             "laguage_quantity": 1,
             "accepted_person": "string",
@@ -19,13 +19,7 @@ RESPONSE_200_JSON = """
             "status": "string"
         }
     ],
-    "total_rides": 1,
-    "filter_options": [
-        "string"
-    ],
-    "sort_options": [
-        "string"
-    ]
+    "total_rides": 1
 }
 """
 

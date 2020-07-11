@@ -42,16 +42,19 @@
                     "type": "string"
                 },
                 "travel_date_time": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 },
                 "flexible_timings": {
                     "type": "boolean"
                 },
                 "flexible_from_date_time": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 },
                 "flexible_to_date_time": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date-time"
                 }
             },
             "required": [
@@ -523,25 +526,11 @@
                     "total_rides": {
                         "type": "integer",
                         "format": "int64"
-                    },
-                    "filter_options": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "sort_options": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
                     }
                 },
                 "required": [
                     "rides",
-                    "total_rides",
-                    "filter_options",
-                    "sort_options"
+                    "total_rides"
                 ]
             }
         },
@@ -614,7 +603,29 @@
                     }
                 }
             }
+        },
+        "CreateRideRequestFailureRespose": {
+            "description": "create ride request failure response",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "response": {
+                        "type": "string"
+                    },
+                    "http_status_code": {
+                        "type": "integer"
+                    },
+                    "res_status": {
+                        "type": "string",
+                        "enum": [
+                            "INVALID_DATE_TIME",
+                            "NEGATIVE_VALUES_NOT_ALLOWED"
+                        ]
+                    }
+                }
+            }
         }
+
 
     },
     "paths": {
@@ -635,6 +646,9 @@
                 "responses": {
                     "201": {
                         "description": "successfully created ride request"
+                    },
+                    "400": {
+                        "$ref": "#/responses/CreateRideRequestFailureRespose"
                     }
                 }
             }
@@ -720,33 +734,57 @@
                         "in": "query",
                         "description": "offset value where to start",
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "minimum": 0
                     },
                     {
                         "name": "limit",
                         "in": "query",
                         "description": "limit value where to stop",
                         "type": "integer",
-                        "default": 5
+                        "default": 5,
+                        "minimum": 1
                     },
                     {
-                        "name": "status",
+                        "name": "filter_by",
                         "in": "query",
-                        "description": "status to filter",
-                        "type": "string"
+                        "description": "filter based on which field",
+                        "type": "string",
+                        "enum": [
+                            "STATUS"
+                        ]
                     },
                     {
-                        "name": "sort_key",
+                        "name": "value",
+                        "in": "query",
+                        "description": "value to perform filter",
+                        "type": "string",
+                        "enum": [
+                            "ACCEPTED",
+                            "EXPIRED",
+                            "PENDING"
+                        ]
+                    },
+                    {
+                        "name": "sort_by",
                         "in": "query",
                         "description": "sort_by",
                         "type": "string",
-                        "default": "seats"
+                        "enum": [
+                            "SEATS",
+                            "TRVEL_DATETIME"
+                        ],
+                        "default": "SEATS"
                     },
                     {
-                        "name": "sort_value",
+                        "name": "order",
                         "in": "query",
                         "description": "sort_value",
                         "type": "string",
+                        "enum": [
+                            "ASC",
+                            "DESC"
+                        ],
                         "default": "ASC"
                     }
                 ],

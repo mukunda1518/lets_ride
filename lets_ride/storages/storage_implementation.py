@@ -12,6 +12,8 @@ from lets_ride.dtos.dtos import (
     RideRequestDto,
     BaseRideRequestDto,
     BaseAssetRequestDto,
+    RideRequestDTO,
+    CreateRideRequestDTO,
 )
 
 class StorageImplementation(StorageInterface):
@@ -19,42 +21,31 @@ class StorageImplementation(StorageInterface):
     def create_ride_request(
         self,
         user_id: int,
-        source: str,
-        destination: str,
-        travel_date_time: datetime,
-        flexible_timings: bool,
-        seats: int,
-        laguage_quantity: int
+        create_ride_request_dto: CreateRideRequestDTO
     ):
         RideRequest.objects.create(
-            source=source,
-            destination=destination,
-            travel_date_time=travel_date_time,
-            flexible_timings=flexible_timings,
-            seats=seats,
-            laguage_quantity=laguage_quantity,
+            source=create_ride_request_dto.source,
+            destination=create_ride_request_dto.destination,
+            travel_date_time=create_ride_request_dto.travel_date_time,
+            flexible_timings=create_ride_request_dto.flexible_timings,
+            seats=create_ride_request_dto.seats,
+            laguage_quantity=create_ride_request_dto.laguage_quantity,
             user_id=user_id
         )
 
     def create_ride_request_with_flexible_timings(
         self,
         user_id: int,
-        source: str,
-        destination: str,
-        flexible_timings: bool,
-        flexible_travel_from_date_time: datetime,
-        flexible_travel_to_date_time: datetime,
-        seats: int,
-        laguage_quantity: int
+        create_ride_request_dto: CreateRideRequestDTO
     ):
         RideRequest.objects.create(
-            source=source,
-            destination=destination,
-            flexible_timings=flexible_timings,
-            flexible_from_date_time=flexible_travel_from_date_time,
-            flexible_to_date_time=flexible_travel_to_date_time,
-            seats=seats,
-            laguage_quantity=laguage_quantity,
+            source=create_ride_request_dto.source,
+            destination=create_ride_request_dto.destination,
+            flexible_timings=create_ride_request_dto.flexible_timings,
+            flexible_from_date_time=create_ride_request_dto.flexible_from_date_time,
+            flexible_to_date_time=create_ride_request_dto.flexible_to_date_time,
+            seats=create_ride_request_dto.seats,
+            laguage_quantity=create_ride_request_dto.laguage_quantity,
             user_id=user_id
         )
 
